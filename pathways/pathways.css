@@ -1,0 +1,136 @@
+/* ==========================================================================
+   PATHWAYS CSS: layout for the Pathways index and the six color pages.
+   Cards come from core/color-card.js and core/atlas.css.
+   ========================================================================== */
+
+.pathway-wrapper {
+  width: 100%;
+}
+
+/* The Pathways index: six cards, three across on wide screens. */
+.pathway-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+/* Individual Color Pathway Page Section styling */
+.pathway-section {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 1.5rem;
+}
+
+.pathway-section h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+/* A color's three words, each in capitals in the page's color (its text
+   shade, via .theme-{color}), followed by its plain meaning. Plain text,
+   not pills, because they aren't links. Filled in by pathways.js. */
+.pathway-words {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.pathway-words li {
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.pathway-word {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: 0.4rem;
+}
+
+/* Where to go next from a color page. */
+.pathway-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.pathway-links a {
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 0.2em;
+}
+
+.pathway-links a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* "Provides language", under the archetype. */
+.pathway-provides {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.pathway-provides strong {
+  color: var(--text-primary);
+}
+
+/* The closing note at the foot of the Pathways index. */
+.pathway-closing {
+  text-align: center;
+}
+
+.pathway-closing p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+/* Muted subhead under the color name: its archetype. */
+.pathway-subhead {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0.15rem 0 0.75rem 0;
+}
+
+/* The line above the cards that points newcomers to the Wheel page. The
+   cards themselves (.color-card) are shared, in core/atlas.css. */
+.pathway-intro {
+  font-size: 1.05rem;
+  margin: 0 0 1.5rem 0;
+}
+.pathway-intro a {
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 0.2em;
+}
+.pathway-intro a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 960px) {
+  .pathway-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .pathway-grid { grid-template-columns: 1fr; }
+  .pathway-section { padding: 1.25rem; }
+}

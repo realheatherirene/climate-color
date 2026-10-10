@@ -1,0 +1,29 @@
+<!-- ==========================================================================
+     Climate Color: Squarespace listener that sizes the embedded pages
+     ==========================================================================
+     A copy for reference. The live copy is pasted into Squarespace:
+     Settings > Advanced > Code Injection > Footer.
+
+     It is the second half of a pair. core/iframe-resize.js, inside each
+     embedded page, keeps reporting how tall the page is; this script
+     receives that and sets the page's box on Squarespace to the same
+     height, so it is never cut off and never leaves a big gap.
+
+     It only acts on messages tagged "climate-color-quiz" (the tag's
+     original name, kept so the live copy keeps working) that come from a
+     frame on the page, and it only ever changes that frame's height.
+     ========================================================================== -->
+<script>
+window.addEventListener("message", function (e) {
+  var d = e.data;
+  if (!d || d.source !== "climate-color-quiz" || typeof d.height !== "number") return;
+  var frames = document.getElementsByTagName("iframe");
+  for (var i = 0; i < frames.length; i++) {
+    if (frames[i].contentWindow === e.source) {
+      frames[i].style.height = Math.ceil(d.height) + "px";
+      frames[i].setAttribute("scrolling", "no");
+      break;
+    }
+  }
+});
+</script>

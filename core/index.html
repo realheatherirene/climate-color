@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Core Reference | Climate Color</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Varela+Round&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="atlas.css">
+  <style>
+    /* Reference page only. Everything it shows comes from atlas.css,
+       climate-color.js, and wheel.js in this folder. */
+    body { margin: 0; padding: 2rem 1rem 4rem; text-align: left; }
+    main { max-width: 1100px; margin: 0 auto; }
+    h1, h2 { font-family: 'ADLaM Display', 'Varela Round', sans-serif; font-weight: 400; color: var(--text-primary); }
+    h1 { font-size: 2rem; margin: 0 0 0.5rem; }
+    h2 { font-size: 1.4rem; margin: 3rem 0 0.5rem; }
+    p { color: var(--text-secondary); line-height: 1.55; max-width: 70ch; }
+    .note { font-size: 0.9rem; color: var(--text-muted); }
+    code { font-size: 0.88em; background: var(--bg-tertiary); padding: 0.05em 0.3em; border-radius: 4px; }
+
+    .wheel-box { display: grid; grid-template-columns: minmax(0, 480px) 1fr; gap: 2rem; align-items: start; margin-top: 1rem; }
+    .wheel-controls { display: flex; flex-direction: column; gap: 0.75rem; }
+    .wheel-controls fieldset { border: 1px solid var(--border-color); border-radius: 12px; padding: 0.75rem 1rem; margin: 0; }
+    .wheel-controls legend { font-weight: 700; padding: 0 0.25rem; }
+    .wheel-controls label { display: block; margin: 0.25rem 0; cursor: pointer; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    button { font: inherit; padding: 0.55rem 1rem; border-radius: 9999px; border: 1px solid var(--border-strong);
+      background: var(--bg-secondary); color: var(--text-primary); cursor: pointer; }
+    button:hover { background: var(--bg-tertiary); }
+    button:focus-visible { outline: 3px solid var(--blue-color); outline-offset: 2px; }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border-color); border-radius: 12px; margin-top: 1rem; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+    th, td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border-color); vertical-align: top; text-align: left; }
+    th { background: var(--bg-secondary); font-weight: 700; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    .chip { display: inline-block; width: 2.25rem; height: 2.25rem; border-radius: 8px; border: 1px solid rgba(0,0,0,0.08); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; white-space: nowrap; }
+    .pill { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-weight: 700; white-space: nowrap; }
+    .pass { color: #166534; font-weight: 700; }
+    .fail { color: #B91C1C; font-weight: 700; }
+    .ratio { white-space: nowrap; }
+
+    .checks li { margin: 0.35rem 0; line-height: 1.45; }
+    .checks ul { margin: 0.25rem 0 0.5rem; }
+
+    @media (max-width: 760px) {
+      .wheel-box { grid-template-columns: 1fr; }
+      h1 { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Climate Color: Core Reference</h1>
+  <p>This page shows the one true copy of the color system. Every value here is read live from the files in
+    <code>core/</code>, so if this page looks right, the source is right. Nothing on this page is typed in by hand.</p>
+  <p class="note">Colors bring people in; archetypes make people understand, and stay.</p>
+
+  <h2>The wheel</h2>
+  <p>The Stewardship Wheel, clockwise from the top. Each wedge shows its color with its archetype beneath. The brand wheel adds each color's three words in the outer ring.</p>
+  <div class="wheel-box">
+    <div id="wheel"></div>
+    <div class="wheel-controls">
+      <fieldset>
+        <legend>Show</legend>
+        <label><input type="radio" name="variant" value="brand" checked> Brand wheel (with words)</label>
+        <label><input type="radio" name="variant" value="simple"> Simple ring</label>
+      </fieldset>
+      <div class="btn-row">
+        <button type="button" id="dl-svg">Download SVG</button>
+        <button type="button" id="dl-png">Download PNG</button>
+      </div>
+      <p class="note" id="dl-status">The download is whichever wheel is showing. SVG stays sharp at any size; the PNG is 2400 pixels square with a clear background.</p>
+    </div>
+  </div>
+
+  <h2>The six colors</h2>
+  <p>In list order, starting at Red. Words in a brand color on white use its darker <strong>text shade</strong>, which must reach at least 4.5 to 1.
+    Pill words use the text shade mixed 88% with black, on an 8% tint of the color. The wheel label is the black or white text on each wedge.
+    The wheel shades are the outer ring behind each color's words, lightest to darkest going clockwise; the words must reach 4.5 to 1 on all three.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Color</th><th>Archetype</th><th>Provides</th><th>Words</th>
+          <th>Brand color</th><th>Text shade on white</th><th>Pill</th><th>Wheel label</th><th>Wheel shades (words)</th>
+        </tr>
+      </thead>
+      <tbody id="color-rows"></tbody>
+    </table>
+  </div>
+
+  <h2>Accessibility checks</h2>
+  <p>Every page reads its colors and words from <code>core/</code>. These checks confirm the text on the wheel and in each color's text shade stays readable (at least 4.5 to 1), so a palette change can't quietly break it.</p>
+  <div class="checks" id="checks"><p class="note">Checking…</p></div>
+</main>
+
+<script type="module">
+  import { COLORS, COLOR_KEYS, getColor, colorValue } from "./climate-color.js";
+  import { renderWheel, wheelSVG, FONT_CSS } from "./wheel.js";
+
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+  /* ---------- contrast (WCAG 2) ---------- */
+  const rgb = hex => [0, 2, 4].map(i => parseInt(hex.replace("#", "").slice(i, i + 2), 16));
+  const lum = c => {
+    const [r, g, b] = c.map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+  const mix = (a, b, t) => a.map((v, i) => Math.round(v * t + b[i] * (1 - t)));   // t of a, rest of b
+  const toHex = c => "#" + c.map(v => v.toString(16).padStart(2, "0")).join("").toUpperCase();
+  const WHITE = [255, 255, 255], BLACK = [0, 0, 0];
+  const verdict = r => `<span class="ratio">${r.toFixed(2)} : 1</span> <span class="${r >= 4.5 ? "pass" : "fail"}">${r >= 4.5 ? "Pass" : "Fails 4.5"}</span>`;
+
+  /* ---------- wheel ---------- */
+  const wheelEl = document.getElementById("wheel");
+  let variant = "brand";
+  const drawWheel = () => renderWheel(wheelEl, { variant, caption: "" });
+  drawWheel();
+  document.querySelectorAll('input[name="variant"]').forEach(r =>
+    r.addEventListener("change", () => { variant = r.value; drawWheel(); }));
+
+  /* ---------- color table ---------- */
+  const wordInk = getComputedStyle(document.documentElement).getPropertyValue("--wheel-word-text").trim().toUpperCase() || "#333333";
+  document.getElementById("color-rows").innerHTML = COLOR_KEYS.map(getColor).map(c => {
+    const color = colorValue(c.key), text = colorValue(c.key, "text");
+    if (!color || !text) {
+      return `<tr><td colspan="9" class="fail">${esc(c.key)}: couldn't read ${!color ? "--" + c.key.toLowerCase() + "-color" : "--" + c.key.toLowerCase() + "-text"} from atlas.css</td></tr>`;
+    }
+    const pillText = mix(rgb(text), BLACK, 0.88), pillBg = mix(rgb(color), WHITE, 0.08);
+    const labelRgb = c.label === "black" ? BLACK : WHITE;
+    return `<tr>
+      <td><strong>${esc(c.key)}</strong></td>
+      <td>${esc(c.archetype)}<br><span class="note">${esc(c.plural)} · ${esc(c.action)}</span></td>
+      <td>${esc(c.provides)}</td>
+      <td>${c.words.map(w => `<strong>${esc(w.word)}</strong> <span class="note">${esc(w.phrase)}</span>`).join("<br>")}</td>
+      <td><span class="chip" style="background:${color}"></span><br><span class="mono">${color}</span></td>
+      <td><span style="color:${text};font-weight:700">${esc(c.plural)}</span><br><span class="mono">${text}</span><br>${verdict(contrast(rgb(text), WHITE))}</td>
+      <td><span class="pill" style="background:${toHex(pillBg)};color:${toHex(pillText)};border:1px solid ${toHex(mix(rgb(color), WHITE, 0.25))}">${esc(c.plural)}</span><br>${verdict(contrast(pillText, pillBg))}</td>
+      <td><span class="pill" style="background:${color};color:${c.label}">${esc(c.key)}</span><br>${esc(c.label)}<br>${verdict(contrast(labelRgb, rgb(color)))}</td>
+      <td>${c.words.map(({ word }, j) => {
+        const t = colorValue(c.key, `tint-${j + 1}`);
+        if (!t) return `<span class="fail">--${c.key.toLowerCase()}-tint-${j + 1} missing</span><br>`;
+        return `<span class="pill" style="background:${t};color:${wordInk};border-radius:6px">${esc(word.toUpperCase())}</span> <span class="mono">${t}</span><br>${verdict(contrast(rgb(wordInk), rgb(t)))}<br>`;
+      }).join("")}</td>
+    </tr>`;
+  }).join("");
+
+  /* ---------- downloads ---------- */
+  const status = document.getElementById("dl-status");
+  const toDataURL = blob => new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(blob); });
+
+  async function fontFace() {
+    // Embed the wheel's two fonts (Latin letters only) so the saved file
+    // looks the same on any computer.
+    try {
+      const css = await (await fetch(FONT_CSS)).text();
+      const blocks = css.split("/* ").filter(b => b.startsWith("latin */")).map(b => b.slice(8));
+      const faces = await Promise.all(blocks.map(async b => {
+        const url = (/url\((https:[^)]+)\)/.exec(b) || [])[1];
+        if (!url) return "";
+        const data = await toDataURL(await (await fetch(url)).blob());
+        return b.replace(url, data).replace(/\s+/g, " ").trim();
+      }));
+      return `<style>${faces.join("")}</style>`;
+    } catch { return ""; }
+  }
+
+  async function downloadableSVG() {
+    const globe = await toDataURL(await (await fetch(new URL("./images/climate-color-globe.png", import.meta.url))).blob());
+    const svg = wheelSVG({ variant, inline: true, globeHref: globe });
+    const font = await fontFace();
+    return svg.replace(/(<svg[^>]*>)/, `$1${font}`);
+  }
+
+  function save(blob, name) {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  const fileName = ext => `climate-color-wheel-${variant}.${ext}`;
+
+  document.getElementById("dl-svg").addEventListener("click", async () => {
+    status.textContent = "Preparing SVG…";
+    save(new Blob([await downloadableSVG()], { type: "image/svg+xml" }), fileName("svg"));
+    status.textContent = `Saved ${fileName("svg")}.`;
+  });
+
+  document.getElementById("dl-png").addEventListener("click", async () => {
+    status.textContent = "Preparing PNG…";
+    const url = URL.createObjectURL(new Blob([await downloadableSVG()], { type: "image/svg+xml" }));
+    const img = new Image();
+    img.onload = () => {
+      const size = 2400, canvas = document.createElement("canvas");
+      canvas.width = canvas.height = size;
+      canvas.getContext("2d").drawImage(img, 0, 0, size, size);
+      URL.revokeObjectURL(url);
+      canvas.toBlob(blob => { save(blob, fileName("png")); status.textContent = `Saved ${fileName("png")}.`; }, "image/png");
+    };
+    img.onerror = () => { status.textContent = "Couldn't make the PNG. Try the SVG instead."; };
+    img.src = url;
+  });
+
+  /* ---------- accessibility checks ---------- */
+  const results = [];
+  const note = (where, problems) => results.push({ where, problems });
+  async function runChecks() {
+    const live = Object.fromEntries(COLORS.map(c => [c.key, { color: colorValue(c.key), text: colorValue(c.key, "text") }]));
+
+    // Wheel labels must clear 4.5:1 on their color.
+    note("core/climate-color.js wheel labels", COLORS
+      .filter(c => contrast(c.label === "black" ? BLACK : WHITE, rgb(live[c.key].color)) < 4.5)
+      .map(c => `${c.key}: ${c.label} text is below 4.5:1 on ${live[c.key].color}`));
+
+    // Words must clear 4.5:1 on every wheel shade.
+    note("core/atlas.css wheel shades", COLORS.flatMap(c => [1, 2, 3].flatMap(j => {
+      const t = colorValue(c.key, `tint-${j}`);
+      if (!t) return [`${c.key}: --${c.key.toLowerCase()}-tint-${j} is missing`];
+      return contrast(rgb(wordInk), rgb(t)) < 4.5 ? [`${c.key} shade ${j} (${t}): word text ${wordInk} is below 4.5:1`] : [];
+    })));
+
+    // Text shades must clear 4.5:1 on white.
+    note("core/atlas.css text shades", COLORS
+      .filter(c => contrast(rgb(live[c.key].text), WHITE) < 4.5)
+      .map(c => `${c.key}: ${live[c.key].text} is below 4.5:1 on white`));
+
+    document.getElementById("checks").innerHTML = "<ul>" + results.map(r => {
+      if (!r.problems.length) return `<li><span class="pass">Passes</span> <strong>${esc(r.where)}</strong></li>`;
+      return `<li><span class="fail">${r.problems.length} problem${r.problems.length > 1 ? "s" : ""}</span> <strong>${esc(r.where)}</strong>
+        <ul>${r.problems.map(x => `<li>${esc(x)}</li>`).join("")}</ul></li>`;
+    }).join("") + "</ul>";
+  }
+  runChecks();
+</script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+/* ==========================================================================
+   CORE ATLAS: how Climate Color looks
+   ==========================================================================
+   Every page loads this file first. It is the only place the brand colors,
+   their text shades, and the wheel shades are written down, and it holds
+   the pieces every page shares: the base text, the page header, pills,
+   color cards, and the small buttons and cards on the FAQ page.
+   Each page's own stylesheet adds only its layout.
+   ========================================================================== */
+
+:root {
+  /* The six brand colors. Chosen so every pair looks clearly different,
+     including for common types of color blindness. If one changes, also
+     check the text shades and wheel shades below and the wheel label
+     colors in core/climate-color.js; core/index.html flags anything that
+     falls below 4.5:1. */
+  --red-color: #EB0333;
+  --orange-color: #E98B21;
+  --yellow-color: #FCCD01;
+  --green-color: #46760F;
+  --blue-color: #196BB7;
+  --indigo-color: #231566;
+
+  /* Text shades: each color's darker version for words on white or on a
+     light tint. Every one clears 4.5:1 against white. Red, Green, Blue,
+     and Indigo already clear it at full strength, so their shade is the
+     same as the color; Orange and Yellow are darkened toward black until
+     they do. */
+  --red-text: #EB0333;
+  --orange-text: #AA6518;
+  --yellow-text: #8D7301;
+  --green-text: #46760F;
+  --blue-text: #196BB7;
+  --indigo-text: #231566;
+
+  /* Wheel shades: the outer ring of the brand wheel. Each color's three
+     words sit on three shades of it, lightest to darkest going clockwise.
+     Hand-picked in the brand deck (CC_Branding_091926.pptx, slide 6), so
+     they are not worked out from the colors above: if the palette changes,
+     choose these again. core/index.html shows all 18 with their contrast. */
+  --yellow-tint-1: #FFF2CC; --yellow-tint-2: #F9ED91; --yellow-tint-3: #F9DD67;
+  --orange-tint-1: #FBE5D6; --orange-tint-2: #F8CBAD; --orange-tint-3: #F4B183;
+  --red-tint-1: #F8C4C4; --red-tint-2: #F4A6A6; --red-tint-3: #EF8181;
+  --indigo-tint-1: #E6E0F8; --indigo-tint-2: #CFC5F1; --indigo-tint-3: #AA97E5;
+  --green-tint-1: #E2F0D9; --green-tint-2: #C5E0B4; --green-tint-3: #A9D18E;
+  --blue-tint-1: #DEEBF7; --blue-tint-2: #BDD7EE; --blue-tint-3: #71AADD;
+
+  /* Word text on the wheel shades. A little darker than the brand deck's
+     gray, so it clears 4.5:1 on all 18. */
+  --wheel-word-text: #333333;
+
+  /* Brand Accents */
+  --brand-sky: #74C1DF;
+  --brand-teal: #1494B9;
+  --brand-lime: #90BB3E;
+
+  /* Global Light UI Colors */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-tertiary: #F1F5F9;
+
+  --text-primary: #212121;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+
+  --border-color: #E2E8F0;
+  --border-strong: #CBD5E1;
+
+  /* Shadows */
+  --shadow-soft: 0 4px 6px -1px rgba(0,0,0,0.04);
+  --shadow-hover: 0 6px 12px rgba(0,0,0,0.06);
+}
+
+/* ==========================================================================
+   Global Base Styles & Resets
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+
+html, body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+html,
+body {
+  -ms-overflow-style: none;  /* IE and Legacy Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* Keeps the page's first and last margins inside the page, so its measured
+   height is its real height. The resize script relies on this, or
+   the Squarespace box comes out too short and cuts off the top. Looks the
+   same either way. */
+body {
+  display: flow-root;
+}
+
+/* Breathing room at the edges on phones, the same on every page. On wider
+   screens, Squarespace's own page margins provide it. */
+@media (max-width: 640px) {
+  body {
+    padding: 1.25rem 0.85rem;
+  }
+}
+
+/* ==========================================================================
+   Page header: the title and one-line description at the top of every page
+   ========================================================================== */
+
+.page-header {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+  font-family: 'ADLaM Display', 'Varela Round', sans-serif;
+  font-size: 2.3rem;
+  font-weight: 500;
+  color: var(--brand-teal);
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.page-header p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ==========================================================================
+   Shared page pieces: the Wheel FAQ and the Wheel page use these
+   ========================================================================== */
+
+/* A narrower page for reading. */
+.page-narrow {
+  max-width: 720px;
+}
+
+/* The row of small buttons under the header (e.g. "Back to the Wheel"). */
+.top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+}
+
+/* Quiet outlined buttons, so they stay out of the way until someone needs
+   them. */
+.btn-small {
+  display: inline-block;
+  background-color: var(--bg-primary);
+  color: color-mix(in srgb, var(--brand-teal) 70%, black);
+  border: 1px solid var(--border-strong);
+  padding: 0.4rem 0.95rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.btn-small:hover {
+  background-color: color-mix(in srgb, var(--brand-teal) 8%, var(--bg-primary));
+  border-color: var(--brand-teal);
+}
+
+.btn-small:focus-visible {
+  outline: 2px solid var(--brand-teal);
+  outline-offset: 2px;
+}
+
+/* A white card with a heading and a paragraph: one FAQ answer. */
+.content-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 2rem;
+}
+
+.content-card:last-child {
+  margin-bottom: 0;
+}
+
+.card-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.content-card p {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.content-card .card-action {
+  margin-top: 1.25rem;
+}
+
+/* "Where to go next" buttons at the foot of a page: the neutral pill,
+   a little larger. */
+.next-btn {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+  .content-card { padding: 1.25rem; }
+}
+
+/* ==========================================================================
+   Pills: rounded buttons and filters
+   ========================================================================== */
+
+.pill-btn {
+  font-family: inherit;
+  border-radius: 9999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Color pills. One recipe for every pill on the site: an 8% tint of the
+   color, a 25% tint border, and words in the text shade mixed 88% with
+   black, so they always clear 4.5:1. core/index.html shows each one with
+   its contrast. Each color class names its color and text shade; the rule
+   after them turns those into the pill. */
+.pill-yellow { --pill-color: var(--yellow-color); --pill-text: var(--yellow-text); }
+.pill-orange { --pill-color: var(--orange-color); --pill-text: var(--orange-text); }
+.pill-red { --pill-color: var(--red-color); --pill-text: var(--red-text); }
+.pill-indigo { --pill-color: var(--indigo-color); --pill-text: var(--indigo-text); }
+.pill-green { --pill-color: var(--green-color); --pill-text: var(--green-text); }
+.pill-blue { --pill-color: var(--blue-color); --pill-text: var(--blue-text); }
+.pill-yellow, .pill-orange, .pill-red,
+.pill-indigo, .pill-green, .pill-blue {
+  background-color: color-mix(in srgb, var(--pill-color) 8%, white);
+  border: 1px solid color-mix(in srgb, var(--pill-color) 25%, white);
+  color: color-mix(in srgb, var(--pill-text) 88%, black);
+}
+
+/* The neutral pill, used for "where to go next" buttons. */
+.pill-all {
+  --pill-color: var(--text-muted);
+  --pill-text: var(--text-secondary);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+}
+
+/* Filter pills: hover darkens only the border, so the words keep their
+   contrast. Keyboard focus adds a ring in the same color as the words,
+   which clears 4.5:1 on the pill's tint. The ring sits just inside the
+   pill's edge, so the edge of the page can't cut it off. On the selected
+   pill (dark fill) the ring is white. The small lift is skipped for
+   anyone who has asked their device to reduce motion. */
+.pill-btn:hover {
+  border-color: var(--pill-color, var(--text-muted));
+}
+.pill-btn:focus-visible {
+  border-color: var(--pill-color, var(--text-muted));
+  outline: 2px solid color-mix(in srgb, var(--pill-text, var(--text-secondary)) 88%, black);
+  outline-offset: -4px;
+}
+.pill-btn.active:focus-visible {
+  outline-color: var(--bg-primary);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pill-btn:hover { transform: translateY(-1px); }
+}
+
+/* Global Theme Text Helpers: words in a color use its text shade. */
+.theme-red { color: var(--red-text); }
+.theme-orange { color: var(--orange-text); }
+.theme-yellow { color: var(--yellow-text); }
+.theme-green { color: var(--green-text); }
+.theme-blue { color: var(--blue-text); }
+.theme-indigo { color: var(--indigo-text); }
+
+/* ==========================================================================
+   Color card (core/color-card.js): one card per color, the same on the
+   Pathways index and under the wheel, with a 6px edge in its color on
+   the left. Words in a color use its text shade. The button sits at the
+   foot of the card, so buttons line up across a row.
+   ========================================================================== */
+.color-card {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-left: 6px solid var(--card-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.color-card-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 0.35rem 0;
+}
+
+.color-card-title {
+  font-size: 1.15rem;
+  line-height: 1.3;
+  margin: 0 0 0.5rem 0;
+}
+
+/* The shared light pill: clickable, so a tint, not the solid color. */
+.color-card-btn {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0.35rem 0.95rem;
+  font-size: 0.95rem;
+}
+
+/* What the color provides, then its three words, each in capitals as on
+   the wheel, followed by its plain meaning. */
+.color-card-provides {
+  color: var(--text-secondary);
+  margin: 0 0 0.75rem 0;
+}
+
+.color-card-provides strong {
+  color: var(--text-primary);
+}
+
+.color-card-words {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+/* With no button below, the list ends the card. */
+.color-card-words:last-child {
+  margin-bottom: 0;
+}
+
+.color-card-words li {
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.color-card-word {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: 0.35rem;
+}
+
+/* ==========================================================================
+   Global Print Defaults
+   ========================================================================== */
+
+@media print {
+    body {
+        padding: 0;
+        background: var(--bg-primary) !important;
+        color: var(--text-primary) !important;
+    }
+    .top-bar,
+    .btn-small {
+        display: none !important;
+    }
+    .content-card {
+        border: 1px solid var(--border-strong) !important;
+        box-shadow: none !important;
+    }
+}

@@ -1,0 +1,122 @@
+/* ==========================================================================
+   THE WHEEL PAGE: layout only. Colors, the header, cards, and pills come
+   from core/atlas.css; the wheel draws itself (core/wheel.js).
+   ========================================================================== */
+
+.wheel-page {
+    padding-bottom: 3rem;
+}
+
+.wheel-lead,
+.wheel-section p {
+    text-wrap: pretty;
+    font-size: 1.05rem;
+    line-height: 1.55;
+    max-width: 44rem;
+    color: var(--text-primary);
+}
+
+.wheel-lead {
+    margin: 0.5rem 0 1.5rem 0;
+}
+
+/* The wheel, centered. Its outer-ring words need this much room to stay
+   readable. */
+.wheel-main {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto 2.5rem;
+}
+
+/* The tapped color's card. Empty, it takes no room; open, it sits close
+   under the wheel's hint. */
+.wheel-card:not(:empty) {
+    max-width: 480px;
+    margin: -1.5rem auto 2.5rem;
+}
+
+/* Wider screens: the description, the card, and "How to read it" / "Why
+   a wheel?" on the left; the wheel on the right. While a card is open it
+   takes the place of those two sections. The last left-hand row takes
+   any extra height, so the wheel being taller never opens gaps between
+   the lines on the left. */
+@media (min-width: 820px) {
+    .wheel-page {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
+        grid-template-rows: auto auto 1fr auto;
+        column-gap: 3rem;
+        align-items: start;
+    }
+
+    .wheel-lead {
+        grid-column: 1;
+        grid-row: 1;
+        margin-top: 0;
+    }
+
+    /* Lifted a little, so the wheel starts above the first line of text. */
+    .wheel-main {
+        grid-column: 2;
+        grid-row: 1 / 4;
+        margin: -1.5rem 0 0;
+    }
+
+    .wheel-card {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .wheel-card:not(:empty) {
+        max-width: 480px;
+        margin: 0 0 1.75rem;
+    }
+
+    .wheel-about {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .wheel-page.has-card .wheel-about {
+        display: none;
+    }
+
+    .wheel-next {
+        grid-column: 1 / -1;
+        grid-row: 4;
+    }
+}
+
+.wheel-section {
+    margin: 0 0 1.75rem 0;
+}
+
+.wheel-section h2 {
+    font-family: 'ADLaM Display', 'Varela Round', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.wheel-section p {
+    margin: 0;
+}
+
+/* Where to go next: the FAQ. */
+.wheel-next {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 2rem 0 0 0;
+}
+
+@media (max-width: 640px) {
+    .wheel-main {
+        max-width: 360px;
+    }
+
+    .wheel-section h2 {
+        font-size: 1.35rem;
+    }
+}
