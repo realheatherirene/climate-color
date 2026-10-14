@@ -5,16 +5,17 @@ const MASS_AUDUBON = { title: "Mass Audubon, May 2024", url: "https://www.massau
 const IMLS = { title: "IMLS: Mass Audubon's Accessible Trails Project", url: "https://imls.gov/grant-spotlights/massachusetts-audubons-accessible-trails-project" };
 
 export default {
-  title: "Climate Trail Map",
+  title: "The Trail Map",
   lede: "The Climate Trail Map is an interactive tool that can be used to find your way into climate action.",
   todoTitle: "Here's what you'll do",
   todo: [
-    "**Pick your way of helping.** That's your trail. (Stop 1)",
-    "**Read four short stops about it.** (Stops 2 to 5)",
-    "**Pick a topic you care about, and visit its lodge.** (Stops 6 and 7)",
-    "**Stop by the Ranger Station.** Leave with one first step you could take close to home. (Stop 8)"
+    "**Pick a trail.** (Stop 1)",
+    "**Travel down your trail to learn more about it.** (Stops 2 to 5)",
+    "**Pick a lodge.** (Stop 6)",
+    "**Enter the lodge to learn more about it.** (Stop 7)",
+    "**Enter at the Ranger Station, where you can either close your session or choose another trail.** (Stop 8)"
   ],
-  note: "Open any stop to read it, at your own pace. There's nothing to sign up for, and nothing is saved online. Need a break? You'll find a link to come back to once you pick your trail.",
+  note: "Make your own choices and move at your own pace. If you need a break, there's a link to save your progress until you come back.",
 
   /* The trailhead board: shown above stop 1, not a numbered stop. */
   board: {
