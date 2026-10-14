@@ -1,0 +1,60 @@
+/* The trailhead: what the map is, how it works, and the six trails.
+   Adult pack: grade 9 reading level or lower. */
+
+const MASS_AUDUBON = { title: "Mass Audubon, May 2024", url: "https://www.massaudubon.org/news/press-room/2024/mass-audubon-opens-all-persons-trail-at-brewster-s-woods-built-by-the-appalachian-mountain-club" };
+const IMLS = { title: "IMLS: Mass Audubon's Accessible Trails Project", url: "https://imls.gov/grant-spotlights/massachusetts-audubons-accessible-trails-project" };
+
+export default {
+  title: "Climate Trail Map",
+  lede: "The Climate Trail Map is an interactive tool that can be used to find your way into climate action.",
+  todoTitle: "Here's what you'll do",
+  todo: [
+    "**Pick your way of helping.** That's your trail. (Stop 1)",
+    "**Read four short stops about it.** (Stops 2 to 5)",
+    "**Pick a topic you care about, and visit its lodge.** (Stops 6 and 7)",
+    "**Stop by the Ranger Station.** Leave with one first step you could take close to home. (Stop 8)"
+  ],
+  note: "Open any stop to read it, at your own pace. There's nothing to sign up for, and nothing is saved online. Need a break? You'll find a link to come back to once you pick your trail.",
+
+  /* The trailhead board: shown above stop 1, not a numbered stop. */
+  board: {
+    start: "Start at stop 1, just below.",
+    open: "**This trail is open to everyone.** You don't need any special knowledge or skills to start.",
+    storyLabel: "Read the story behind it",
+    blocks: [
+      { p: "This page works like a trail at a nature center. Follow the trail markers from stop to stop, and do each activity as the stop asks. You may skip any activity, if you'd like." },
+      { legend: [
+        { mark: "stop", term: "Stops", text: "are numbered. Open one to read it, and close it when you're done." },
+        { mark: "rest", term: "Rest and Reflect stops", text: "have a round marker. They're for thinking things over. You can write your thoughts right on the page; they stay on your device." },
+        { mark: "lodge", icon: "i-pin", term: "Your lodge", text: "is a topic you care about, like food or water. Inside are exhibits, lettered A to E." },
+        { mark: "station", icon: "i-station", term: "The Ranger Station", text: "is the end of the trail, where you choose what comes next." }
+      ] },
+      { sub: "Surprises along the way" },
+      { p: "Some stops hold a **hidden find** to guess and reveal, a **stretch** to try right where you are, or a **quote** worth stopping for." },
+    ],
+    story: [
+      { p: "Mass Audubon, a conservation group in Massachusetts, builds All Persons Trails so visitors of all abilities can enjoy nature. Its trails offer features like audio tours, Braille and tactile maps, rope guides, wider boardwalks, and benches. The trail at Brewster's Woods, opened in May 2024, has a wide, stable surface of crushed stone." },
+      { quote: { text: "Nature provides a host of physical, mental, and emotional benefits that should be available to everyone.", who: "Renata Pomponi, Mass Audubon", src: MASS_AUDUBON } },
+      { p: "That's the spirit of this trail, too." },
+      { cite: [MASS_AUDUBON, IMLS] }
+    ]
+  },
+
+  pick: {
+    hint: "People show they care in different ways, like creating something, motivating others, or helping people find their way. Choose the way most like you."
+  },
+
+  /* What each way of helping means, in plain words. Shown on the picker
+     and repeated wherever the trail is named. */
+  ways: {
+    Red: "keeping a clear purpose, making a solid plan, and being someone others can count on",
+    Orange: "imagining what could be, trying new ways, and making room for everyone's ideas",
+    Yellow: "getting people excited, keeping things moving, and cheering others on",
+    Green: "bringing people together, linking them to help, and making sure everyone belongs",
+    Blue: "finding the words, keeping everyone informed, and shaping how people talk about it",
+    Indigo: "sorting out what matters most, adjusting when things change, and helping people find their way"
+  },
+
+  notBuilt: "This trail is still being built. For now, the Green Trail is ready.",
+  footnote: "How we choose resources: free, no account where possible, checked, and re-checked yearly. Climate Color isn't affiliated with these organizations. For now, the map lists resources in the United States only."
+};
