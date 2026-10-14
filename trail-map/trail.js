@@ -6,7 +6,7 @@
    core/climate-color.js. This file holds only behavior.
 
    Flow: trailhead board -> 1 pick your trail -> 2-5 trail stops -> 6 pick
-   your lodge -> 7 the lodge, with exhibits A-E inside -> 8 the Ranger
+   your lodge -> 7 the lodge, with its exhibits inside -> 8 the Ranger
    Station. Everything is on one page. A trail and lodge can be linked
    directly: #green or #green-water.
    ========================================================================== */
@@ -161,14 +161,15 @@ function renderLodge() {
   const lodgeN = lodgeStopNumber() + 1, stationN = lodgeN + 1;
   const x = { lodgeStop: String(lodgeStopNumber()) };
   const lf = txt => fill(txt, c, L, x);
-  const letters = "ABCDEFGHIJ";
-  const rooms = built.map(([key, s], i) => renderStop({ n: letters.charAt(i), key, title: TITLES[key], stop: s, line: "room", ctx,
+  /* Exhibits inside the lodge: no numbers or letters; their titles tell
+     them apart. */
+  const rooms = built.map(([key, s], i) => renderStop({ n: null, key, title: TITLES[key], stop: s, line: "room", ctx,
     aheadLabel: i < built.length - 1 ? "Next exhibit" : "Next stop" })).join("");
 
   /* Stop 7: the lodge, one place on the trail, with its exhibits inside. */
   const lodgeStop = `<li class="stop place is-lodge" id="lodgeStop"><span class="marker" aria-hidden="true">${lodgeN}</span>
     <div class="place-sign"><div class="band" aria-hidden="true"></div>
-      <div class="text"><p class="place-eyebrow">You've arrived</p><p class="place-title">${fmt(L.name)} Lodge</p>
+      <div class="text"><p class="place-title">${fmt(L.name)} Lodge</p>
       <p class="place-sub">${fmt(cap(L.about))}</p>
       <p class="place-line">You care about ${fmt(L.name.toLowerCase())}, and you help by ${c.action}.</p></div>
       ${icon(L.icon, "place-icon")}</div>
@@ -262,7 +263,7 @@ document.addEventListener("input", e => {
   if (e.target.matches("textarea.note")) store.set(e.target.dataset.note, e.target.value);
 });
 
-/* A stop's number (or an exhibit's letter) fills in only while it's open. */
+/* A stop's number fills in only while it's open. */
 document.addEventListener("toggle", e => {
   if (e.target.tagName === "DETAILS" && e.target.parentNode.classList.contains("stop")) e.target.parentNode.classList.toggle("is-open", e.target.open);
 }, true);

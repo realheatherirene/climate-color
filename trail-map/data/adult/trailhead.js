@@ -26,7 +26,7 @@ export default {
       { legend: [
         { mark: "stop", term: "Stops", text: "are numbered. Open one to read it, and close it when you're done." },
         { mark: "rest", term: "Rest and Reflect stops", text: "have a round marker. They're for thinking things over. You can write your thoughts right on the page; they stay on your device." },
-        { mark: "lodge", icon: "i-pin", term: "Your lodge", text: "is a topic you care about, like food or water. Inside are exhibits, lettered A to E." },
+        { mark: "lodge", icon: "i-pin", term: "Your lodge", text: "is a topic you care about, like food or water. Inside are exhibits to explore." },
         { mark: "station", icon: "i-station", term: "The Ranger Station", text: "is the end of the trail, where you choose what comes next." }
       ] },
       { sub: "Surprises along the way" },

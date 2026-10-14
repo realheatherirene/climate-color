@@ -8,7 +8,7 @@
    ========================================================================== */
 
 export const TITLES = {
-  how:       "How this trail works",
+  how:       "Get your bearings",
   pickTrail: "Pick your trail",
   pickLodge: "Pick your lodge",
   care:      "Find out why your care matters",

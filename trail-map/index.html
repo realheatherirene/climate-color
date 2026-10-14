@@ -85,7 +85,15 @@
     <symbol id="i-ahead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></symbol>
 </defs></svg>
 <header class="page-header">
-    <h1 id="title"></h1>
+    <h1><span id="title"></span>
+        <svg class="mini-trail" viewBox="0 0 200 56" aria-hidden="true" focusable="false">
+            <path d="M6 46C40 46 52 22 86 26s46 22 74 12 28-24 34-26" style="fill:none;stroke:var(--green-color);stroke-width:3.5;stroke-dasharray:1.5 7;stroke-linecap:round"/>
+            <rect x="34" y="31" width="14" height="17" rx="3" style="fill:#fff;stroke:var(--green-color);stroke-width:2.5"/>
+            <circle cx="104" cy="32" r="8" style="fill:#fff;stroke:var(--green-color);stroke-width:2.5"/>
+            <rect x="140" y="25" width="14" height="17" rx="3" style="fill:#fff;stroke:var(--green-color);stroke-width:2.5"/>
+            <path d="M186 30s-10-9-10-17a10 10 0 0 1 20 0c0 8-10 17-10 17z" style="fill:#0F7393"/>
+            <circle cx="186" cy="13" r="3.8" style="fill:#fff"/>
+        </svg></h1>
     <p class="lede" id="lede"></p>
     <div class="todo" id="todo"></div>
     <p class="pace" id="note"></p>
@@ -93,28 +101,13 @@
 
 <main class="trail-page">
     <p class="test-note">This map is still growing. For now, the Green Trail and the Water Lodge are ready.</p>
-    <svg class="trail-art" viewBox="0 0 720 150" aria-hidden="true" focusable="false">
-      <path d="M0 150V96c70-26 140-30 220-8s150 30 240 4 170-50 260-30v88z" style="fill:var(--green-tint-1)"/>
-      <path d="M0 150v-24c90-20 180-6 270 4s200 4 290-20 120-16 160-10v50z" style="fill:var(--green-tint-2)"/>
-      <path d="M500 84l38-46 30 32 16-14 36 34" style="fill:var(--green-tint-2);stroke:var(--green-tint-3);stroke-width:3;stroke-linejoin:round"/>
-      <path d="M24 132C110 132 140 92 220 98s120 30 200 18 120-40 180-48 70-6 92-6" style="fill:none;stroke:var(--green-color);stroke-width:4;stroke-dasharray:2 9;stroke-linecap:round"/>
-      <g style="font:700 12px 'Varela Round',sans-serif">
-        <rect x="96" y="112" width="20" height="24" rx="4" style="fill:#fff;stroke:var(--green-color);stroke-width:3"/><text x="106" y="128" text-anchor="middle" style="fill:var(--green-color)">1</text>
-        <rect x="210" y="84" width="20" height="24" rx="4" style="fill:#fff;stroke:var(--green-color);stroke-width:3"/><text x="220" y="100" text-anchor="middle" style="fill:var(--green-color)">2</text>
-        <circle cx="340" cy="116" r="12" style="fill:#fff;stroke:var(--green-color);stroke-width:3"/><text x="340" y="120" text-anchor="middle" style="fill:var(--green-color)">3</text>
-        <rect x="450" y="86" width="20" height="24" rx="4" style="fill:#fff;stroke:var(--green-color);stroke-width:3"/><text x="460" y="102" text-anchor="middle" style="fill:var(--green-color)">4</text>
-      </g>
-      <g transform="translate(652 16)"><path d="M18 46s-16-14-16-27a16 16 0 0 1 32 0c0 13-16 27-16 27z" style="fill:#0F7393"/><circle cx="18" cy="19" r="6" style="fill:#fff"/></g>
-    </svg>
-
     <!-- The trail: the Trailhead and stop 1 are written here; trail.js
          adds stops 2-6, then the lodge (7) and the Ranger Station (8). -->
     <ol class="line" id="start">
         <li class="stop place is-trailhead" id="trailhead">
             <span class="marker" aria-hidden="true"><svg><use href="#i-sign"/></svg></span>
             <div class="place-sign">
-                <div class="text"><p class="place-eyebrow">Begin here</p><p class="place-title">Trailhead</p>
-                <p class="place-sub">Get your bearings, then head to stop 1.</p></div>
+                <div class="text"><p class="place-eyebrow">Begin here</p><p class="place-title">Trailhead</p></div>
                 <svg class="place-icon" aria-hidden="true"><use href="#i-sign"/></svg>
             </div>
             <section class="place-board" id="board" aria-labelledby="boardTitle"></section>

@@ -103,7 +103,7 @@ export function renderStop({ n, key, title, stop, line = "trail", ctx, tag = "li
   if (!ex || !STOP_TYPES.includes(stop.exhibit)) throw new Error("Not a stop type: " + stop.exhibit);
   const rest = stop.exhibit === "rest" ? " rest" : "";
   return `<${tag} class="stop ${line}${rest}" data-stop="${key}">
-  <span class="marker" aria-hidden="true">${n}</span>
+  ${n == null ? "" : `<span class="marker" aria-hidden="true">${n}</span>`}
   <details><summary><span class="sum"><h3>${fmt(title)}</h3></span><span class="toggle"><span class="open-label">Open <span aria-hidden="true">&#9662;</span></span><span class="close-label">Close <span aria-hidden="true">&#9652;</span></span></span></summary>
   <div class="body">
     <p class="exhibit">${icon(ex.icon)}${ex.label}</p>
