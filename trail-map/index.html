@@ -84,13 +84,15 @@
     <symbol id="i-station" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-6 9 6"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/><path d="M15 5V2h4l-1 1 1 1h-4"/></symbol>
     <symbol id="i-ahead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></symbol>
 </defs></svg>
-<main class="page">
-  <p class="test-note">This map is still growing. For now, the Green Trail and the Water Lodge are ready.</p>
-  <header class="page-header">
+<header class="page-header">
     <h1 id="title"></h1>
     <p class="lede" id="lede"></p>
     <div class="todo" id="todo"></div>
     <p class="pace" id="note"></p>
+</header>
+
+<main class="trail-page">
+    <p class="test-note">This map is still growing. For now, the Green Trail and the Water Lodge are ready.</p>
     <svg class="trail-art" viewBox="0 0 720 150" aria-hidden="true" focusable="false">
       <path d="M0 150V96c70-26 140-30 220-8s150 30 240 4 170-50 260-30v88z" style="fill:var(--green-tint-1)"/>
       <path d="M0 150v-24c90-20 180-6 270 4s200 4 290-20 120-16 160-10v50z" style="fill:var(--green-tint-2)"/>
@@ -104,32 +106,36 @@
       </g>
       <g transform="translate(652 16)"><path d="M18 46s-16-14-16-27a16 16 0 0 1 32 0c0 13-16 27-16 27z" style="fill:#0F7393"/><circle cx="18" cy="19" r="6" style="fill:#fff"/></g>
     </svg>
-  </header>
 
-  <ol class="line" id="start">
-    <li class="stop trailhead-stop" id="trailhead">
-      <span class="marker" aria-hidden="true"><svg><use href="#i-sign"/></svg></span>
-      <div class="th-sign"><div class="text"><p class="next">Begin here</p><p class="sign-title">Trailhead</p>
-        <p class="sign-sub">Get your bearings, then head to stop 1.</p></div><svg class="lodge" aria-hidden="true"><use href="#i-sign"/></svg></div>
-      <section class="th-board" id="board" aria-labelledby="boardTitle"></section>
-    </li>
-    <li class="stop picker" id="pick">
-      <span class="marker" aria-hidden="true">1</span>
-      <div class="pick-body">
-        <h3 id="pickTitle"></h3>
-        <p class="step-hint" id="pickHint"></p>
-        <ul class="trails" id="trailOpts"></ul>
-        <div id="trailBox" aria-live="polite"></div>
-      </div>
-    </li>
-  </ol>
-  <ol class="line" id="trailStops"></ol>
+    <!-- The trail: the Trailhead and stop 1 are written here; trail.js
+         adds stops 2-6, then the lodge (7) and the Ranger Station (8). -->
+    <ol class="line" id="start">
+        <li class="stop place is-trailhead" id="trailhead">
+            <span class="marker" aria-hidden="true"><svg><use href="#i-sign"/></svg></span>
+            <div class="place-sign">
+                <div class="text"><p class="place-eyebrow">Begin here</p><p class="place-title">Trailhead</p>
+                <p class="place-sub">Get your bearings, then head to stop 1.</p></div>
+                <svg class="place-icon" aria-hidden="true"><use href="#i-sign"/></svg>
+            </div>
+            <section class="place-board" id="board" aria-labelledby="boardTitle"></section>
+        </li>
+        <li class="stop picker" id="pick">
+            <span class="marker" aria-hidden="true">1</span>
+            <div class="pick-body">
+                <h3 id="pickTitle"></h3>
+                <p class="step-hint" id="pickHint"></p>
+                <ul class="options" id="trailOpts"></ul>
+                <div id="trailBox" aria-live="polite"></div>
+            </div>
+        </li>
+    </ol>
+    <ol class="line" id="trailStops"></ol>
+    <ol class="line" id="lodgeLine"></ol>
 
-  <ol class="line" id="lodgeLine"></ol>
-
-  <p class="footnote" id="footnote"></p>
+    <p class="footnote" id="footnote"></p>
 </main>
 <script type="module" src="trail.js"></script>
+<!-- Tells the Squarespace page how tall this page is, so its box fits. -->
 <script src="../core/iframe-resize.js"></script>
 </body>
 </html>

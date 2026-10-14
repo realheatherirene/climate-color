@@ -100,7 +100,7 @@ function renderLodgePick(n) {
     <span class="marker" aria-hidden="true">${n}</span>
     <div class="pick-body"><h3>${TITLES.pickLodge}</h3>
       <p class="step-hint">${fmt(topics.hint)}</p>
-      <ul class="trails lodges-list">${opts}</ul>
+      <ul class="options lodges">${opts}</ul>
       <div id="lodgeBox" aria-live="polite"></div></div></li>`;
 }
 
@@ -166,13 +166,13 @@ function renderLodge() {
     aheadLabel: i < built.length - 1 ? "Next exhibit" : "Next stop" })).join("");
 
   /* Stop 7: the lodge, one place on the trail, with its exhibits inside. */
-  const lodgeStop = `<li class="stop lodge-stop" id="lodgeStop"><span class="marker" aria-hidden="true">${lodgeN}</span>
-    <div class="sign"><div class="band" aria-hidden="true"></div>
-      <div class="text"><p class="next">You've arrived</p><p class="sign-title">${fmt(L.name)} Lodge</p>
-      <p class="sign-sub">${fmt(cap(L.about))}</p>
-      <p class="sign-line">You care about ${fmt(L.name.toLowerCase())}, and you help by ${c.action}.</p></div>
-      ${icon(L.icon, "lodge")}</div>
-    <div class="lodge-board">
+  const lodgeStop = `<li class="stop place is-lodge" id="lodgeStop"><span class="marker" aria-hidden="true">${lodgeN}</span>
+    <div class="place-sign"><div class="band" aria-hidden="true"></div>
+      <div class="text"><p class="place-eyebrow">You've arrived</p><p class="place-title">${fmt(L.name)} Lodge</p>
+      <p class="place-sub">${fmt(cap(L.about))}</p>
+      <p class="place-line">You care about ${fmt(L.name.toLowerCase())}, and you help by ${c.action}.</p></div>
+      ${icon(L.icon, "place-icon")}</div>
+    <div class="place-board">
       <p>${fmt(lf(LB.welcome))}</p>
       <p class="sub">${fmt(lf(LB.why))}</p>
       <p>${fmt(tp.teaser)}</p>
@@ -188,10 +188,10 @@ function renderLodge() {
   const farewell = (t.farewell || []).map(p => `<p>${fmt(p.replace("{topic}", L.name.toLowerCase()))}</p>`).join("");
   const way = (go, w, ic, back, extraAttr = "") => `<li><button type="button" class="way ${back ? "back" : "on"}" data-go="${go}"${extraAttr}>
       <span class="dir">${back ? "&uarr;" : "&rarr;"} ${fmt(lf(w.dir))}</span>${icon(ic)}<b>${w.label}</b><span>${fmt(lf(w.hint))}</span></button></li>`;
-  const station = `<li class="stop station-stop" id="station"><span class="marker" aria-hidden="true">${stationN}</span>
-    <div class="station-sign"><div class="text"><p class="next">${fmt(J.eyebrow)}</p><p class="sign-title">${fmt(J.title)}</p>
-      <p class="sign-sub">${fmt(J.sub)}</p></div>${icon("i-station", "lodge")}</div>
-    <div class="station-board">
+  const station = `<li class="stop place is-station" id="station"><span class="marker" aria-hidden="true">${stationN}</span>
+    <div class="place-sign"><div class="text"><p class="place-eyebrow">${fmt(J.eyebrow)}</p><p class="place-title">${fmt(J.title)}</p>
+      <p class="place-sub">${fmt(J.sub)}</p></div>${icon("i-station", "place-icon")}</div>
+    <div class="place-board">
       <p>${fmt(J.lede)}</p>
       <div class="recap">${J.recap.map(r => `<p>${fmt(lf(r))}</p>`).join("")}</div>
       <h3 class="choose">${icon("i-junction", "jicon")}${TITLES.junction}</h3>

@@ -1,386 +1,1298 @@
 /* ==========================================================================
-   CLIMATE TRAIL MAP: layout only. Colors, type, and pills come from
-   core/atlas.css. The trail line is green, the lodge line is a dotted teal,
-   rest stops are tan, and every kind of stop also has a word and an icon.
+   THE CLIMATE TRAIL MAP: layout only. Brand colors, type, the page header,
+   and pills come from core/atlas.css. Like the Wheel page, everything is
+   left-aligned, reading text stops at about 44rem, and Squarespace's own
+   margins frame the page on wider screens.
+
+   How the page is put together:
+     - The trail is a vertical line with numbered markers. Every stop and
+       place sits on it, so the reader can always tell where they are.
+     - Three places sit on the line: the Trailhead, the lodge, and the
+       Ranger Station. Each is a colored sign over a light board, set by
+       one --place color (see "Places").
+     - Stops open and close (details/summary). A marker fills in while its
+       stop is open. Rest and Reflect stops have round markers.
+     - Every kind of content has a word label and an icon, so color is
+       never the only signal.
    ========================================================================== */
 
 :root {
-  --trail: var(--green-color);
-  --lodge: #0F7393;          /* 4.5:1+ on white */
-  --lodge-tint: #E1F1F7;
-  --rest: #7A5C22;           /* 4.5:1+ on its tint */
-  --rest-tint: #F6EFE1;
-  --rule: var(--border-color);
-  --surface: var(--bg-secondary);
-  --font-display: 'ADLaM Display', 'Varela Round', system-ui, sans-serif;
+    --trail: var(--green-color);       /* the trail line and its stops */
+    --lodge: #0F7393;                  /* lodges: 4.5:1 or better on white */
+    --lodge-tint: #E1F1F7;
+    --station: #4A3422;                /* the Ranger Station: wood brown */
+    --station-tint: #F5EEE6;
+    --note: #7A5C22;                   /* rest stop questions and notes */
+    --note-tint: #F6EFE1;
+    --rule: var(--border-color);
+    --display: 'ADLaM Display', 'Varela Round', sans-serif;
+    --read: 44rem;                     /* longest line of reading text */
 }
 
-.page { max-width: 48rem; margin: 0 auto; padding: 1.5rem 16px 4rem; font-size: 1.0625rem; }
-.test-note { font-size: 0.85rem; color: var(--text-secondary); border: 1px dashed var(--border-strong); border-radius: 10px; padding: 0.5rem 0.8rem; margin: 0 0 1.25rem; }
-.eyebrow { font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); margin: 0; }
-h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 6vw, 2.6rem); line-height: 1.1; margin: 0.2rem 0 0.5rem; }
-.lede { max-width: 62ch; margin: 0 0 0.4rem; }
-.pace { color: var(--text-secondary); margin: 0 0 0.5rem; }
-a { color: var(--lodge); font-weight: 700; text-underline-offset: 2px; }
-a:focus-visible, summary:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--lodge); outline-offset: 2px; }
-b { font-weight: 700; }
 
-/* ---------- The line and its stops ---------- */
-.line { list-style: none; margin: 0; padding: 0; }
-.stop, .hrow { position: relative; padding-left: 3.4rem; }
-.stop::before, .hrow::before { content: ""; position: absolute; left: 1.1rem; top: 0; bottom: 0; width: 5px; background: var(--trail); }
-.hrow.first::before { top: 3.2rem; }
-.start-here { font-family: var(--font-display); font-size: clamp(2rem, 7vw, 2.6rem); line-height: 1; color: var(--trail); margin: 1rem 0 0.3rem; }
-.stop.lodge::before { width: 0; background: none; border-left: 5px dotted var(--lodge); }
-.tour { margin-left: 2.25rem; }
-.marker { position: absolute; left: 0.35rem; top: 0.5rem; width: 2rem; height: 2.5rem; border-radius: 5px; z-index: 1; display: grid; place-items: center; background: var(--bg-primary); border: 4px solid var(--trail); color: var(--trail); font-weight: 700; font-variant-numeric: tabular-nums; font-size: 0.95rem; }
-.stop.lodge .marker { border-color: var(--lodge); color: var(--lodge); }
-.stop.rest .marker { border-color: var(--rest); color: var(--rest); }
-.stop.is-open .marker { background: var(--trail); color: #fff; }
-.stop.lodge.is-open .marker { background: var(--lodge); }
-.stop.rest.is-open .marker { background: var(--rest); }
+/* ==========================================================================
+   Page frame and header
+   ========================================================================== */
 
-details { border-bottom: 1px solid var(--rule); }
-summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 0.75rem; align-items: center; padding: 0.75rem 0; }
-summary::-webkit-details-marker { display: none; }
-summary h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; margin: 0; line-height: 1.25; }
-.stop.rest summary h3 { color: var(--rest); }
-.toggle { font-size: 1rem; font-weight: 700; color: var(--lodge); white-space: nowrap; }
-summary:hover .toggle { text-decoration: underline; text-underline-offset: 3px; }
-details[open] .open-label, details:not([open]) .close-label { display: none; }
-.body { padding-bottom: 1.1rem; min-width: 0; }
-.body p { margin: 0 0 0.8rem; max-width: 64ch; }
-
-/* The exhibit label at the top of each open stop */
-.exhibit { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); border: 1px solid var(--border-strong); border-radius: 999px; padding: 0.2rem 0.7rem 0.2rem 0.45rem; }
-.exhibit svg { width: 1.1rem; height: 1.1rem; }
-.stop.rest .exhibit { color: var(--rest); border-color: color-mix(in srgb, var(--rest) 40%, white); }
-
-.sub { font-weight: 700; margin: 1rem 0 0.25rem !important; }
-.cite { font-size: 0.9rem; color: var(--text-secondary); }
-ul.plain { margin: 0 0 0.8rem; padding-left: 1.2rem; }
-ul.plain li { margin-bottom: 0.45rem; max-width: 62ch; }
-.actions, .defs { margin: 0 0 0.8rem; display: grid; grid-template-columns: 6.5rem 1fr; gap: 0.5rem 0.9rem; }
-.actions dt, .defs dt { font-weight: 700; color: var(--green-text); }
-.actions dd, .defs dd { margin: 0; }
-.actions .eg { display: block; color: var(--text-secondary); font-size: 0.95rem; }
-
-.quote { margin: 0.4rem 0 1rem; padding: 0.2rem 0 0.2rem 1rem; border-left: 4px solid var(--trail); }
-.quote blockquote { margin: 0 0 0.3rem; font-family: var(--font-display); font-size: 1.2rem; line-height: 1.35; }
-.quote figcaption { font-size: 0.9rem; color: var(--text-secondary); }
-
-.lab { display: flex; align-items: center; gap: 0.55rem; font-weight: 700; margin: 1rem 0 0.35rem !important; }
-.badge { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--surface); border: 2px solid var(--text-primary); }
-.badge svg { width: 1.15rem; height: 1.15rem; }
-.check { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.25rem 0; }
-.check input { width: 1.1rem; height: 1.1rem; margin-top: 0.3rem; accent-color: var(--lodge); flex: none; }
-.reach { font-size: 0.85rem; color: var(--text-secondary); font-weight: 400; }
-.rdesc { display: block; font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.1rem; }
-a.ext svg { width: 0.95rem; height: 0.95rem; vertical-align: -0.1rem; margin-left: 0.2rem; }
-.say { margin: 0 0 0.8rem; padding-left: 1.2rem; }
-.say li { margin-bottom: 0.4rem; }
-.say q { font-style: italic; }
-
-.reflect { background: var(--rest-tint); border-radius: 10px; padding: 0.7rem 1rem; margin: 0.6rem 0 0.8rem; }
-.reflect ul { margin: 0; padding-left: 1.2rem; }
-.reflect .sub { color: var(--rest); margin-top: 0 !important; }
-
-.find { border: 2px dashed var(--border-strong); border-radius: 12px; padding: 0.8rem 1rem; margin: 0.6rem 0 0.9rem; }
-.find-prompt { font-weight: 700; }
-.find-reveal { margin-top: 0.7rem; }
-.find .pill-btn, .pills .pill-btn, .next-btn { padding: 0.4rem 0.95rem; font-size: 0.95rem; }
-.stretch { border-left: 4px solid var(--text-primary); padding: 0.2rem 0 0.2rem 1rem; margin: 0.6rem 0 0.9rem; }
-.stretch ol { margin: 0 0 0.5rem; padding-left: 1.3rem; }
-.stretch-note { font-size: 0.95rem; color: var(--text-secondary); }
-.pills { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.3rem 0 0.4rem; }
-
-.ahead { display: flex; gap: 0.5rem; align-items: flex-start; border-top: 1px dashed var(--border-strong); padding-top: 0.7rem; margin-top: 1rem !important; color: var(--text-secondary); }
-.ahead svg { width: 1.2rem; height: 1.2rem; flex: none; margin-top: 0.2rem; color: var(--text-primary); }
-.ahead b { color: var(--text-primary); }
-
-/* ---------- Trail picker ---------- */
-.step-hint { color: var(--text-secondary); margin: 0 0 0.7rem; max-width: 62ch; }
-.trails { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.15rem; }
-.opt { font: inherit; color: var(--text-primary); background: none; border: 2px solid transparent; border-radius: 12px; width: 100%; text-align: left; cursor: pointer; display: grid; grid-template-columns: 1.1rem 1fr; gap: 0.9rem; padding: 0.6rem 0.7rem; align-items: start; }
-.opt:hover { background: var(--surface); }
-.opt[aria-pressed="true"] { background: var(--green-tint-1); border-color: var(--trail); }
-.blaze { width: 1.1rem; height: 1.6rem; border-radius: 3px; margin-top: 0.15rem; }
-.oname { display: block; font-weight: 700; font-size: 1.05rem; }
-.tcolor { font-weight: 400; color: var(--text-secondary); }
-.odesc { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.4; }
-
-.here { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 0.8rem 1rem; margin: 0.8rem 0 0.9rem; scroll-margin-top: 1rem; }
-.here p { margin: 0 0 0.4rem; max-width: 62ch; }
-.route-name { font-family: var(--font-display); font-size: clamp(1.3rem, 4vw, 1.7rem); line-height: 1.2; }
-#trailBox, #lodgeSign { scroll-margin-top: 1rem; }
-.not-built { margin: 0 0 0.6rem; }
-
-/* ---------- Overlook cards (all nine at once) ---------- */
-.cards { list-style: none; padding: 0; margin: 0.4rem 0 0.4rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr)); gap: 0.75rem; }
-.card { border: 1px solid var(--rule); border-radius: 12px; padding: 0.8rem 0.9rem; display: flex; flex-direction: column; }
-.card.chosen { border: 2px solid var(--lodge); background: var(--lodge-tint); }
-.card p { margin: 0 0 0.45rem !important; }
-.card-name { display: flex; align-items: center; gap: 0.45rem; font-weight: 700; font-size: 1.05rem; }
-.card-name svg { width: 1.4rem; height: 1.4rem; color: var(--lodge); }
-.card-about { font-size: 0.9rem; color: var(--text-secondary); }
-.card-teaser { font-size: 0.95rem; flex: 1; }
-.card .cite { font-size: 0.8rem; }
-.card .next-btn { align-self: flex-start; }
-.soon { font-size: 0.9rem; font-weight: 700; color: var(--text-secondary); }
-
-/* ---------- Lodge sign ---------- */
-.sign { margin: 1.4rem 0 0.4rem; border-radius: 12px; overflow: hidden; background: var(--lodge); color: #fff; display: grid; grid-template-columns: 0.7rem 1fr auto; }
-.sign .band { background: var(--trail); }
-.sign .text { padding: 0.9rem 1.1rem; min-width: 0; }
-.sign p { margin: 0; }
-.sign .next { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.9; }
-.sign-title { font-family: var(--font-display); font-size: clamp(2rem, 7vw, 2.6rem); line-height: 1.05; margin: 0.15rem 0 0.2rem !important; }
-.sign-line { margin-top: 0.4rem !important; font-weight: 700; }
-.sign svg.lodge { width: 3rem; height: 3rem; margin: 0 1.1rem; align-self: center; color: #fff; }
-
-/* ---------- Junction ---------- */
-.junction:empty { display: none; }
-.junction { margin: 1.4rem 0 0; border-top: 1px solid var(--rule); padding-top: 1rem; }
-.junction-head { display: flex; align-items: center; gap: 0.8rem; }
-.junction-head .marker { position: static; border-color: var(--text-primary); color: var(--text-primary); }
-.junction-head h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.5rem; margin: 0; }
-.junction > p { margin: 0.6rem 0; }
-.ways { list-style: none; padding: 0; margin: 0 0 0.8rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; }
-.way { font: inherit; text-align: left; width: 100%; height: 100%; cursor: pointer; background: var(--surface); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: 12px; padding: 0.8rem 0.9rem; display: flex; flex-direction: column; gap: 0.25rem; }
-.way:hover { border-color: var(--text-primary); }
-.way b { font-size: 1.05rem; }
-.way span { font-size: 0.9rem; color: var(--text-secondary); }
-.keep { background: var(--rest-tint); border-radius: 12px; padding: 0.9rem 1rem; }
-.keep p { max-width: 60ch; }
-
-.footnote { margin-top: 2rem; font-size: 0.85rem; color: var(--text-secondary); border-top: 1px solid var(--rule); padding-top: 1rem; }
-
-@media (max-width: 560px) {
-  .tour { margin-left: 1rem; }
-  .actions, .defs { grid-template-columns: 1fr; gap: 0.1rem; }
-  .actions dd, .defs dd { margin-bottom: 0.5rem; }
-  .ways { grid-template-columns: 1fr; }
-  .sign { grid-template-columns: 0.7rem 1fr; }
-  .sign svg.lodge { display: none; }
+.trail-page {
+    padding-bottom: 3rem;
+    font-size: 1.05rem;
+    line-height: 1.55;
 }
-@media print {
-  .test-note, .toggle, .pick, .pills, .find-btn, .ways, .next-btn { display: none !important; }
-  details > .body { display: block !important; }
-  .find-reveal, .keep { display: block !important; }
+
+.trail-page p {
+    text-wrap: pretty;
 }
-.keep p:first-child { margin-top: 0; }
 
-/* ---------- v8 ---------- */
-/* Header art: a winding trail with stops, a rest stop, the overlook, a lodge pin */
-.trail-art { display: block; width: 100%; height: auto; margin: 0.6rem 0 -0.4rem; }
-.start-here { margin-top: 0.4rem; }
+.lede,
+.todo,
+.pace {
+    max-width: var(--read);
+}
 
-/* Open/Close sits right after the title, so it can't be missed on wide screens */
-summary { grid-template-columns: minmax(0, max-content) auto; justify-content: start; column-gap: 1rem; }
-.toggle { font-size: 0.9rem; border: 1px solid color-mix(in srgb, var(--lodge) 35%, white); border-radius: 999px; padding: 0.15rem 0.7rem; background: var(--bg-primary); }
-summary:hover .toggle { background: var(--lodge-tint); text-decoration: none; }
+/* core/atlas.css sets .page-header p in the quieter secondary color; the
+   lede and the "what you'll do" list are the page's opening words, so
+   they read in the main color. */
+.page-header .lede {
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    margin: 0 0 0.75rem;
+}
 
-/* Exhibits inside a stop carry their own label */
-.exhibit.tag { margin: 0 0 0.5rem; font-size: 0.72rem; }
-.quote { border-left: 4px solid var(--trail); }
-.quote .tag { margin-bottom: 0.4rem; }
+.todo {
+    margin: 0 0 0.75rem;
+}
 
-/* Trailhead key */
-.legend { list-style: none; padding: 0; margin: 0.3rem 0 0.8rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem 1.2rem; }
-.legend li { display: flex; gap: 0.7rem; align-items: flex-start; }
-.mark { flex: none; width: 2rem; height: 2.4rem; display: grid; place-items: center; font-weight: 700; font-size: 0.9rem; }
-.mark svg { width: 1.6rem; height: 1.6rem; }
-.mark-stop { border: 4px solid var(--trail); color: var(--trail); border-radius: 5px; }
-.mark-rest { border: 4px solid var(--rest); color: var(--rest); border-radius: 5px; }
-.mark-trail::before { content: ""; width: 1.1rem; height: 1.8rem; border-radius: 3px; background: var(--trail); }
-.mark-icon { color: var(--lodge); }
+.page-header .todo p {
+    color: var(--text-primary);
+    font-weight: 700;
+    margin: 0;
+}
+
+.todo ol {
+    margin: 0.25rem 0 0;
+    padding-left: 1.4rem;
+    display: grid;
+    gap: 0.25rem;
+}
+
+.page-header .pace {
+    margin: 0;
+}
+
+.test-note {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border: 1px dashed var(--border-strong);
+    border-radius: 10px;
+    padding: 0.5rem 0.8rem;
+    margin: 0 0 1rem;
+    max-width: var(--read);
+}
+
+/* The little trail drawing above the Trailhead. */
+.trail-art {
+    display: block;
+    width: 100%;
+    max-width: 48rem;
+    height: auto;
+    margin: 0 0 -0.2rem;
+}
+
+
+/* ==========================================================================
+   The trail line and its markers
+   ========================================================================== */
+
+.line {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 48rem;
+}
+
+.stop {
+    position: relative;
+    padding-left: 3.4rem;
+}
+
+/* The trail itself: a solid green line down the left. */
+.stop::before {
+    content: "";
+    position: absolute;
+    left: 1.1rem;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: var(--trail);
+}
+
+/* Numbered markers: outlined at rest, filled while open (or once a choice
+   is made at a picker). */
+.marker {
+    position: absolute;
+    z-index: 1;
+    left: 0.35rem;
+    top: 0.5rem;
+    width: 2rem;
+    height: 2.5rem;
+    display: grid;
+    place-items: center;
+    border: 4px solid var(--trail);
+    border-radius: 5px;
+    background: var(--bg-primary);
+    color: var(--trail);
+    font-weight: 700;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.stop.is-open > .marker {
+    background: var(--trail);
+    color: #fff;
+}
+
+/* Rest and Reflect: the same colors, a round marker. */
+.stop.rest > .marker {
+    border-radius: 50%;
+    width: 2.3rem;
+    height: 2.3rem;
+    left: 0.2rem;
+    top: 0.6rem;
+}
+
+
+/* ==========================================================================
+   A stop: the title alone while closed, everything else inside
+   ========================================================================== */
+
+details {
+    border-bottom: 1px solid var(--rule);
+}
+
+summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: minmax(0, max-content) auto;
+    justify-content: start;
+    align-items: center;
+    column-gap: 1rem;
+    padding: 0.75rem 0;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary h3 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 1.3rem;
+    line-height: 1.25;
+    margin: 0;
+}
+
+/* Open / Close: linked text right after the title. */
+.toggle {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--lodge);
+    white-space: nowrap;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+summary:hover .toggle {
+    text-decoration-thickness: 2px;
+}
+
+details[open] .open-label,
+details:not([open]) .close-label {
+    display: none;
+}
+
+.body {
+    min-width: 0;
+    padding-bottom: 1.1rem;
+}
+
+.body p {
+    margin: 0 0 0.8rem;
+    max-width: var(--read);
+}
+
+a {
+    color: var(--lodge);
+    font-weight: 700;
+    text-underline-offset: 2px;
+}
+
+a:focus-visible,
+summary:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--lodge);
+    outline-offset: 2px;
+}
+
+
+/* ==========================================================================
+   Pickers: stop 1 (your trail) and the lodge picker. Always open, so their
+   markers fill in once a choice is made.
+   ========================================================================== */
+
+.pick-body {
+    padding: 0.7rem 0 1rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.pick-body h3 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    margin: 0 0 0.3rem;
+}
+
+.step-hint {
+    color: var(--text-secondary);
+    margin: 0 0 0.7rem;
+    max-width: var(--read);
+}
+
+.options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.15rem;
+}
+
+.opt {
+    font: inherit;
+    color: var(--text-primary);
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    background: none;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 0.6rem 0.7rem;
+    display: grid;
+    grid-template-columns: 1.1rem 1fr;
+    gap: 0.9rem;
+    align-items: start;
+}
+
+.opt:hover {
+    background: var(--bg-secondary);
+}
+
+.opt[aria-pressed="true"] {
+    background: var(--green-tint-1);
+    border-color: var(--trail);
+}
+
+.blaze {
+    width: 1.1rem;
+    height: 1.6rem;
+    border-radius: 3px;
+    margin-top: 0.15rem;
+}
+
+.oname {
+    display: block;
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.tcolor {
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.odesc {
+    font-size: 0.92rem;
+    line-height: 1.4;
+    color: var(--text-secondary);
+}
+
+/* The lodge picker: the same rows, with a topic icon, three across. */
+.lodges .opt {
+    grid-template-columns: 1.4rem 1fr;
+}
+
+.lodges .opt[aria-pressed="true"] {
+    background: var(--lodge-tint);
+    border-color: var(--lodge);
+}
+
+.opt-icon {
+    display: grid;
+    place-items: center;
+    color: var(--lodge);
+    margin-top: 0.1rem;
+}
+
+.opt-icon svg {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+@media (min-width: 700px) {
+    .lodges {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* What the reader picked, and the "still being built" note. */
+.here {
+    background: var(--bg-secondary);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    margin: 0.8rem 0 0.9rem;
+    max-width: var(--read);
+}
+
+.here p {
+    margin: 0 0 0.4rem;
+}
+
+.route-name {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    line-height: 1.2;
+}
+
+.here-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--lodge);
+    vertical-align: -0.2rem;
+    margin-right: 0.4rem;
+}
+
+.not-built {
+    margin: 0 0 0.6rem;
+}
+
+#trailBox,
+#lodgeBox,
+.place {
+    scroll-margin-top: 1rem;
+}
+
+
+/* ==========================================================================
+   Places: the Trailhead, a lodge, and the Ranger Station. Each is a colored
+   sign over a light board. One --place color sets each one.
+   ========================================================================== */
+
+.place.is-trailhead { --place: var(--trail);   --place-tint: var(--green-tint-1); }
+.place.is-lodge     { --place: var(--lodge);   --place-tint: var(--lodge-tint); }
+.place.is-station   { --place: var(--station); --place-tint: var(--station-tint); }
+
+.place > .marker {
+    border-color: var(--place);
+    background: var(--place);
+    color: #fff;
+    top: 0.9rem;
+}
+
+.place > .marker svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.place-sign {
+    margin-top: 0.6rem;
+    border-radius: 12px 12px 0 0;
+    background: var(--place);
+    color: #fff;
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
+/* A lodge's sign also carries a stripe in its trail's color. */
+.place-sign .band {
+    background: var(--trail);
+}
+
+.place.is-lodge .place-sign {
+    grid-template-columns: 0.7rem 1fr auto;
+}
+
+.place-sign .text {
+    padding: 0.9rem 1.1rem;
+    min-width: 0;
+}
+
+.place-sign p {
+    margin: 0;
+}
+
+.place-eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.place-title {
+    font-family: var(--display);
+    font-size: clamp(2rem, 7vw, 2.6rem);
+    line-height: 1.05;
+    margin: 0.15rem 0 0.2rem !important;
+}
+
+.place-line {
+    font-weight: 700;
+    margin-top: 0.4rem !important;
+}
+
+.place-icon {
+    width: 3rem;
+    height: 3rem;
+    margin: 0 1.1rem;
+    align-self: center;
+    color: #fff;
+}
+
+.place-board {
+    border: 2px solid var(--place);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    background: var(--place-tint);
+    padding: 0.9rem 1.1rem 0.8rem;
+    margin-bottom: 0.6rem;
+}
+
+.place-board > p,
+.place-board > h2 {
+    max-width: var(--read);
+}
+
+.place-board h2 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 1.4rem;
+    margin: 0 0 0.4rem;
+}
+
+/* The Trailhead: the line starts below its marker. */
+.place.is-trailhead {
+    padding-bottom: 0.4rem;
+}
+
+.place.is-trailhead::before {
+    top: 3rem;
+}
+
+.start-small {
+    font-weight: 700;
+    color: var(--green-text);
+    margin: 0.6rem 0 0.2rem !important;
+}
+
+/* A lodge: the green trail runs in, a dotted path runs out toward the
+   Ranger Station. */
+.place.is-lodge {
+    padding-bottom: 1.6rem;
+}
+
+.place.is-lodge::before {
+    bottom: auto;
+    height: 1.4rem;
+}
+
+.place.is-lodge::after {
+    content: "";
+    position: absolute;
+    left: 1.1rem;
+    top: 3rem;
+    bottom: 0;
+    border-left: 5px dotted var(--lodge);
+}
+
+.inside-hint {
+    color: var(--text-secondary);
+    margin-top: -0.3rem !important;
+}
+
+.leave {
+    font-weight: 700;
+}
+
+/* The Ranger Station: the dotted path arrives from above. */
+.place.is-station::before {
+    bottom: auto;
+    height: 1.2rem;
+    width: 0;
+    background: none;
+    border-left: 5px dotted var(--lodge);
+}
+
+
+/* ==========================================================================
+   Exhibits A-E inside a lodge: the same stops, lettered, on a white panel
+   ========================================================================== */
+
+.rooms {
+    list-style: none;
+    margin: 0.2rem 0 0.8rem;
+    padding: 0 0.9rem;
+    background: var(--bg-primary);
+    border-radius: 10px;
+}
+
+.stop.room {
+    padding-left: 2.8rem;
+}
+
+.stop.room::before {
+    display: none;
+}
+
+.stop.room > .marker {
+    left: 0;
+    top: 0.55rem;
+    width: 1.9rem;
+    height: 2.3rem;
+    border-color: var(--lodge);
+    color: var(--lodge);
+}
+
+.stop.room.rest > .marker {
+    width: 2rem;
+    height: 2rem;
+    left: -0.05rem;
+}
+
+.stop.room.is-open > .marker {
+    background: var(--lodge);
+    color: #fff;
+}
+
+.rooms > .stop:last-child details {
+    border-bottom: none;
+}
+
+
+/* ==========================================================================
+   Content inside a stop
+   ========================================================================== */
+
+/* The exhibit label at the top of a stop (Trail sign, Rest stop, ...), and
+   the smaller tag on an activity inside it (Hidden find, Stretch, Quote). */
+.exhibit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem 0.2rem 0.45rem;
+}
+
+.exhibit svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.exhibit.tag {
+    font-size: 0.72rem;
+    margin: 0 0 0.5rem;
+}
+
+.sub {
+    font-weight: 700;
+    margin: 1rem 0 0.25rem !important;
+}
+
+.cite {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+a.ext svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    vertical-align: -0.1rem;
+    margin-left: 0.2rem;
+}
+
+ul.plain {
+    margin: 0 0 0.8rem;
+    padding-left: 1.2rem;
+    max-width: var(--read);
+}
+
+ul.plain li {
+    margin-bottom: 0.45rem;
+}
+
+/* Action words and other short definitions: the word, then what it means. */
+.actions,
+.defs {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0.5rem 0.9rem;
+    margin: 0 0 0.8rem;
+    max-width: var(--read);
+}
+
+.actions dt,
+.defs dt {
+    font-weight: 700;
+    color: var(--green-text);
+}
+
+.actions dd,
+.defs dd {
+    margin: 0;
+}
+
+.actions .eg {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.quote {
+    margin: 0.4rem 0 1rem;
+    padding: 0.2rem 0 0.2rem 1rem;
+    border-left: 4px solid var(--trail);
+    max-width: var(--read);
+}
+
+.quote blockquote {
+    margin: 0 0 0.3rem;
+    font-family: var(--display);
+    font-size: 1.2rem;
+    line-height: 1.35;
+}
+
+.quote figcaption {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Explore and Say labels, each with a round badge. */
+.lab {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 700;
+    margin: 1rem 0 0.35rem !important;
+}
+
+.badge {
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--bg-secondary);
+    border: 2px solid var(--text-primary);
+}
+
+.badge svg {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+/* Directions: a checkbox, then a sentence that starts with a bold verb. */
+.check {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    padding: 0.25rem 0;
+    max-width: var(--read);
+}
+
+.check input {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.3rem;
+    accent-color: var(--lodge);
+}
+
+.reach {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.rdesc {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.say {
+    margin: 0 0 0.8rem;
+    padding-left: 1.2rem;
+}
+
+.say li {
+    margin-bottom: 0.4rem;
+}
+
+.say q {
+    font-style: italic;
+}
+
+/* Rest and Reflect: questions in a shaded box, then a notes box. */
+.reflect {
+    background: var(--note-tint);
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    margin: 0.6rem 0 0.8rem;
+    max-width: var(--read);
+}
+
+.reflect ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.reflect .sub {
+    color: var(--note);
+    margin-top: 0 !important;
+}
+
+.notes {
+    margin: 0.4rem 0 0.6rem;
+    max-width: var(--read);
+}
+
+.notes .sub {
+    display: block;
+}
+
+.note {
+    width: 100%;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--text-primary);
+    background: #fff;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--note) 45%, white);
+    border-radius: 10px;
+    resize: vertical;
+}
+
+.note:focus-visible {
+    outline-color: var(--note);
+}
+
+.note-help {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin: 0.35rem 0 0.2rem !important;
+}
+
+/* Hidden find: guess first, then reveal. */
+.find {
+    border: 2px dashed var(--border-strong);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    margin: 0.6rem 0 0.9rem;
+    max-width: var(--read);
+}
+
+.find-prompt {
+    font-weight: 700;
+}
+
+.find-reveal {
+    margin-top: 0.7rem;
+}
+
+/* Stretch: a short activity, with a version that needs no movement. */
+.stretch {
+    border-left: 4px solid var(--text-primary);
+    padding: 0.2rem 0 0.2rem 1rem;
+    margin: 0.6rem 0 0.9rem;
+    max-width: var(--read);
+}
+
+.stretch ol {
+    margin: 0 0 0.5rem;
+    padding-left: 1.3rem;
+}
+
+.stretch-note {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.3rem 0 0.4rem;
+}
+
+.pills .pill-btn,
+.find .pill-btn,
+.next-btn {
+    padding: 0.4rem 0.95rem;
+    font-size: 0.95rem;
+}
+
+/* "Next stop" / "Next exhibit" at the end of each stop. */
+.ahead {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    color: var(--text-secondary);
+    border-top: 1px dashed var(--border-strong);
+    padding-top: 0.7rem;
+    margin-top: 1rem !important;
+}
+
+.ahead svg {
+    flex: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 0.2rem;
+    color: var(--text-primary);
+}
+
+.ahead b {
+    color: var(--text-primary);
+}
+
+
+/* ==========================================================================
+   The Trailhead's key: four marks, each beside what it means
+   ========================================================================== */
+
+.legend {
+    list-style: none;
+    margin: 0.3rem 0 0.8rem;
+    padding: 0.8rem;
+    background: var(--bg-primary);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem 1.2rem;
+}
+
+.legend li {
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+}
+
+.mark {
+    flex: none;
+    width: 2.2rem;
+    height: 2.2rem;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 0.75rem;
+}
+
+.mark svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+.mark-stop,
+.mark-rest {
+    border: 3px solid var(--trail);
+    color: var(--trail);
+}
+
+.mark-stop {
+    width: 1.5rem;
+    height: 1.8rem;
+    border-radius: 5px;
+    margin: 0 0.35rem;
+}
+
+.mark-rest {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    margin: 0 0.22rem;
+}
+
 .mark-lodge { color: var(--lodge); }
-@media (max-width: 560px) { .legend { grid-template-columns: 1fr; } }
-
-/* Save your spot */
-.mini { border: none; margin-top: 0.3rem; }
-.mini > summary { display: inline-flex; padding: 0.2rem 0; font-weight: 700; color: var(--lodge); text-decoration: underline; text-underline-offset: 3px; }
-.save { margin-top: 0.4rem; }
-.save .sub { margin-top: 0.3rem !important; }
-.save-row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
-.save-link { flex: 1 1 14rem; min-width: 0; font: inherit; font-size: 0.85rem; padding: 0.35rem 0.6rem; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--bg-primary); color: var(--text-secondary); }
-
-/* Junction: a recap so the reader remembers how the map works */
-.recap { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 0.8rem 1rem; margin: 0.6rem 0 0.9rem; }
-.recap p { margin: 0 0 0.5rem; max-width: 64ch; }
-.recap p:last-child { margin: 0; }
-.way svg { width: 1.6rem; height: 1.6rem; color: var(--lodge); margin-bottom: 0.2rem; }
-.keep .save { border-top: 1px dashed color-mix(in srgb, var(--rest) 40%, white); padding-top: 0.6rem; margin: 0.6rem 0; }
-@media print { .trail-art, .mini, .save, .recap + .ways { display: none !important; } }
-
-/* ---------- v9 ---------- */
-/* Open/Close as linked text, right after the title */
-.toggle { font-size: 0.95rem; border: none; padding: 0; background: none; text-decoration: underline; text-underline-offset: 3px; }
-summary:hover .toggle { background: none; text-decoration-thickness: 2px; }
-
-/* Trailhead board: how it works, before stop 1 */
-.board { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 1rem 1.2rem 0.6rem; margin: 0.4rem 0 0.6rem; }
-.board h2 { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-weight: 400; font-size: 1.5rem; margin: 0 0 0.4rem; }
-.board h2 svg { width: 1.5rem; height: 1.5rem; color: var(--lodge); }
-.board p { max-width: 64ch; }
-.open-all { margin: 0.6rem 0 0.2rem; }
-.story { padding-top: 0.4rem; }
-
-/* Picker stops (1 and the lodge picker): always open, on the line */
-/* Picker stops are always open, so their markers stay outlined like any stop at rest. */
-.pick-body { padding: 0.7rem 0 1rem; border-bottom: 1px solid var(--rule); }
-.pick-body h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; margin: 0 0 0.3rem; line-height: 1.2; }
-.opt-icon { width: 1.4rem; display: grid; place-items: center; color: var(--lodge); margin-top: 0.1rem; }
-.opt-icon svg { width: 1.4rem; height: 1.4rem; }
-.lodges-list .opt { grid-template-columns: 1.4rem 1fr; }
-.lodges-list .opt[aria-pressed="true"] { background: var(--lodge-tint); border-color: var(--lodge); }
-.here-icon { width: 1.5rem; height: 1.5rem; color: var(--lodge); vertical-align: -0.2rem; margin-right: 0.4rem; }
-@media (min-width: 700px) { .lodges-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-
-/* ---------- v11: lodge welcome board ---------- */
-.sign { margin-bottom: 0; border-radius: 12px 12px 0 0; }
-.lodge-board { border: 2px solid var(--lodge); border-top: none; border-radius: 0 0 12px 12px; background: var(--lodge-tint); padding: 0.9rem 1.1rem 0.6rem; margin-bottom: 0.4rem; }
-.lodge-board p { max-width: 64ch; margin: 0 0 0.6rem; }
-.lodge-board .sub { margin-top: 0.8rem !important; }
-.inside { list-style: none; padding: 0; margin: 0.2rem 0 0.7rem; display: grid; gap: 0.5rem; }
-.inside li { display: flex; gap: 0.7rem; align-items: flex-start; }
-.mini-marker { flex: none; width: 1.7rem; height: 2.1rem; border: 3px solid var(--lodge); border-radius: 5px; display: grid; place-items: center; font-weight: 700; font-size: 0.85rem; color: var(--lodge); background: var(--bg-primary); }
-.inside li.rest .mini-marker { border-color: var(--rest); color: var(--rest); }
-.inside b { display: block; }
-.leave { font-weight: 700; }
-
-/* ---------- v12: the junction as a fork in the trail ---------- */
-.junction { border-top: none; }
-.junction-head h3 { display: flex; align-items: center; gap: 0.5rem; }
-.jicon { width: 1.6rem; height: 1.6rem; color: var(--lodge); }
-.fork { display: block; width: 100%; height: auto; margin: 0.2rem 0 0.1rem; }
-.ways { margin-top: 0; }
-/* Each choice is a trail sign: back-pointing or onward */
-.way { position: relative; border: 2px solid var(--lodge); background: var(--bg-primary); padding-top: 0.7rem; }
-.way:hover { background: var(--lodge-tint); border-color: var(--lodge); }
-.way .dir { align-self: flex-start; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; background: var(--lodge); border-radius: 4px; padding: 0.15rem 0.5rem; margin-bottom: 0.3rem; }
-.way.on .dir { background: var(--trail); }
-.way.on { border-color: var(--trail); }
-.way.on:hover { background: var(--green-tint-1); }
-.way.on svg { color: var(--trail); }
-@media (max-width: 560px) { .fork { display: none; } }
-/* On phones the fork is drawn as one trail with a branch to each sign */
-@media (max-width: 560px) {
-  .ways { position: relative; padding-left: 1.4rem; }
-  .ways::before { content: ""; position: absolute; left: 0.35rem; top: -0.4rem; bottom: 1.5rem; border-left: 4px dotted var(--lodge); }
-  .ways li { position: relative; }
-  .ways li::before { content: ""; position: absolute; left: -1.05rem; top: 1.3rem; width: 1rem; border-top: 4px dotted var(--lodge); }
-}
-
-/* ---------- v13: lodge as one stop (exhibits A-E inside), Ranger Station ---------- */
-:root { --station: #4A3422; --station-tint: #F5EEE6; }
-.todo { margin: 0.4rem 0 0.6rem; }
-.todo .sub { margin: 0.2rem 0 0.3rem !important; }
-.todo ol { margin: 0; padding-left: 1.4rem; display: grid; gap: 0.25rem; }
 .mark-station { color: var(--station); }
 
-/* Stop 7: the lodge. Green trail in, dotted path out toward the station. */
-.lodge-stop { padding-bottom: 1.6rem; }
-.lodge-stop::before { bottom: auto; height: 1.4rem; }
-.lodge-stop::after { content: ""; position: absolute; left: 1.1rem; top: 3rem; bottom: 0; border-left: 5px dotted var(--lodge); }
-.lodge-stop > .marker { border-color: var(--lodge); color: #fff; background: var(--lodge); top: 0.9rem; }
-.lodge-stop .sign { margin-top: 0.6rem; }
-.lodge-board { margin-bottom: 0; }
-.inside-hint { color: var(--text-secondary); margin-top: -0.3rem !important; }
-.rooms { list-style: none; padding: 0; margin: 0.2rem 0 0.8rem; background: var(--bg-primary); border-radius: 10px; padding: 0 0.9rem; }
-.stop.room { padding-left: 2.8rem; }
-.stop.room::before { display: none; }
-.stop.room .marker { left: 0; top: 0.55rem; width: 1.9rem; height: 2.3rem; border-color: var(--lodge); color: var(--lodge); }
-.stop.room.rest .marker { border-color: var(--rest); color: var(--rest); }
-.stop.room.is-open .marker { background: var(--lodge); color: #fff; }
-.stop.room.rest.is-open .marker { background: var(--rest); }
-.rooms > .stop:last-child details { border-bottom: none; }
-
-/* Stop 8: the Ranger Station */
-.station-stop::before { bottom: auto; height: 1.2rem; width: 0; background: none; border-left: 5px dotted var(--lodge); }
-.station-stop > .marker { border-color: var(--station); color: var(--station); }
-.station-stop.is-open > .marker { background: var(--station); color: #fff; }
-.station-sign { margin-top: 0.6rem; border-radius: 12px 12px 0 0; background: var(--station); color: #fff; display: grid; grid-template-columns: 1fr auto; }
-.station-sign .text { padding: 0.9rem 1.1rem; }
-.station-sign p { margin: 0; }
-.station-sign .next { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.9; }
-.station-sign svg.lodge { width: 3rem; height: 3rem; margin: 0 1.1rem; align-self: center; color: #fff; }
-.station-board { border: 2px solid var(--station); border-top: none; border-radius: 0 0 12px 12px; background: var(--station-tint); padding: 0.9rem 1.1rem 0.8rem; }
-.station-board > p { max-width: 64ch; }
-.station-board .recap { background: var(--bg-primary); }
-.choose { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; margin: 1rem 0 0; }
-.choose .jicon { color: var(--station); }
-.way { border-color: var(--station); }
-.way.back .dir { background: var(--station); }
-.way.back svg { color: var(--station); }
-.way:hover { background: var(--station-tint); border-color: var(--station); }
-.station-board .keep { margin-top: 0.4rem; background: var(--bg-primary); }
-@media (max-width: 560px) {
-  .station-sign svg.lodge { display: none; }
-  .ways::before, .ways li::before { border-color: var(--station); }
+.open-all {
+    margin: 0.6rem 0 0.2rem;
 }
 
-/* Notes at rest stops */
-.notes { margin: 0.4rem 0 0.6rem; }
-.notes .sub { display: block; }
-.note { width: 100%; font: inherit; font-size: 1rem; padding: 0.6rem 0.7rem; border: 1px solid color-mix(in srgb, var(--rest) 45%, white); border-radius: 10px; background: #fff; color: var(--text-primary); resize: vertical; }
-.note:focus-visible { outline: 2px solid var(--rest); outline-offset: 1px; }
-.note-help { font-size: 0.88rem; color: var(--text-secondary); margin: 0.35rem 0 0.2rem !important; }
-.linkish { font: inherit; font-size: 0.9rem; font-weight: 700; color: var(--lodge); background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-@media print { .note { border: 1px solid #999; min-height: 6rem; } .linkish { display: none !important; } }
-/* Phones: give the lodge and station boxes more room */
-@media (max-width: 560px) {
-  .lodge-stop, .station-stop { padding-left: 2.7rem; }
-  .lodge-stop > .marker, .station-stop > .marker { left: 0.1rem; width: 1.9rem; }
-  .lodge-stop::before, .lodge-stop::after, .station-stop::before { left: 0.8rem; }
-  .lodge-board, .station-board { padding: 0.8rem 0.65rem 0.6rem; }
-  .rooms { padding: 0 0.5rem; }
-  .stop.room { padding-left: 2.3rem; }
-  .stop.room .marker { width: 1.7rem; height: 2.1rem; }
-  .stop.room summary { grid-template-columns: 1fr; row-gap: 0.15rem; }
-  .ahead { display: block; }
-  .ahead svg { display: none; }
-  .reflect ul { padding-left: 1rem; }
+.story {
+    padding-top: 0.4rem;
 }
 
-/* ---------- v14: Rest and Reflect stops: same colors, round markers ---------- */
-.stop.rest .marker { border-radius: 50%; width: 2.3rem; height: 2.3rem; left: 0.2rem; top: 0.6rem; border-color: var(--trail); color: var(--trail); }
-.stop.rest.is-open .marker { background: var(--trail); color: #fff; }
-.stop.room.rest .marker { width: 2rem; height: 2rem; left: -0.05rem; border-color: var(--lodge); color: var(--lodge); }
-.stop.room.rest.is-open .marker { background: var(--lodge); color: #fff; }
-.stop.rest summary h3 { color: inherit; }
-.stop.rest .exhibit { color: var(--text-secondary); border-color: var(--border-strong); }
-.mark-rest { border-radius: 50%; width: 2.2rem; height: 2.2rem; border-color: var(--trail); color: var(--trail); }
-@media (max-width: 560px) { .stop.room.rest .marker { width: 1.8rem; height: 1.8rem; } }
+/* Small "read more" and "save your spot" openers. */
+.mini {
+    border: none;
+    margin-top: 0.3rem;
+}
 
-/* ---------- v15: brand header, trailhead as a place, legend marks ---------- */
-/* The page header follows core/atlas.css (.page-header): brand teal title */
-.page-header { margin-bottom: 0.5rem; }
-.page-header h1 { font-family: 'ADLaM Display', 'Varela Round', sans-serif; font-size: clamp(2rem, 6vw, 2.3rem); font-weight: 500; color: var(--brand-teal); margin: 0.2rem 0 0.6rem; }
-.page-header .lede { color: var(--text-primary); font-size: 1.0625rem; }
-.page-header .todo ol, .page-header .todo .sub { color: var(--text-primary); }
-.page-header .pace { font-size: 1rem; }
+.mini > summary {
+    display: inline-flex;
+    padding: 0.2rem 0;
+    font-weight: 700;
+    color: var(--lodge);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
 
-/* Trailhead: a place on the trail, like the lodge and the station */
-.trailhead-stop { padding-bottom: 0.4rem; }
-.trailhead-stop::before { top: 3rem; }
-.trailhead-stop > .marker { background: var(--trail); color: #fff; top: 0.7rem; }
-.trailhead-stop > .marker svg { width: 1.2rem; height: 1.2rem; }
-.th-sign { border-radius: 12px 12px 0 0; background: var(--trail); color: #fff; display: grid; grid-template-columns: 1fr auto; }
-.th-sign .text { padding: 0.9rem 1.1rem; }
-.th-sign p { margin: 0; }
-.th-sign .next { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.9; }
-.th-sign svg.lodge { width: 3rem; height: 3rem; margin: 0 1.1rem; align-self: center; color: #fff; }
-.th-board { border: 2px solid var(--trail); border-top: none; border-radius: 0 0 12px 12px; background: var(--green-tint-1); padding: 0.9rem 1.1rem 0.6rem; margin-bottom: 0.6rem; }
-.th-board h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; margin: 0 0 0.4rem; }
-.th-board p { max-width: 64ch; }
-.th-board .legend { background: var(--bg-primary); border-radius: 10px; padding: 0.8rem; }
-.start-small { font-weight: 700; color: var(--green-text); margin: 0.6rem 0 0.2rem !important; }
 
-/* Legend marks: small number boxes, larger icons, all centered in one column */
-.legend li { align-items: center; }
-.mark { width: 2.2rem; height: 2.2rem; }
-.mark-stop { width: 1.5rem; height: 1.8rem; border-width: 3px; font-size: 0.75rem; justify-self: center; margin: 0 0.35rem; }
-.mark-rest { width: 1.75rem; height: 1.75rem; border-width: 3px; font-size: 0.75rem; margin: 0 0.22rem; }
-.mark svg { width: 2rem; height: 2rem; }
-@media (max-width: 560px) { .th-sign svg.lodge { display: none; } .trailhead-stop { padding-left: 2.7rem; } .trailhead-stop > .marker { left: 0.1rem; } .th-board { padding: 0.8rem 0.65rem 0.6rem; } }
+/* ==========================================================================
+   The Ranger Station: a recap, the fork, and three signs
+   ========================================================================== */
+
+.recap {
+    background: var(--bg-primary);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    margin: 0.6rem 0 0.9rem;
+}
+
+.recap p {
+    margin: 0 0 0.5rem;
+    max-width: var(--read);
+}
+
+.recap p:last-child {
+    margin: 0;
+}
+
+.choose {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 1.4rem;
+    margin: 1rem 0 0;
+}
+
+.jicon {
+    width: 1.6rem;
+    height: 1.6rem;
+    color: var(--station);
+}
+
+/* The fork in the trail (wider screens; phones get a branching line). */
+.fork {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0.2rem 0 0.1rem;
+}
+
+.ways {
+    list-style: none;
+    margin: 0 0 0.8rem;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+}
+
+/* Each choice is a trail sign: "Back to..." in brown, "Onward" in green. */
+.way {
+    font: inherit;
+    text-align: left;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    border: 2px solid var(--station);
+    border-radius: 12px;
+    padding: 0.7rem 0.9rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.way:hover {
+    background: var(--station-tint);
+}
+
+.way b {
+    font-size: 1.05rem;
+}
+
+.way > span:last-child {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.way svg {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-bottom: 0.2rem;
+    color: var(--station);
+}
+
+.dir {
+    align-self: flex-start;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--station);
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.way.on {
+    border-color: var(--trail);
+}
+
+.way.on:hover {
+    background: var(--green-tint-1);
+}
+
+.way.on .dir {
+    background: var(--trail);
+}
+
+.way.on svg {
+    color: var(--trail);
+}
+
+.keep {
+    background: var(--bg-primary);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    margin-top: 0.4rem;
+}
+
+.keep p {
+    max-width: var(--read);
+}
+
+.keep p:first-child {
+    margin-top: 0;
+}
+
+/* Save your spot: a link to copy, for coming back later. */
+.save {
+    margin-top: 0.4rem;
+}
+
+.keep .save {
+    border-top: 1px dashed var(--border-strong);
+    padding-top: 0.6rem;
+    margin: 0.6rem 0;
+}
+
+.save-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.save-link {
+    flex: 1 1 14rem;
+    min-width: 0;
+    font: inherit;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 0.35rem 0.6rem;
+}
+
+/* A button that reads as a link ("Clear my notes"). */
+.linkish {
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--lodge);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.footnote {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    max-width: 48rem;
+}
+
+
+/* ==========================================================================
+   Phones: give the boxes room, stack the signs, simplify the fork
+   ========================================================================== */
+
+@media (max-width: 560px) {
+    .place {
+        padding-left: 2.7rem;
+    }
+
+    .place > .marker {
+        left: 0.1rem;
+        width: 1.9rem;
+    }
+
+    .place::before,
+    .place.is-lodge::after {
+        left: 0.8rem;
+    }
+
+    .place-board {
+        padding: 0.8rem 0.65rem 0.6rem;
+    }
+
+    .place-icon {
+        display: none;
+    }
+
+    .place.is-lodge .place-sign {
+        grid-template-columns: 0.7rem 1fr;
+    }
+
+    .place-sign {
+        grid-template-columns: 1fr;
+    }
+
+    .rooms {
+        padding: 0 0.5rem;
+    }
+
+    .stop.room {
+        padding-left: 2.3rem;
+    }
+
+    .stop.room > .marker {
+        width: 1.7rem;
+        height: 2.1rem;
+    }
+
+    .stop.room.rest > .marker {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+
+    .stop.room summary {
+        grid-template-columns: 1fr;
+        row-gap: 0.15rem;
+    }
+
+    .legend,
+    .ways {
+        grid-template-columns: 1fr;
+    }
+
+    .actions,
+    .defs {
+        grid-template-columns: 1fr;
+        gap: 0.1rem;
+    }
+
+    .actions dd,
+    .defs dd {
+        margin-bottom: 0.5rem;
+    }
+
+    .reflect ul {
+        padding-left: 1rem;
+    }
+
+    .ahead {
+        display: block;
+    }
+
+    .ahead svg {
+        display: none;
+    }
+
+    /* The fork becomes one trail with a branch to each sign. */
+    .fork {
+        display: none;
+    }
+
+    .ways {
+        position: relative;
+        padding-left: 1.4rem;
+    }
+
+    .ways::before {
+        content: "";
+        position: absolute;
+        left: 0.35rem;
+        top: -0.4rem;
+        bottom: 1.5rem;
+        border-left: 4px dotted var(--station);
+    }
+
+    .ways li {
+        position: relative;
+    }
+
+    .ways li::before {
+        content: "";
+        position: absolute;
+        left: -1.05rem;
+        top: 1.3rem;
+        width: 1rem;
+        border-top: 4px dotted var(--station);
+    }
+}
+
+
+/* ==========================================================================
+   Print: the whole trail, opened, without the buttons
+   ========================================================================== */
+
+@media print {
+    .test-note,
+    .trail-art,
+    .toggle,
+    .pills,
+    .find-btn,
+    .ways,
+    .fork,
+    .next-btn,
+    .mini,
+    .save,
+    .linkish {
+        display: none !important;
+    }
+
+    .find-reveal,
+    .keep {
+        display: block !important;
+    }
+
+    .note {
+        min-height: 6rem;
+        border: 1px solid #999;
+    }
+}
