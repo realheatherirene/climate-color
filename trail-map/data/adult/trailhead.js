@@ -7,15 +7,15 @@ const IMLS = { title: "IMLS: Mass Audubon's Accessible Trails Project", url: "ht
 export default {
   title: "The Trail Map",
   lede: "The Climate Trail Map is an interactive tool that can be used to find your way into climate action.",
-  todoTitle: "Here's what you'll do",
+  todoTitle: "Here's how it works:",
   todo: [
-    "**Pick a trail.** (Stop 1)",
-    "**Travel down your trail to learn more about it.** (Stops 2 to 5)",
-    "**Pick a lodge.** (Stop 6)",
-    "**Enter the lodge to learn more about it.** (Stop 7)",
-    "**Enter at the Ranger Station, where you can either close your session or choose another trail.** (Stop 8)"
+    "**Pick a trail. Each trail name suggests one stewardship style—the mental, emotional, and practical strengths people use to care for the world around them.** (Stop 1)",
+    "**Travel down your trail and take part in the activities to learn more about that stewardship style.** (Stops 2 to 5)",
+    "**Pick a lodge. Each lodge name suggests one community action topic—the personal, social, and environmental domains affected by climate change.** (Stop 6)",
+    "**Enter the lodge to and take part in the activities to learn more about that community action topic.** (Stop 7)",
+    "**Enter the Ranger Station. From the ranger station, you can either visit another lodge, try another trail, save your notes, or leave the trail.** (Stop 8)"
   ],
-  note: "Make your own choices and move at your own pace. If you need a break, there's a link to save your progress until you come back.",
+  note: "Make your own choices and move at your own pace. If you need a break, use the 'Save your spot' link to pause.",
 
   /* The trailhead board: shown above stop 1, not a numbered stop. */
   board: {
