@@ -56,8 +56,8 @@ Each page's own folder holds only what is unique to that page. Each file opens w
 ### How the pages connect
 
 * **Colors in links.** Pathways accepts `?style=` with a color, like `climatecolor.com/pathways?style=Green`, and opens that color's page. Colors, archetypes, and plurals all work, in any capitalization. The Wheel's color cards link to Pathways this way.
-* **Trail Map links.** `#green` opens the Trail Map on the Green Trail, and `#green-water` opens it with the Water exhibit and its Field Guide too. Reflection notes are kept in the visitor's own browser only (localStorage) and never sent anywhere.
-* **Squarespace helpers.** Two small scripts live on the Squarespace side, with copies in `tools/`. `squarespace-height-listener.html` (in Code Injection > Footer) resizes the embedded boxes. `squarespace-embed-links.html` (in the Code Block after the Pathways embed) passes `?style=` from the site's address into the embed. It finds the embeds by the repo name, `stewardship-wheel`, so renaming the repo means updating it too.
+* **Trail Map links.** `climatecolor.com/trail-map?spot=green` opens the Trail Map on the Green Trail, and `?spot=green-water` opens it with the Water Exhibit and its Field Guide too. The Trail Map page's Squarespace helper passes `?spot=` into the embed; on GitHub Pages, `#green-water` works the same way. Reflection notes are kept in the visitor's own browser only (localStorage) and never sent anywhere.
+* **Squarespace helpers.** Two small scripts live on the Squarespace side, with copies in `tools/`. `squarespace-height-listener.html` (in Code Injection > Footer) resizes the embedded boxes. `squarespace-embed-links.html` (in the Code Block after the Pathways embed, and after the Trail Map embed) passes `?style=` and `?spot=` from the site's address into the embed. It finds the embeds by the repo name, `stewardship-wheel`, so renaming the repo means updating it too.
 * **Links out of an embed** open in the whole window (`target="_top"`), so visitors land on the Squarespace page with its menu.
 
 ### Making common changes
