@@ -1,31 +1,34 @@
 <!-- ==========================================================================
-     Climate Color: Squarespace helper that passes ?style= into the embeds
+     Climate Color: Squarespace helper that passes ?style= and ?spot= into
+     the embeds
      ==========================================================================
      A copy for reference. The live copy sits in the Code Block that holds
-     each page's embed, right after the closing </iframe> tag, on the page
-     that uses colors in its address: Pathways. Don't put it in Page Settings > Advanced: code there runs before
-     the embed exists, so it finds nothing to update. Squarespace doesn't
-     run scripts in the editor, so test it on the live page in a private
-     window.
+     each page's embed, right after the closing </iframe> tag, on each page
+     that uses its address: Pathways (?style=) and the Trail Map (?spot=).
+     The same script works on both. Don't put it in Page Settings >
+     Advanced: code there runs before the embed exists, so it finds nothing
+     to update. Squarespace doesn't run scripts in the editor, so test it
+     on the live page in a private window.
 
-     Links like climatecolor.com/pathways?style=Green open a Squarespace
-     page, and Pathways inside it is an embedded box with its own address,
-     which doesn't know about the color. This script copies ?style= from
-     the page's address onto every Climate Color box on the page (any
-     iframe whose address contains /stewardship-wheel/, the repo's name),
-     so Pathways opens the one color named. With no ?style= in the address
-     it does nothing.
+     Links like climatecolor.com/pathways?style=Green or
+     climatecolor.com/trail-map?spot=green-water open a Squarespace page,
+     and the Climate Color page inside it is an embedded box with its own
+     address, which doesn't know about the link. This script copies those
+     settings from the page's address onto every Climate Color box on the
+     page (any iframe whose address contains /stewardship-wheel/, the
+     repo's name). With neither in the address it does nothing.
      ========================================================================== -->
 <script>
 (function () {
-  var style = new URLSearchParams(window.location.search).get("style");
-  if (!style) return;
+  var params = new URLSearchParams(window.location.search);
+  var pass = ["style", "spot"].filter(function (k) { return params.get(k); });
+  if (!pass.length) return;
   var frames = document.getElementsByTagName("iframe");
   for (var i = 0; i < frames.length; i++) {
     var src = frames[i].getAttribute("src") || "";
     if (src.indexOf("/stewardship-wheel/") === -1) continue;
     var url = new URL(src, window.location.href);
-    url.searchParams.set("style", style);
+    pass.forEach(function (k) { url.searchParams.set(k, params.get(k)); });
     frames[i].src = url.href.replace(/%2C/g, ",");
   }
 })();
