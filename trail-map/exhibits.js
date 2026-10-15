@@ -83,9 +83,15 @@ const BLOCKS = {
   legend: b => `<ul class="legend">${b.legend.map(i => `<li><span class="mark mark-${i.mark}" aria-hidden="true">${
     i.mark === "stop" || i.mark === "rest" ? "0" : icon(i.icon)}</span><span><b>${fmt(i.term)}</b> ${fmt(i.text)}</span></li>`).join("")}</ul>`,
 
-  /* Buttons for the other trails, keeping the current lodge. */
+  /* Buttons for the other trails, keeping the current exhibit. */
   trails: (b, ctx) => `<div class="pills">${ctx.otherTrails().map(c =>
-    `<button type="button" class="pill-btn pill-${c.key.toLowerCase()}" data-trail="${c.key}">${c.action} · ${c.key}</button>`).join("")}</div>`
+    `<button type="button" class="pill-btn pill-${c.key.toLowerCase()}" data-trail="${c.key}">${c.action} · ${c.key}</button>`).join("")}</div>`,
+
+  /* All six ways of helping, color first, each with its plain meaning.
+     The reader's own trail is marked in words, not by color alone. */
+  ways: (b, ctx) => `<ul class="ways-list">${ctx.allWays().map(w =>
+    `<li${w.mine ? ' class="mine"' : ""}><span class="blaze" style="background:var(--${w.key.toLowerCase()}-color)" aria-hidden="true"></span>
+    <span><b>${w.key} · ${w.action}</b>${w.mine ? ` <span class="yours">${fmt(w.yours)}</span>` : ""}<span class="odesc">${fmt(w.meaning)}.</span></span></li>`).join("")}</ul>`
 };
 
 export function renderBlocks(blocks, ctx) {
@@ -96,8 +102,9 @@ export function renderBlocks(blocks, ctx) {
   }).join("\n");
 }
 
-/* One numbered stop: the title alone while closed; the exhibit label, the
-   content, and the "Next stop" line inside. */
+/* One stop: the title alone while closed; the kind label, the content,
+   and the "Next" line inside. Stops along the trail are numbered; parts
+   of an exhibit, the Field Guide, and the Bulletin Board are not. */
 export function renderStop({ n, key, title, stop, line = "trail", ctx, tag = "li", aheadLabel = "Next stop" }) {
   const ex = EXHIBITS[stop.exhibit];
   if (!ex || !STOP_TYPES.includes(stop.exhibit)) throw new Error("Not a stop type: " + stop.exhibit);

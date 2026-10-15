@@ -1,14 +1,13 @@
-/* The lodges: one per topic. The picker shows each name and its four-item
-   description; the teaser opens the lodge once it's picked. Teasers teach
-   about the topic; they never ask "would you do this?" (no scenarios
-   before the click). Sources: the Fifth National Climate Assessment, 2023.
+/* The nine topics, one exhibit each, in the order they're lettered A to I.
+   The exhibit picker shows each name and its four-item description; the
+   teaser and its source open the exhibit. Teasers teach about the topic;
+   they never ask "would you do this?" Sources: the Fifth National Climate
+   Assessment, 2023.
    Adult pack: grade 9 reading level or lower. */
 
 const nca = (n, name) => ({ title: `Fifth National Climate Assessment, Ch. ${n}: ${name}`, url: `https://doi.org/10.7930/NCA5.2023.CH${n}` });
 
 export default {
-  hint: "Climate change touches many parts of our lives, like food, water, land, and wildlife. You may care about all of them. Pick one to start, and come back for the others anytime.",
-  notBuilt: "This lodge is still being built. For now, the Water Lodge is ready.",
   topics: [
     { key: "food", name: "Food", icon: "i-food", about: "farms, gardens, kitchens, and meals",
       teaser: "Climate change is shifting growing seasons and bringing more extreme weather to farms. That can make food harder to find and harder to afford, and not everyone feels it equally.",

@@ -1,4 +1,7 @@
-/* Stops and lines shared by every trail and every lodge.
+/* Words shared by every trail and every exhibit: the first trail stop,
+   the Lodge, the Field Guide, the Bulletin Board, notes, and saving.
+   The page fills in {trail}, {action}, {meaning}, {words}, {exhibit},
+   {lower}, and {about}.
    Adult pack: grade 9 reading level or lower. */
 
 const SPARKMAN = { title: "Sparkman, Geiger & Weber, 2022", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9399177/" };
@@ -19,63 +22,79 @@ export default {
       { sub: "Your care already counts" },
       { p: "Community care is climate care. Climate care is community care. The ways you already show up for others are the ways you can show up for the climate." }
     ],
-    ahead: "Get to know your way of helping, and the three actions that go with it."
+    ahead: "Meet your way of helping, and the three actions that go with it."
   },
 
-  /* Questions every lodge's last rest stop starts with. The lodge adds
-     its own. */
-  first: {
-    title: "Your first step",
-    questions: [
-      "Which idea on this trail could I try first?",
-      "When and where would I start?",
-      "Who could come with me?"
-    ],
-    friend: [
-      "What here fits you?",
-      "Which first step could we take together?",
-      "Which trail or lodge next?"
-    ],
-    ahead: "The Ranger Station, where you choose what comes next."
-  },
-
-  /* The lodge welcome board, shared by every lodge. {lodge} is the name,
-     {lower} the name in a sentence, {action} the way of helping, {lodgeStop} the lodge picker's number. */
-  lodgeBoard: {
-    welcome: "Welcome to the {lodge} Lodge! This is where you go deep on one topic. Every exhibit here is about {lower}, and how your way of helping fits in.",
+  /* The Lodge: one for every trail, with an exhibit for each topic. */
+  lodge: {
+    eyebrow: "Every trail leads here",
+    title: "The Lodge",
+    sub: "Exhibits on nine community action topics",
+    line: "You help by {action}. Now pick a topic you care about.",
+    welcome: "Welcome to the Lodge! Inside are exhibits on nine topics, the parts of life that climate change touches. You may care about all of them. Pick one to start, and come back for the others anytime.",
     why: "Why {lower}?",
-    inside: "Exhibits inside",
-    insideHint: "Open each one right here, in order or in any order you like.",
-    stops: {
-      changing: "The changes coming to {lower}, and who is hit hardest.",
-      role: "{action} at work for {lower}, with something to try right now.",
-      local: "A rest stop to think about your own community.",
-      nearby: "Ways to find {lower} work near you, and what to say when you ask.",
-      first: "Pick one thing to try, on your own or with a friend."
+    notBuilt: "This exhibit is still being built. For now, the Water exhibit is ready.",
+    tryReady: "Try the Water exhibit"
+  },
+
+  /* The Field Guide: the same for everyone. The page fills in the
+     reader's trail and exhibit; the reader writes the rest. */
+  guide: {
+    eyebrow: "Yours to keep",
+    title: "Field Guide",
+    sub: "For the trail beyond the park",
+    line: "You help by {action}. You care about {lower}.",
+    intro: "The park is where you learn. The field is your own community. This guide is the same for everyone: your trail and topic are filled in, and you write the rest.",
+    think: {
+      lead: "Imagine this:",
+      questions: [
+        "How could {action} help here?",
+        "Which of your three actions fits best: {words}?",
+        "Where does {action} already touch {lower} in your life?"
+      ]
     },
-    leave: "Want a different topic? Head back to stop {lodgeStop} anytime. When you're done here, follow the trail to the Ranger Station.",
-    go: "Head to the lodge"
+    others: {
+      lead: "Every way of helping has a part to play with {lower}. Here are all six. Yours is marked.",
+      ask: "Which other ways would you want beside you?"
+    },
+    first: {
+      questions: [
+        "Which idea in this guide could I try first?",
+        "When and where would I start?",
+        "Who could come with me?"
+      ],
+      friend: [
+        "What here fits you?",
+        "Which first step could we take together?",
+        "Which trail or exhibit next?"
+      ]
+    },
+    yours: "Your trail",
+    ahead: {
+      story: "Something to think through.",
+      think: "Something to try right where you are.",
+      tryIt: "Other ways to help, beside yours.",
+      others: "Your first step.",
+      first: "The Bulletin Board, where you choose what comes next."
+    },
+    print: "Print your Field Guide",
+    printHelp: "Prints this guide only, with your notes. If the button doesn't work here, use your browser's Print command."
   },
 
-  junction: {
-    title: "Ranger Station",
+  /* The Bulletin Board: the end of the trail. */
+  bulletin: {
     eyebrow: "End of the trail",
-    sub: "Get your bearings, and choose where to go next.",
-    lede: "Welcome to the Ranger Station! This is the end of this trail. Every way from here is open.",
-    /* {trail}, {action}, {meaning}, {lodge}, {about} are filled in by the page. */
-    recap: [
-      "**Where you've been.** You took the {trail} Trail: you help by {action}, {meaning}. Then you visited the {lodge} Lodge: {about}.",
-      "**How the map works.** Your trail is your way of helping, and a lodge is a topic you care about. You can change either one, anytime, and the other stays put."
-    ],
-    lodge: { dir: "Back to stop {lodgeStop}", label: "Visit another lodge", hint: "Stay on the {trail} Trail and go back to stop {lodgeStop}. Pick a new topic, and your trail stops stay the same." },
-    trail: { dir: "Back to stop 1", label: "Try another trail", hint: "Stay with {lodge} and go back to stop 1. Pick a different way of helping, and your trail stops change to fit it." },
-    keep: { dir: "Onward", label: "Take this with you", hint: "A few words to carry home, a link to come back to, and a way to print this page." }
+    title: "Bulletin Board",
+    sub: "What's next, close to home and on the map",
+    lede: "Welcome to the Bulletin Board! This is the end of this trail. Here's what's posted: real places to start close to home, and where to go next.",
+    recap: "**Where you've been.** You took the {trail} Trail: you help by {action}, {meaning}. In the Lodge, you visited the {exhibit} exhibit: {about}.",
+    exhibit: { dir: "Back to the Lodge", label: "Visit another exhibit", hint: "Stay on the {trail} Trail and pick a new topic. Your trail stops stay the same." },
+    trail: { dir: "Back to the Trailhead", label: "Try another trail", hint: "Stay with {exhibit} and pick a different way of helping. Your trail stops change to fit it." },
+    keep: { dir: "Onward", label: "Take this with you", hint: "A few words to carry home, a link to come back to, and your Field Guide to print." }
   },
 
-  /* Coming back later. Only the trail and lodge are kept, and only in the
-     link itself: nothing is saved online. */
-  /* Writing at rest stops. Notes are kept with the browser's own storage,
-     on this device only, and never sent anywhere. */
+  /* Notes at rest stops and in the Field Guide. Kept with the browser's
+     own storage, on this device only, and never sent anywhere. */
   notes: {
     label: "Your notes",
     placeholder: "Write your thoughts here, if you'd like.",
@@ -85,12 +104,13 @@ export default {
     off: "This browser can't keep notes. Print or copy them before you leave."
   },
 
+  /* Coming back later. Only the trail and exhibit are kept, and only in
+     the link itself: nothing is saved online. */
   save: {
-    title: "Need a break?",
-    text: "Copy this link and save it anywhere, like a note or an email to yourself. It brings you back to your trail and lodge. Your rest stop notes stay on this device. Open stops and checkmarks start fresh.",
+    opener: "Need a break? Save your spot",
+    title: "Save your spot",
+    text: "Copy this link and save it anywhere, like a note or an email to yourself. It brings you back to your trail and exhibit. Your notes stay on this device. Open stops and checkmarks start fresh.",
     copy: "Copy link",
-    copied: "Copied",
-    print: "Print this page",
-    printHelp: "If the button doesn't work here, use your browser's Print command."
+    copied: "Copied"
   }
 };

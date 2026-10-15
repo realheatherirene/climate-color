@@ -1,9 +1,11 @@
 /* The Green Trail: Connecting.
    Color names, archetypes, and action words come from core/climate-color.js;
-   this file holds only the words that are written for this trail.
+   this file holds only the words written for this trail: its four stops,
+   plus its story and its "Try it now" for the Field Guide.
    Adult pack: grade 9 reading level or lower. */
 
 const FEMA = { title: "FEMA PrepTalks: Daniel Aldrich, Social Capital in Disaster Mitigation and Recovery", url: "https://fema.gov/sites/default/files/documents/fema_preptalks_aldrich_discussion-guide.pdf" };
+const PROSPECT = { title: "Casey Sanchez, \"Gulf Coast Notebook,\" The American Prospect, February 2009", url: "https://prospect.org/2009/02/17/gulf-coast-notebook/" };
 
 export default {
   key: "Green",
@@ -39,7 +41,7 @@ export default {
       ] },
       { p: "**If Connecting fits you, keep going.** If it doesn't, try another way of helping now:" },
       { trails: true },
-      { p: "Or finish this trail first. You can switch trails at the junction, at the end." }
+      { p: "Or finish this trail first. You can switch trails at the Bulletin Board, at the end." }
     ],
     ahead: "What Connectors bring to a whole community, beyond the people you know."
   },
@@ -63,10 +65,40 @@ export default {
       { sub: "Where Connectors show up" },
       { p: "Block clubs and tenant groups. Mutual aid networks. Faith communities and schools. Phone trees and group chats. Anywhere people need to find each other." }
     ],
-    ahead: "Pick your lodge: the topic you'd like to explore with your way of helping."
+    ahead: "The Lodge, where you pick an exhibit on a topic you care about."
   },
 
-  /* Words to carry home from the junction. {topic} becomes the lodge name. */
+  /* For the Field Guide: a true story of someone on this trail. Every
+     fact here is on the one linked page. */
+  story: {
+    exhibit: "sign",
+    blocks: [
+      { p: "When Hurricane Katrina flooded New Orleans in 2005, the members of Mary Queen of Vietnam, a Catholic parish in New Orleans East, were scattered far from home. Their pastor, Father Vien Nguyen, and others from the parish kept them linked to each other." },
+      { quote: { text: "Wherever we'd go, we'd take pictures of one location and show it to the other.", who: "Father Vien Nguyen", src: PROSPECT } },
+      { p: "In October 2005, as the city began to reopen, more than 300 people came back for Sunday Mass. The parish sent the city 500 petition signatures asking for quick action, and the neighborhood became one of the first to get its power back. The article reports that 95 percent of members came back." },
+      { p: "That's Connecting at work: keeping people linked, even when they're far apart." },
+      { cite: [PROSPECT] }
+    ]
+  },
+
+  /* For the Field Guide: a short activity for this trail, for any topic. */
+  tryIt: {
+    exhibit: "sign",
+    blocks: [
+      { stretch: {
+        title: "Your phone tree",
+        steps: [
+          "Think of three people you could reach quickly if important news needed to spread on your street.",
+          "Who would you reach first?",
+          "Who might not get the word any other way?"
+        ],
+        note: "Do this in your head or on paper. No phone, internet, or moving around needed."
+      } }
+    ]
+  },
+
+  /* Words to carry home from the Bulletin Board. {topic} becomes the
+     exhibit's name. */
   farewell: [
     "You don't need to bring everyone together alone. Connection grows when many tend it, and rest is part of the trail. You simply help people find each other.",
     "“We can start close to home. We can care for our {topic} together.”"

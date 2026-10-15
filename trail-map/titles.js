@@ -1,30 +1,44 @@
 /* ==========================================================================
-   STOP TITLES: written once, used on every trail and in every lodge
+   TITLES: written once, used on every trail, in every exhibit, and in
+   every Field Guide
    ==========================================================================
    Titles are universal, so a reader learns them once and finds them again
    anywhere on the map. Nothing topic-specific goes here: topic words live
-   inside the stop, with the content they describe. Each title starts with
-   a verb. Keys match the stop keys in the data files.
+   inside, with the content they describe. Each title starts with a verb
+   and is no longer than "Find out why your care matters." Keys match the
+   keys in the data files.
    ========================================================================== */
 
 export const TITLES = {
-  how:       "Get your bearings",
-  pickTrail: "Pick your trail",
-  pickLodge: "Pick your lodge",
-  care:      "Find out why your care matters",
-  know:      "Get to know your way of helping",
-  fit:       "Rest and Reflect",
-  community: "Discover what your way of helping brings to a community",
-  changing:  "Find out what's changing",
-  role:      "Discover what your way of helping can do here",
-  local:     "Rest and Reflect",
-  nearby:    "Find work close to home",
-  first:     "Rest and Reflect",
-  station:   "Ranger Station",
-  junction:  "Choose what comes next"
+  /* The Trailhead */
+  how:         "Get your bearings",
+  pickTrail:   "Pick your trail",
+
+  /* Stops along the trail, numbered 1 to 4 */
+  care:        "Find out why your care matters",
+  know:        "Meet your way of helping",
+  fit:         "Rest and Reflect",
+  community:   "Discover what you bring",
+
+  /* The Lodge and its exhibits, lettered A to I */
+  pickExhibit: "Pick an exhibit",
+  changing:    "Find out what's changing",
+  daily:       "Find it in daily life",
+
+  /* The Field Guide */
+  story:       "Meet someone like you",
+  think:       "Think it through",
+  tryIt:       "Try it now",
+  others:      "Learn other ways to help",
+  first:       "Choose your first step",
+
+  /* The Bulletin Board */
+  next:        "Choose what comes next",
+  nearby:      "Find work close to home"
 };
 
-/* The order stops appear in. The renderer numbers them in this order,
-   skipping any that a trail or lodge hasn't been written for yet. */
+/* The order things appear in. Anything a trail or exhibit hasn't been
+   written for yet is skipped. */
 export const TRAIL_ORDER = ["care", "know", "fit", "community"];
-export const LODGE_ORDER = ["changing", "role", "local", "nearby", "first"];
+export const EXHIBIT_ORDER = ["changing", "daily"];
+export const GUIDE_ORDER = ["story", "think", "tryIt", "others", "first"];
