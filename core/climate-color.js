@@ -175,15 +175,18 @@ export const WHEEL_TEXT = {
   more: "Learn about the Stewardship Wheel"
 };
 
-/* The site's own pages, which embed the Wheel and Pathways. Links to them
-   open in the whole window (target="_top"), so a visitor leaves the
-   embedded box and lands on the site page with its header and navigation.
-   The Pathways page passes ?style= on to the page it embeds
-   (tools/squarespace-embed-links.html), and Pathways opens the one color's
-   page when ?style= names just one. */
+/* The site's own pages, which embed the Wheel, Pathways, and the Trail
+   Map. Links to them open in the whole window (target="_top"), so a
+   visitor leaves the embedded box and lands on the site page with its
+   header and navigation. The Pathways page passes ?style= on to the page
+   it embeds, and the Trail Map page passes ?spot= the same way
+   (tools/squarespace-embed-links.html). Pathways opens the one color's
+   page when ?style= names just one; the Trail Map opens the reader's
+   saved trail and exhibit. */
 export const SITE = {
   pathways: "https://climatecolor.com/pathways",
-  wheel: "https://climatecolor.com/wheel"
+  wheel: "https://climatecolor.com/wheel",
+  trailMap: "https://climatecolor.com/trail-map"
 };
 
 /* A link to a page on the site with colors in it, in any order and
