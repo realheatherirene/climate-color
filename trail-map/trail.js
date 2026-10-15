@@ -46,6 +46,7 @@ function notesBox(key) {
 
 const ctx = {
   uid: () => ++uid,
+  topic: () => topicOf(st.exhibit),
   otherTrails: () => COLOR_KEYS.filter(k => k !== st.trail).map(getColor),
   allWays: () => COLOR_KEYS.map(key => {
     const c = getColor(key);
@@ -62,14 +63,38 @@ const fill = (txt, c, tp) => txt.replace(/\{trail\}/g, c.key).replace(/\{action\
   .replace(/\{exhibit\}/g, tp ? tp.name : "").replace(/\{lower\}/g, tp ? tp.name.toLowerCase() : "")
   .replace(/\{about\}/g, tp ? tp.about : "");
 
+/* ---------- Places: one source for names, icons, and signs ---------- */
+
+const P = shared.places;
+
+/* A place's sign: an eyebrow, a title, a short line, and its icon. */
+const sign = (pl, line = "") => `<div class="place-sign"><div class="text">${pl.eyebrow ? `<p class="place-eyebrow">${fmt(pl.eyebrow)}</p>` : ""}<p class="place-title">${fmt(pl.title)}</p>
+    ${pl.sub ? `<p class="place-sub">${fmt(pl.sub)}</p>` : ""}${line ? `<p class="place-line">${fmt(line)}</p>` : ""}</div>${icon(pl.icon, "place-icon")}</div>`;
+
+/* A place on the trail: its sign over a light board. */
+const place = (key, cls, board) => `<li class="stop place ${cls}" id="${key}">
+  <span class="marker" aria-hidden="true">${icon(P[key].icon)}</span>
+  ${sign(P[key])}
+  <div class="place-board">${board}</div></li>`;
+
 /* ---------- Static parts: header and the Trailhead ---------- */
 
 document.title = trailhead.title + " | Climate Color";
 $("title").textContent = trailhead.title;
 $("lede").textContent = trailhead.lede;
-$("todo").innerHTML = `<p class="sub">${fmt(trailhead.todoTitle)}</p><ol>${trailhead.todo.map(t => `<li>${fmt(t)}</li>`).join("")}</ol>`;
-$("note").textContent = trailhead.note;
+
+/* "Here's how it works": the places, in order, as a route strip. It
+   doubles as the map's key, since each icon matches its place's sign. */
+$("todo").innerHTML = `<p class="sub">${fmt(trailhead.todoTitle)}</p><ol class="route">${Object.entries(P).map(([key, pl]) =>
+  `<li class="route-${key}"><span class="route-icon" aria-hidden="true">${icon(pl.icon)}</span><span><b>${fmt(pl.name)}.</b> ${fmt(pl.route)}</span></li>`).join("")}</ol>`;
+
+/* The pace note, with a way to save your spot from the very top. */
+const S0 = shared.save;
+$("note").innerHTML = `${fmt(trailhead.note)} ${fmt(S0.pace)} <button type="button" class="linkish" data-go="copySpot">${fmt(S0.paceButton)}</button> ${fmt(S0.paceAfter)}`;
 $("footnote").textContent = trailhead.footnote;
+
+$("trailheadMarker").innerHTML = icon(P.trailhead.icon);
+$("trailheadSign").outerHTML = sign(P.trailhead);
 
 const B = trailhead.board;
 $("board").innerHTML = `<h2 id="boardTitle">${TITLES.how}</h2>
@@ -83,7 +108,7 @@ $("trailOpts").innerHTML = COLOR_KEYS.map(key => {
   const c = getColor(key);
   return `<li><button type="button" class="opt" data-trail="${key}" aria-pressed="false">
     <span class="blaze" style="background:var(--${key.toLowerCase()}-color)" aria-hidden="true"></span>
-    <span><span class="oname">${c.action} <span class="tcolor">· ${key}</span></span>
+    <span><span class="oname">${c.action} <span class="tcolor">· ${key}</span><span class="your-tag">${icon("i-check")}${fmt(shared.guide.yours)}</span></span>
     <span class="odesc">${fmt(cap(trailhead.ways[key]))}.</span></span></button></li>`;
 }).join("");
 
@@ -98,13 +123,6 @@ function savePanel(id) {
     <button type="button" class="pill-btn pill-all next-btn" data-go="copy" data-for="${id}">${fmt(S.copy)}</button></div></div>`;
 }
 
-/* A place on the trail: a colored sign over a light board. */
-const place = ({ cls, id, iconId, eyebrow, title, sub, line, board }) => `<li class="stop place ${cls}" id="${id}">
-  <span class="marker" aria-hidden="true">${icon(iconId)}</span>
-  <div class="place-sign"><div class="text">${eyebrow ? `<p class="place-eyebrow">${fmt(eyebrow)}</p>` : ""}<p class="place-title">${fmt(title)}</p>
-    ${sub ? `<p class="place-sub">${fmt(sub)}</p>` : ""}${line ? `<p class="place-line">${fmt(line)}</p>` : ""}</div>${icon(iconId, "place-icon")}</div>
-  <div class="place-board">${board}</div></li>`;
-
 /* Unnumbered parts, on a white panel, each ending with a "Next" line. */
 const panel = parts => `<ul class="rooms">${parts.map(([key, s, next]) =>
   renderStop({ n: null, key, title: TITLES[key], stop: s, line: "room", ctx, aheadLabel: next || "Next" })).join("")}</ul>`;
@@ -115,11 +133,10 @@ function renderTrail() {
   document.querySelectorAll("[data-trail].opt").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.trail === st.trail)));
   const box = $("trailBox"), stops = $("trailStops");
   if (!st.trail) { box.innerHTML = ""; stops.innerHTML = ""; return; }
-  const c = getColor(st.trail), t = trails[st.trail];
-  box.innerHTML = `<div class="here"><p><b>Your trail</b></p><p class="route-name">The ${c.key} Trail</p>
-    <p>You help by <b>${c.action}</b>: ${fmt(trailhead.ways[c.key])}.</p>
-    ${t ? `<details class="mini"><summary>${fmt(shared.save.opener)}</summary>${savePanel("saveTop")}</details>` : ""}</div>` +
-    (t ? `<p class="start-small">Start at stop 1, just below. <span aria-hidden="true">&darr;</span></p>` : `<p class="not-built">${fmt(trailhead.notBuilt)}</p><button type="button" class="pill-btn pill-all next-btn" data-trail="Green">Try the Green Trail <span aria-hidden="true">&rarr;</span></button>`);
+  const t = trails[st.trail];
+  /* The picked row carries the "Your trail" tag; a box below appears
+     only for a trail that isn't built yet. */
+  box.innerHTML = t ? "" : `<p class="not-built">${fmt(trailhead.notBuilt)}</p><button type="button" class="pill-btn pill-all next-btn" data-trail="Green">Try the Green Trail <span aria-hidden="true">&rarr;</span></button>`;
   if (!t) { stops.innerHTML = ""; return; }
   let n = 1;
   const stopFor = key => key === "care" ? shared.care : t[key];
@@ -142,23 +159,24 @@ function renderLodge() {
     <span class="letter" aria-hidden="true">${letterOf(x.key)}</span>
     <span><span class="oname">${icon(x.icon, "oicon")}${fmt(x.name)}</span><span class="odesc">${fmt(cap(x.about))}.</span></span></button></li>`).join("");
 
-  /* The open exhibit: its letter and sign, why the topic matters, then
-     its parts. An exhibit that isn't built yet shows its teaser only. */
+  /* The open exhibit: a room in the Lodge, with its own sign (letter,
+     name, and what it covers), a one-line promise, then its parts. An
+     exhibit that isn't built yet shows its teaser only. */
   let open = "";
   if (tp) {
-    const head = `<div class="ex-head"><span class="letter big" aria-hidden="true">${letterOf(tp.key)}</span>
-      ${icon(tp.icon, "ex-icon")}<div><p class="ex-name"><span class="sr">Exhibit ${letterOf(tp.key)}: </span>${fmt(tp.name)}</p><p class="ex-about">${fmt(cap(tp.about))}</p></div></div>
-      <p class="sub">${fmt(f(L.why))}</p><p>${fmt(tp.teaser)}</p>
-      <p class="cite">Source: <a class="ext" href="${tp.src.url}" target="_blank" rel="noopener">${fmt(tp.src.title)}${icon("i-ext")}</a></p>`;
-    open = `<section class="exhibit-open" id="exhibitOpen" aria-label="Exhibit ${letterOf(tp.key)}: ${fmt(tp.name)}">${head}` + (E
-      ? panel(EXHIBIT_ORDER.filter(k => E.parts[k]).map(k => [k, E.parts[k]]))
-      : `<p class="not-built">${fmt(L.notBuilt)}</p><button type="button" class="pill-btn pill-all next-btn" data-exhibit="water">${fmt(L.tryReady)} <span aria-hidden="true">&rarr;</span></button>`) + `</section>`;
+    const letter = letterOf(tp.key);
+    const roomSign = `<div class="room-sign"><span class="letter big" aria-hidden="true">${letter}</span>
+      <div class="text"><p class="place-eyebrow">${fmt(L.exhibitWord)} ${letter}</p><p class="room-title">${fmt(tp.name)}</p>
+      <p class="place-sub">${fmt(cap(tp.about))}</p></div>${icon(tp.icon, "place-icon")}</div>`;
+    open = `<section class="exhibit-open" id="exhibitOpen" aria-label="${fmt(L.exhibitWord)} ${letter}: ${fmt(tp.name)}">${roomSign}` + (E
+      ? `<div class="room-body"><p class="promise">${fmt(E.promise)}</p>${panel(EXHIBIT_ORDER.filter(k => E.parts[k]).map(k => [k, E.parts[k]]))}</div>`
+      : `<div class="room-body">${renderBlocks([{ teaser: true }], ctx)}<p class="not-built">${fmt(L.notBuilt)}</p><button type="button" class="pill-btn pill-all next-btn" data-exhibit="water">${fmt(L.tryReady)} <span aria-hidden="true">&rarr;</span></button></div>`) + `</section>`;
   }
 
-  const lodge = place({ cls: "is-lodge", id: "lodge", iconId: "i-lodge", eyebrow: L.eyebrow, title: L.title, sub: L.sub, line: f(L.line),
-    board: `<p>${fmt(L.welcome)}</p>
+  const lodge = place("lodge", "is-lodge", `<p>${fmt(f(L.welcome))}</p>
       <h3 class="board-h">${TITLES.pickExhibit}</h3>
-      <ul class="options exhibits">${opts}</ul>${open}` });
+      <p class="step-hint">${fmt(L.pickHint)}</p>
+      <ul class="options exhibits">${opts}</ul>${open}`);
 
   if (!E) { line.innerHTML = lodge; return; }
 
@@ -176,15 +194,20 @@ function renderLodge() {
       { questions: [...G.first.friend, ...(E.first ? E.first.friend : [])], title: "With a friend" }
     ] }
   };
-  const guide = `<li class="stop is-guide" id="guide"><span class="marker" aria-hidden="true">${icon("i-guide")}</span>
+  const PG = P.guide;
+  const printRow = `<p class="print-row"><button type="button" class="pill-btn pill-all next-btn" data-go="printGuide">${fmt(G.print)}</button> <span class="reach">${fmt(G.printHelp)}</span></p>`;
+  /* Its cover says what it's for and how to use it, with Print right
+     there; its parts follow, and Print comes again at the end. */
+  const guide = `<li class="stop is-guide" id="guide"><span class="marker" aria-hidden="true">${icon(PG.icon)}</span>
     <div class="guide-card">
-      <div class="guide-cover"><div><p class="place-eyebrow">${fmt(G.eyebrow)}</p><p class="place-title">${fmt(G.title)}</p>
-        <p class="guide-sub">${fmt(G.sub)}</p>
-        <p class="guide-for"><span class="blaze" style="background:var(--${c.key.toLowerCase()}-color)" aria-hidden="true"></span>The ${c.key} Trail <span aria-hidden="true">·</span> Exhibit ${letterOf(tp.key)}: ${fmt(tp.name)}</p>
-        <p class="place-line">${fmt(f(G.line))}</p></div>${icon("i-guide", "place-icon")}</div>
-      <div class="guide-body"><p>${fmt(G.intro)}</p>
-        ${panel(GUIDE_ORDER.filter(k => guideParts[k]).map(k => [k, { ...guideParts[k], ahead: A[k] }]))}
-        <p class="print-row"><button type="button" class="pill-btn pill-all next-btn" data-go="printGuide">${fmt(G.print)}</button> <span class="reach">${fmt(G.printHelp)}</span></p>
+      <div class="guide-cover"><div><p class="place-eyebrow">${fmt(PG.eyebrow)}</p><p class="place-title">${fmt(PG.title)}</p>
+        <p class="guide-sub">${fmt(PG.sub)}</p>
+        <p class="guide-for"><span class="blaze" style="background:var(--${c.key.toLowerCase()}-color)" aria-hidden="true"></span>The ${c.key} Trail <span aria-hidden="true">·</span> ${fmt(L.exhibitWord)} ${letterOf(tp.key)}: ${fmt(tp.name)}</p>
+        <p class="place-line">${fmt(f(G.line))}</p>
+        <p class="guide-use">${fmt(G.whatFor)}</p><p class="guide-use">${fmt(G.howTo)}</p>${printRow}</div>${icon(PG.icon, "place-icon")}</div>
+      <div class="guide-body">
+        ${panel(GUIDE_ORDER.filter(k => guideParts[k]).map(k => [k, { ...guideParts[k], ahead: A[k], line: G.lines[k] }]))}
+        ${printRow}
       </div></div></li>`;
 
   /* The Bulletin Board: the end of the trail and the place to choose. */
@@ -192,18 +215,16 @@ function renderLodge() {
   const farewell = (t.farewell || []).map(p => `<p>${fmt(p.replace("{topic}", tp.name.toLowerCase()))}</p>`).join("");
   const way = (go, w, ic, back, extraAttr = "") => `<li><button type="button" class="way ${back ? "back" : "on"}" data-go="${go}"${extraAttr}>
       <span class="dir">${back ? "&uarr;" : "&rarr;"} ${fmt(f(w.dir))}</span>${icon(ic)}<b>${w.label}</b><span>${fmt(f(w.hint))}</span></button></li>`;
-  const bulletin = place({ cls: "is-board", id: "bulletin", iconId: "i-board", eyebrow: J.eyebrow, title: J.title, sub: J.sub,
-    board: `<p>${fmt(J.lede)}</p>
+  const bulletin = place("bulletin", "is-board", `<p>${fmt(J.lede)}</p>
       <div class="recap"><p>${fmt(f(J.recap))}</p></div>
       ${E.finder ? panel([["nearby", { ...E.finder, ahead: null }]]) : ""}
       <h3 class="board-h">${TITLES.next}</h3>
       <ul class="ways">
-        ${way("lodge", J.exhibit, "i-lodge", true)}
-        ${way("trailhead", J.trail, "i-trail", true)}
-        ${way("keep", J.keep, "i-guide", false, ' aria-expanded="false" aria-controls="keep"')}
+        ${way("lodge", J.exhibit, P.lodge.icon, true)}
+        ${way("trailhead", J.trail, P.trail.icon, true)}
+        ${way("keep", J.keep, P.guide.icon, false, ' aria-expanded="false" aria-controls="keep"')}
       </ul>
-      <div class="keep" id="keep" hidden>${farewell}${savePanel("saveEnd")}
-        <p class="print-row"><button type="button" class="pill-btn pill-all next-btn" data-go="printGuide">${fmt(G.print)}</button> <span class="reach">${fmt(G.printHelp)}</span></p></div>` });
+      <div class="keep" id="keep" hidden>${farewell}${savePanel("saveEnd")}${printRow}</div>`);
 
   line.innerHTML = lodge + guide + bulletin;
 }
@@ -220,6 +241,20 @@ function render(trailChanged = true) {
 
 const go = el => el && el.scrollIntoView({ behavior: "smooth", block: "start" });
 
+/* Copies a link to the reader's spot, then says "Copied" on the button
+   for a moment. Some embeds block the clipboard, so there's a fallback. */
+function copyText(text, btn, label) {
+  const done = () => { btn.textContent = shared.save.copied; setTimeout(() => { btn.textContent = label; }, 2000); };
+  const fallback = () => {
+    const t = document.createElement("textarea");
+    t.value = text; t.setAttribute("readonly", ""); t.style.position = "absolute"; t.style.left = "-9999px";
+    document.body.appendChild(t); t.select();
+    try { document.execCommand("copy"); done(); } catch (err) { /* the save panel's link can still be copied by hand */ }
+    t.remove();
+  };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+}
+
 /* Print the Field Guide only: everything else is hidden while printing. */
 function printGuide() {
   document.body.classList.add("print-guide");
@@ -231,7 +266,14 @@ function printGuide() {
 document.addEventListener("click", e => {
   const b = e.target.closest("button");
   if (!b) return;
-  if (b.dataset.trail) { st.trail = b.dataset.trail; render(); go($("trailBox")); return; }
+  if (b.dataset.trail) {
+    st.trail = b.dataset.trail; render();
+    /* Bring stop 1 (or the "still being built" note) into view, keeping
+       the picked row in sight where the screen allows. */
+    const next = trails[st.trail] ? $("trailStops") : $("trailBox");
+    if (next) next.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    return;
+  }
   if (b.dataset.exhibit) { st.exhibit = b.dataset.exhibit; render(false); go($("exhibitOpen")); return; }
   if (b.classList.contains("find-btn")) {
     const r = $(b.getAttribute("aria-controls")); r.hidden = !r.hidden;
@@ -246,12 +288,8 @@ document.addEventListener("click", e => {
     store.set(b.dataset.note, ""); $(b.dataset.for).value = "";
     b.textContent = shared.notes.cleared; setTimeout(() => { b.textContent = shared.notes.clear; }, 2000);
   }
-  if (to === "copy") {
-    const input = $(b.dataset.for); input.select();
-    const done = () => { b.textContent = shared.save.copied; setTimeout(() => { b.textContent = shared.save.copy; }, 2000); };
-    const fallback = () => { try { document.execCommand("copy"); done(); } catch (err) { /* the link stays selected to copy by hand */ } };
-    if (navigator.clipboard) navigator.clipboard.writeText(input.value).then(done, fallback); else fallback();
-  }
+  if (to === "copySpot") copyText(location.href, b, shared.save.paceButton);
+  if (to === "copy") { $(b.dataset.for).select(); copyText(location.href, b, shared.save.copy); }
 });
 
 /* Notes save as you type, on this device only. */
@@ -269,7 +307,7 @@ const [hTrail, hExhibit] = location.hash.slice(1).split("-");
 const k = COLORS.find(c => c.key.toLowerCase() === (hTrail || "").toLowerCase());
 if (k) { st.trail = k.key; if (topicOf(hExhibit)) st.exhibit = hExhibit; }
 render();
-if (k) go(st.exhibit && trails[st.trail] ? $("exhibitOpen") : $("trailBox"));
+if (k) go(st.exhibit && trails[st.trail] ? $("exhibitOpen") : $("trailStops"));
 
 /* Printing the page opens every stop, so the printout carries it all. */
 window.addEventListener("beforeprint", () => document.querySelectorAll("details").forEach(d => { d.open = true; }));

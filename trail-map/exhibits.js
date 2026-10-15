@@ -7,10 +7,11 @@
    read as markup, so content files never contain HTML.
    ========================================================================== */
 
-/* Each exhibit type has a word label and an icon, so color is never the
-   only signal. Sign, rest, overlook, and tip describe a whole stop and
-   label it at the top. Find, stretch, and quote are activities inside a
-   stop, so each carries its own label in its own box. */
+/* Each kind has a word label and an icon. Sign, rest, overlook, and tip
+   describe a whole stop: they set its shape (a rest stop gets a round
+   marker and a notes box) and carry no label of their own. Find,
+   stretch, and quote are surprises inside a stop; each carries its own
+   label in its own box, so color is never the only signal. */
 export const EXHIBITS = {
   sign:     { label: "Trail sign",  icon: "i-sign" },
   quote:    { label: "Quote",       icon: "i-quote" },
@@ -83,6 +84,10 @@ const BLOCKS = {
   legend: b => `<ul class="legend">${b.legend.map(i => `<li><span class="mark mark-${i.mark}" aria-hidden="true">${
     i.mark === "stop" || i.mark === "rest" ? "0" : icon(i.icon)}</span><span><b>${fmt(i.term)}</b> ${fmt(i.text)}</span></li>`).join("")}</ul>`,
 
+  /* The open topic's teaser and its source, from topics.js: written once,
+     shown here and in the exhibit picker's "still being built" note. */
+  teaser: (b, ctx) => { const t = ctx.topic(); return `<p>${fmt(t.teaser)}</p>${sources([t.src])}`; },
+
   /* Buttons for the other trails, keeping the current exhibit. */
   trails: (b, ctx) => `<div class="pills">${ctx.otherTrails().map(c =>
     `<button type="button" class="pill-btn pill-${c.key.toLowerCase()}" data-trail="${c.key}">${c.action} · ${c.key}</button>`).join("")}</div>`,
@@ -102,8 +107,8 @@ export function renderBlocks(blocks, ctx) {
   }).join("\n");
 }
 
-/* One stop: the title alone while closed; the kind label, the content,
-   and the "Next" line inside. Stops along the trail are numbered; parts
+/* One stop: the title (and its short line, if any) while closed; the
+   content and the "Next" line inside. Stops along the trail are numbered; parts
    of an exhibit, the Field Guide, and the Bulletin Board are not. */
 export function renderStop({ n, key, title, stop, line = "trail", ctx, tag = "li", aheadLabel = "Next stop" }) {
   const ex = EXHIBITS[stop.exhibit];
@@ -111,9 +116,8 @@ export function renderStop({ n, key, title, stop, line = "trail", ctx, tag = "li
   const rest = stop.exhibit === "rest" ? " rest" : "";
   return `<${tag} class="stop ${line}${rest}" data-stop="${key}">
   ${n == null ? "" : `<span class="marker" aria-hidden="true">${n}</span>`}
-  <details><summary><span class="sum"><h3>${fmt(title)}</h3></span><span class="toggle"><span class="open-label">Open <span aria-hidden="true">&#9662;</span></span><span class="close-label">Close <span aria-hidden="true">&#9652;</span></span></span></summary>
+  <details><summary><span class="sum"><h3>${fmt(title)}</h3><span class="toggle"><span class="open-label">Open <span aria-hidden="true">&#9662;</span></span><span class="close-label">Close <span aria-hidden="true">&#9652;</span></span></span></span>${stop.line ? `<span class="sum-line">${fmt(stop.line)}</span>` : ""}</summary>
   <div class="body">
-    <p class="exhibit">${icon(ex.icon)}${ex.label}</p>
     ${renderBlocks(stop.blocks, ctx)}
     ${stop.exhibit === "rest" && ctx.notes ? ctx.notes(key) : ""}
     ${stop.ahead ? `<p class="ahead">${icon("i-ahead")}<span><b>${aheadLabel}:</b> ${fmt(stop.ahead)}</span></p>` : ""}

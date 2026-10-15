@@ -7,17 +7,14 @@ const IMLS = { title: "IMLS: Mass Audubon's Accessible Trails Project", url: "ht
 export default {
   title: "The Trail Map",
   lede: "The Climate Trail Map is an interactive tool that can be used to find your way into climate action.",
+  /* "Here's how it works" is drawn as a route strip from the places in
+     shared.js, so it doubles as the map's key. */
   todoTitle: "Here's how it works:",
-  todo: [
-    "**Pick a trail at the Trailhead. Each trail name suggests one stewardship style—the mental, emotional, and practical strengths people use to care for the world around them.**",
-    "**Travel down your trail and take part in the activities to learn more about that stewardship style.** (Stops 1 to 4)",
-    "**Enter the Lodge and pick an exhibit. Each exhibit name suggests one community action topic—the personal, social, and environmental domains affected by climate change.** (Exhibits A to I)",
-    "**Take your Field Guide. It helps you bring what you learned home to your own community.**",
-    "**Stop at the Bulletin Board. From there, you can visit another exhibit, try another trail, find work close to home, or save your spot.**"
-  ],
-  note: "Make your own choices and move at your own pace. If you need a break, use the 'Save your spot' link to pause.",
+  note: "Make your own choices and move at your own pace.",
 
-  /* The Trailhead's board, with the trail picker at the bottom. */
+  /* The Trailhead's board, with the trail picker at the bottom. The
+     places are in the route strip above, so the key here shows only the
+     two kinds of stop. */
   board: {
     open: "**This trail is open to everyone.** You don't need any special knowledge or skills to start.",
     storyLabel: "Read the story behind it",
@@ -25,10 +22,7 @@ export default {
       { p: "This page works like a trail at a nature center. Follow the trail markers from stop to stop, and do each activity as the stop asks. You may skip any activity, if you'd like." },
       { legend: [
         { mark: "stop", term: "Action Stop", text: "Open to read. Close when you're done." },
-        { mark: "rest", term: "Rest Stop", text: "Think things over. Jot down your thoughts." },
-        { mark: "lodge", icon: "i-lodge", term: "Lodge", text: "Learn about a community action topic." },
-        { mark: "guide", icon: "i-guide", term: "Field Guide", text: "Yours to keep, for your own community." },
-        { mark: "board", icon: "i-board", term: "Bulletin Board", text: "Choose what to do next." }
+        { mark: "rest", term: "Rest Stop", text: "Think things over. Jot down your thoughts." }
       ] }
     ],
     story: [
@@ -40,7 +34,7 @@ export default {
   },
 
   pick: {
-    hint: "People show they care in different ways, like creating something, motivating others, or helping people find their way. Choose the way most like you."
+    hint: "Each trail name suggests one stewardship style—the mental, emotional, and practical strengths people use to care for the world around them. Choose the way most like you."
   },
 
   /* What each way of helping means, in plain words. Shown on the picker,

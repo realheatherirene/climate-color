@@ -47,9 +47,12 @@
 }
 
 .lede,
-.todo,
 .pace {
     max-width: var(--read);
+}
+
+.todo {
+    max-width: 52rem;
 }
 
 /* core/atlas.css sets .page-header p in the quieter secondary color; the
@@ -71,11 +74,49 @@
     margin: 0;
 }
 
-.todo ol {
-    margin: 0.25rem 0 0;
-    padding-left: 1.4rem;
+/* "Here's how it works": the five places as a route strip, each icon
+   in its place's color. It doubles as the map's key. */
+.route {
+    list-style: none;
+    margin: 0.4rem 0 0;
+    padding: 0;
     display: grid;
-    gap: 0.25rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.8rem;
+}
+
+.route li {
+    display: grid;
+    gap: 0.35rem;
+    align-content: start;
+    font-size: 0.92rem;
+    line-height: 1.35;
+    color: var(--text-primary);
+}
+
+.route-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--route, var(--trail));
+    color: #fff;
+}
+
+.route-icon svg {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.route-lodge    { --route: var(--lodge); }
+.route-bulletin { --route: var(--board); }
+
+/* The Field Guide is received, not a place: a dashed outline. */
+.route-guide .route-icon {
+    background: var(--note-tint);
+    color: var(--note);
+    border: 2px dashed var(--note);
 }
 
 .page-header .pace {
@@ -179,12 +220,16 @@ details {
 summary {
     list-style: none;
     cursor: pointer;
-    display: grid;
-    grid-template-columns: minmax(0, max-content) auto;
-    justify-content: start;
-    align-items: center;
-    column-gap: 1rem;
+    display: block;
     padding: 0.75rem 0;
+}
+
+/* The title, then Open / Close right after it. */
+.sum {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1rem;
 }
 
 summary::-webkit-details-marker {
@@ -197,6 +242,15 @@ summary h3 {
     font-size: 1.3rem;
     line-height: 1.25;
     margin: 0;
+}
+
+/* A short line under a part's title, so a closed part still says what's
+   inside. */
+.sum-line {
+    display: block;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin-top: 0.15rem;
 }
 
 /* Open / Close: linked text right after the title. */
@@ -362,10 +416,8 @@ textarea:focus-visible {
     font-size: 0.9rem;
 }
 
-.opt[aria-pressed="true"] .letter,
-.letter.big {
-    background: var(--lodge);
-    color: #fff;
+.opt[aria-pressed="true"] .letter {
+    flex: none;
 }
 
 .oicon {
@@ -382,26 +434,30 @@ textarea:focus-visible {
     }
 }
 
-/* What the reader picked, and the "still being built" note. */
-.here {
-    background: var(--bg-secondary);
-    border: 1px solid var(--rule);
-    border-radius: 12px;
-    padding: 0.8rem 1rem;
-    margin: 0.8rem 0 0.9rem;
-    max-width: var(--read);
+/* "Your trail": a tag on the picked row, with a check. */
+.your-tag {
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--green-text);
+    vertical-align: 0.1rem;
 }
 
-.here p {
-    margin: 0 0 0.4rem;
+.your-tag svg {
+    width: 0.95rem;
+    height: 0.95rem;
 }
 
-.route-name {
-    font-family: var(--display);
-    font-size: 1.5rem;
-    line-height: 1.2;
+.opt[aria-pressed="true"] .your-tag {
+    display: inline-flex;
 }
 
+/* The "still being built" note. */
 .not-built {
     margin: 0 0 0.6rem;
 }
@@ -510,12 +566,6 @@ textarea:focus-visible {
     top: 3rem;
 }
 
-.start-small {
-    font-weight: 700;
-    color: var(--green-text);
-    margin: 0.6rem 0 0.2rem !important;
-}
-
 /* The Bulletin Board ends the trail: the line arrives from above and
    stops at its marker. */
 .place.is-board::before {
@@ -525,60 +575,71 @@ textarea:focus-visible {
 
 
 /* ==========================================================================
-   The open exhibit, inside the Lodge: its letter and sign, then its
-   parts on a white panel
+   The open exhibit: a room in the Lodge, with its own sign, a one-line
+   promise, then its parts on a white panel
    ========================================================================== */
 
 .exhibit-open {
-    border-top: 2px solid var(--lodge);
-    margin-top: 1rem;
-    padding-top: 0.9rem;
+    margin-top: 1.2rem;
 }
 
-.ex-head {
-    display: flex;
+.room-sign {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.2rem 0.9rem;
+    background: var(--lodge);
+    color: #fff;
+    border-radius: 12px 12px 0 0;
+    padding: 0.8rem 1rem;
 }
 
-.letter.big {
-    width: 2.2rem;
-    height: 2.6rem;
-    font-size: 1.1rem;
-    flex: none;
-}
-
-.ex-icon {
-    flex: none;
-    width: 2.2rem;
-    height: 2.2rem;
-    color: var(--lodge);
-}
-
-.ex-head p {
+.room-sign p {
     margin: 0;
 }
 
-.ex-name {
+.room-sign .letter.big {
+    width: 2.6rem;
+    height: 3rem;
+    font-size: 1.3rem;
+    border-color: #fff;
+    background: #fff;
+    color: var(--lodge);
+}
+
+.room-title {
     font-family: var(--display);
-    font-size: 1.7rem;
+    font-size: clamp(1.7rem, 6vw, 2.1rem);
     line-height: 1.1;
 }
 
-.ex-about {
-    color: var(--text-secondary);
+.room-sign .place-icon {
+    margin: 0;
+    width: 2.6rem;
+    height: 2.6rem;
 }
 
-/* Words for screen readers only. */
-.sr {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
+.room-body {
+    border: 2px solid var(--lodge);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    background: var(--bg-primary);
+    padding: 0.8rem 1rem 0.2rem;
 }
 
+.room-body > p {
+    max-width: var(--read);
+}
+
+.promise {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+/* An exhibit's parts already sit on white, so the panel needs no edge. */
+.room-body .rooms {
+    padding: 0;
+}
 
 /* ==========================================================================
    The Field Guide: something received, not a place. A booklet with a
@@ -644,6 +705,20 @@ textarea:focus-visible {
 .guide-cover .place-line {
     color: var(--text-primary);
     font-weight: 400;
+}
+
+.guide-use {
+    color: var(--text-primary);
+    max-width: var(--read);
+    margin-top: 0.5rem !important;
+}
+
+.guide-cover .print-row {
+    margin: 0.7rem 0 0.5rem;
+}
+
+.guide-cover .print-row .reach {
+    color: var(--text-secondary);
 }
 
 .guide-body {
@@ -1020,7 +1095,8 @@ ul.plain li {
 
 
 /* ==========================================================================
-   The Trailhead's key: five marks, each beside what it means
+   The Trailhead's key: the two kinds of stop (the places are in the route
+   strip at the top)
    ========================================================================== */
 
 .legend {
@@ -1076,9 +1152,6 @@ ul.plain li {
     margin: 0.2rem 0.22rem 0;
 }
 
-.mark-lodge { color: var(--lodge); }
-.mark-guide { color: var(--note); }
-.mark-board { color: var(--board); }
 
 .open-all {
     margin: 0.6rem 0 0.2rem;
@@ -1316,8 +1389,28 @@ ul.plain li {
     }
 
     .legend,
-    .ways {
+    .ways,
+    .route {
         grid-template-columns: 1fr;
+    }
+
+    .route {
+        gap: 0.45rem;
+    }
+
+    .route li {
+        grid-template-columns: 2.4rem 1fr;
+        align-items: center;
+        gap: 0.7rem;
+    }
+
+    .room-sign {
+        grid-template-columns: auto 1fr;
+        padding: 0.7rem 0.7rem;
+    }
+
+    .room-body {
+        padding: 0.7rem 0.7rem 0.2rem;
     }
 
     .actions,

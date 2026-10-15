@@ -6,7 +6,8 @@
    anywhere on the map. Nothing topic-specific goes here: topic words live
    inside, with the content they describe. Each title starts with a verb
    and is no longer than "Find out why your care matters." Keys match the
-   keys in the data files.
+   keys in the data files. A part may add a short line under its title
+   (its `line` field), which is written with its content.
    ========================================================================== */
 
 export const TITLES = {
@@ -22,8 +23,10 @@ export const TITLES = {
 
   /* The Lodge and its exhibits, lettered A to I */
   pickExhibit: "Pick an exhibit",
+  why:         "Discover why it matters",
   changing:    "Find out what's changing",
-  daily:       "Find it in daily life",
+  who:         "Meet who feels it first",
+  life:        "Find it in your own life",
 
   /* The Field Guide */
   story:       "Meet someone like you",
@@ -40,5 +43,5 @@ export const TITLES = {
 /* The order things appear in. Anything a trail or exhibit hasn't been
    written for yet is skipped. */
 export const TRAIL_ORDER = ["care", "know", "fit", "community"];
-export const EXHIBIT_ORDER = ["changing", "daily"];
+export const EXHIBIT_ORDER = ["why", "changing", "who", "life"];
 export const GUIDE_ORDER = ["story", "think", "tryIt", "others", "first"];

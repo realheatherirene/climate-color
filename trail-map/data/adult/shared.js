@@ -1,12 +1,27 @@
-/* Words shared by every trail and every exhibit: the first trail stop,
-   the Lodge, the Field Guide, the Bulletin Board, notes, and saving.
-   The page fills in {trail}, {action}, {meaning}, {words}, {exhibit},
-   {lower}, and {about}.
+/* Words shared by every trail and every exhibit: the places on the map,
+   the first trail stop, the Lodge, the Field Guide, the Bulletin Board,
+   notes, and saving. The page fills in {trail}, {action}, {meaning},
+   {words}, {exhibit}, {lower}, and {about}.
    Adult pack: grade 9 reading level or lower. */
 
 const SPARKMAN = { title: "Sparkman, Geiger & Weber, 2022", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9399177/" };
 
 export default {
+  /* The places on the map, in order: the one source for their names,
+     icons, and signs. The route strip at the top of the page, each
+     place's sign, and the Bulletin Board all read from here. */
+  places: {
+    trailhead: { name: "Trailhead", icon: "i-sign", route: "Pick your trail.",
+      eyebrow: "Begin here", title: "Trailhead" },
+    trail: { name: "Trail", icon: "i-trail", route: "Four stops about your way of helping." },
+    lodge: { name: "Lodge", icon: "i-lodge", route: "Pick an exhibit on a topic you care about.",
+      eyebrow: "You made it!", title: "The Lodge", sub: "Exhibits on nine community action topics" },
+    guide: { name: "Field Guide", icon: "i-guide", route: "Yours to keep.",
+      eyebrow: "Yours to keep", title: "Field Guide", sub: "For the trail beyond the park" },
+    bulletin: { name: "Bulletin Board", icon: "i-board", route: "Choose what's next.",
+      eyebrow: "End of the trail", title: "Bulletin Board", sub: "What's next, close to home and on the map" }
+  },
+
   care: {
     exhibit: "sign",
     blocks: [
@@ -27,12 +42,9 @@ export default {
 
   /* The Lodge: one for every trail, with an exhibit for each topic. */
   lodge: {
-    eyebrow: "Every trail leads here",
-    title: "The Lodge",
-    sub: "Exhibits on nine community action topics",
-    line: "You help by {action}. Now pick a topic you care about.",
-    welcome: "Welcome to the Lodge! Inside are exhibits on nine topics, the parts of life that climate change touches. You may care about all of them. Pick one to start, and come back for the others anytime.",
-    why: "Why {lower}?",
+    welcome: "You made it to the end of the {trail} Trail. Welcome to the Lodge! Each exhibit here shows how climate change touches one part of life, and what that means close to home. When you leave, you'll take a Field Guide made for your trail and your topic.",
+    pickHint: "Each exhibit name suggests one community action topic—the personal, social, and environmental domains affected by climate change. You may care about all of them. Start with one, and come back for the others anytime.",
+    exhibitWord: "Exhibit",
     notBuilt: "This exhibit is still being built. For now, the Water exhibit is ready.",
     tryReady: "Try the Water exhibit"
   },
@@ -40,11 +52,9 @@ export default {
   /* The Field Guide: the same for everyone. The page fills in the
      reader's trail and exhibit; the reader writes the rest. */
   guide: {
-    eyebrow: "Yours to keep",
-    title: "Field Guide",
-    sub: "For the trail beyond the park",
     line: "You help by {action}. You care about {lower}.",
-    intro: "The park is where you learn. The field is your own community. This guide is the same for everyone: your trail and topic are filled in, and you write the rest.",
+    whatFor: "**What it's for:** taking what you learned here home to your own community.",
+    howTo: "**How to use it:** open each part, jot your notes as you go, then print it or save your spot to come back.",
     think: {
       lead: "Imagine this:",
       questions: [
@@ -70,6 +80,15 @@ export default {
       ]
     },
     yours: "Your trail",
+    /* A short line under each part's title, so a closed part still says
+       what's inside. */
+    lines: {
+      story: "A true story from your trail.",
+      think: "A situation, and how you'd help.",
+      tryIt: "Something small to do right now.",
+      others: "All six ways of helping, side by side.",
+      first: "Pick one thing to try."
+    },
     ahead: {
       story: "Something to think through.",
       think: "Something to try right where you are.",
@@ -83,9 +102,6 @@ export default {
 
   /* The Bulletin Board: the end of the trail. */
   bulletin: {
-    eyebrow: "End of the trail",
-    title: "Bulletin Board",
-    sub: "What's next, close to home and on the map",
     lede: "Welcome to the Bulletin Board! This is the end of this trail. Here's what's posted: real places to start close to home, and where to go next.",
     recap: "**Where you've been.** You took the {trail} Trail: you help by {action}, {meaning}. In the Lodge, you visited the {exhibit} exhibit: {about}.",
     exhibit: { dir: "Back to the Lodge", label: "Visit another exhibit", hint: "Stay on the {trail} Trail and pick a new topic. Your trail stops stay the same." },
@@ -107,7 +123,9 @@ export default {
   /* Coming back later. Only the trail and exhibit are kept, and only in
      the link itself: nothing is saved online. */
   save: {
-    opener: "Need a break? Save your spot",
+    pace: "Need a break?",
+    paceButton: "Copy a link to your spot",
+    paceAfter: "and come back anytime.",
     title: "Save your spot",
     text: "Copy this link and save it anywhere, like a note or an email to yourself. It brings you back to your trail and exhibit. Your notes stay on this device. Open stops and checkmarks start fresh.",
     copy: "Copy link",

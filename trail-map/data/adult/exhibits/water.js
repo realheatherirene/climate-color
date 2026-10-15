@@ -4,31 +4,60 @@
    appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA4 = { title: "Fifth National Climate Assessment, Ch. 4: Water, 2023", url: "https://doi.org/10.7930/NCA5.2023.CH4" };
+const NCA5_WATER = { title: "Fifth National Climate Assessment, Ch. 4: Water, 2023", url: "https://doi.org/10.7930/NCA5.2023.CH4" };
 
 export default {
   key: "water",
 
+  /* One line under the exhibit's sign: what the reader will get here. */
+  promise: "In this exhibit, you'll find out how climate change is changing water, who feels it first, and where water shows up in your own life.",
+
+  /* The exhibit's parts, in the order set by titles.js. Each has a short
+     line under its title, so a closed part still says what's inside. */
   parts: {
+    why: {
+      exhibit: "sign",
+      line: "A quick guess, then why water matters.",
+      blocks: [
+        { find: {
+          prompt: "Make a guess first: when Hurricane Harvey flooded the Houston area, how much heavier was its rain because of human-caused warming?",
+          button: "Reveal the answer",
+          reveal: "About 15 to 20 percent heavier, by scientists' estimates. That made the flooded area 14 percent larger, and 32 percent more homes flooded.",
+          src: NCA5_WATER
+        } },
+        { teaser: true }
+      ],
+      ahead: "What's changing for water, across the country."
+    },
+
     changing: {
       exhibit: "sign",
+      line: "Heavier rain, drought, and water quality.",
       blocks: [
         { p: "Everyone depends on water, from the tap at home to the creek down the street. Climate change is changing how much water falls, when it comes, and how clean it stays." },
-        { sub: "What's changing" },
         { list: [
           "**Heavier rain.** Heavy rainstorms are expected to increase across the country, and flood damage is already growing.",
           "**Drought.** The harm from droughts is growing too.",
           "**Water quality.** Floods and droughts can both make water less safe to drink, fish, and swim in."
         ] },
-        { sub: "Who is hit hardest" },
+        { cite: [NCA5_WATER] }
+      ],
+      ahead: "Who feels these changes first."
+    },
+
+    who: {
+      exhibit: "sign",
+      line: "The communities hit hardest.",
+      blocks: [
         { p: "Every community will feel these changes. Communities on the front lines of climate change, including Tribal and Indigenous communities, face the most risk, often with the fewest resources to prepare." },
-        { cite: [NCA4] }
+        { cite: [NCA5_WATER] }
       ],
       ahead: "A rest stop to think about water where you live."
     },
 
-    daily: {
+    life: {
       exhibit: "rest",
+      line: "Where water shows up in your day.",
       blocks: [
         { sub: "Water where you live" },
         { questions: [
@@ -54,6 +83,7 @@ export default {
   /* For the Bulletin Board: where water work turns up close to home. */
   finder: {
     exhibit: "tip",
+    line: "Where water work turns up near you.",
     blocks: [
       { p: "Opportunities are local, and they change. Calls for volunteers, meetings, and sign-ups are where people who care about water find each other." },
       { tips: [
