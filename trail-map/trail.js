@@ -6,12 +6,13 @@
    core/climate-color.js. This file holds only behavior.
 
    Flow: the Trailhead (get your bearings, pick your trail) -> stops 1-4
-   along the trail -> the Lodge (pick an exhibit, A-I) -> the Field Guide
+   along the trail -> the Lodge (pick an exhibit) -> the Field Guide
    -> the Bulletin Board. Everything is on one page. A trail and exhibit
-   can be linked directly: #green or #green-water.
+   can be linked directly: ?spot=green-water (the form the site's links
+   use, passed in by tools/squarespace-embed-links.html), or #green-water.
    ========================================================================== */
 
-import { COLORS, COLOR_KEYS, getColor } from "../core/climate-color.js";
+import { COLORS, COLOR_KEYS, getColor, SITE } from "../core/climate-color.js";
 import { TITLES, TRAIL_ORDER, EXHIBIT_ORDER, GUIDE_ORDER } from "./titles.js";
 import { renderStop, renderBlocks, fmt, icon } from "./exhibits.js";
 
@@ -23,7 +24,8 @@ const st = { trail: null, exhibit: null };
 let uid = 0;
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const topicOf = key => topics.topics.find(t => t.key === key);
-const letterOf = key => "ABCDEFGHI".charAt(topics.topics.findIndex(t => t.key === key));
+/* How every topic is named, from one setting: "Water Exhibit." */
+const exhibitName = tp => shared.lodge.exhibitName.replace("{exhibit}", tp.name);
 
 /* ---------- Notes: this device only ---------- */
 /* Stored with the browser's own storage under one key per trail, exhibit,
@@ -52,14 +54,16 @@ const ctx = {
     const c = getColor(key);
     return { key, action: c.action, meaning: cap(trailhead.ways[key]), mine: key === st.trail, yours: shared.guide.yours };
   }),
-  notes: notesBox
+  notes: notesBox,
+  route: () => routeStrip()
 };
 
-/* Fills {trail}, {action}, {meaning}, {words}, {exhibit}, {lower}, and
-   {about} in shared wording. */
+/* Fills {trail}, {action}, {meaning}, {words}, {exhibit}, {exhibitName},
+   {lower}, and {about} in shared wording. */
 const fill = (txt, c, tp) => txt.replace(/\{trail\}/g, c.key).replace(/\{action\}/g, c.action)
   .replace(/\{meaning\}/g, trailhead.ways[c.key])
   .replace(/\{words\}/g, c.words.map(w => w.word).join(", ").replace(/, ([^,]*)$/, ", or $1"))
+  .replace(/\{exhibitName\}/g, tp ? exhibitName(tp) : "")
   .replace(/\{exhibit\}/g, tp ? tp.name : "").replace(/\{lower\}/g, tp ? tp.name.toLowerCase() : "")
   .replace(/\{about\}/g, tp ? tp.about : "");
 
@@ -83,14 +87,19 @@ document.title = trailhead.title + " | Climate Color";
 $("title").textContent = trailhead.title;
 $("lede").textContent = trailhead.lede;
 
-/* "Here's how it works": the places, in order, as a route strip. It
-   doubles as the map's key, since each icon matches its place's sign. */
-$("todo").innerHTML = `<p class="sub">${fmt(trailhead.todoTitle)}</p><ol class="route">${Object.entries(P).map(([key, pl]) =>
-  `<li class="route-${key}"><span class="route-icon" aria-hidden="true">${icon(pl.icon)}</span><span><b>${fmt(pl.name)}.</b> ${fmt(pl.route)}</span></li>`).join("")}</ol>`;
+/* The places, in order, as a route strip: the map's key on the
+   Trailhead's board. Each icon matches its place's sign. */
+function routeStrip() {
+  return `<ol class="route">${Object.entries(P).map(([key, pl]) =>
+    `<li class="route-${key}"><span class="route-icon" aria-hidden="true">${icon(pl.icon)}</span><span><b class="route-name">${fmt(pl.name)}</b><span class="route-text">${fmt(pl.route)}</span></span></li>`).join("")}</ol>`;
+}
+
+$("todo").innerHTML = `<p class="sub">${fmt(trailhead.todoTitle)}</p>${trailhead.intro.map(t => `<p>${fmt(t)}</p>`).join("")}`;
 
 /* The pace note, with a way to save your spot from the very top. */
 const S0 = shared.save;
-$("note").innerHTML = `${fmt(trailhead.note)} ${fmt(S0.pace)} <button type="button" class="linkish" data-go="copySpot">${fmt(S0.paceButton)}</button> ${fmt(S0.paceAfter)}`;
+$("note").innerHTML = `<p>${fmt(trailhead.note)} ${fmt(S0.pace)}</p>
+  <p><button type="button" class="pill-btn pill-all next-btn" data-go="copySpot">${fmt(S0.paceButton)}</button></p>`;
 $("footnote").textContent = trailhead.footnote;
 
 $("trailheadMarker").innerHTML = icon(P.trailhead.icon);
@@ -114,8 +123,13 @@ $("trailOpts").innerHTML = COLOR_KEYS.map(key => {
 
 /* ---------- Pieces ---------- */
 
-/* "Save your spot." The link carries the trail and exhibit in its #hash,
-   and nothing else: no account, nothing saved online. */
+/* "Save your spot." The link is the site's own Trail Map page with the
+   trail and exhibit in ?spot=, and nothing else: no account, nothing
+   saved online. The page sits inside a Squarespace frame, so its own
+   address wouldn't bring a reader back to climatecolor.com. */
+const spot = () => st.trail ? st.trail.toLowerCase() + (st.exhibit && trails[st.trail] ? "-" + st.exhibit : "") : "";
+const spotUrl = () => spot() ? `${SITE.trailMap}?spot=${spot()}` : SITE.trailMap;
+
 function savePanel(id) {
   const S = shared.save;
   return `<div class="save"><p class="sub">${fmt(S.title)}</p><p>${fmt(S.text)}</p>
@@ -153,22 +167,20 @@ function renderLodge() {
   const tp = topicOf(st.exhibit), E = exhibits[st.exhibit];
   const f = txt => fill(txt, c, tp);
 
-  /* The exhibit picker, lettered A to I, in the same row style as the
+  /* The exhibit picker, in the same row style as the
      trail picker. */
   const opts = topics.topics.map(x => `<li><button type="button" class="opt" data-exhibit="${x.key}" aria-pressed="${st.exhibit === x.key}">
-    <span class="letter" aria-hidden="true">${letterOf(x.key)}</span>
-    <span><span class="oname">${icon(x.icon, "oicon")}${fmt(x.name)}</span><span class="odesc">${fmt(cap(x.about))}.</span></span></button></li>`).join("");
+    <span class="opt-icon" aria-hidden="true">${icon(x.icon)}</span>
+    <span><span class="oname">${fmt(exhibitName(x))}</span><span class="odesc">${fmt(cap(x.about))}.</span></span></button></li>`).join("");
 
-  /* The open exhibit: a room in the Lodge, with its own sign (letter,
-     name, and what it covers), a one-line promise, then its parts. An
-     exhibit that isn't built yet shows its teaser only. */
+  /* The open exhibit: a room in the Lodge, with its own sign (its name
+     and what it covers), a one-line promise, then its parts. An exhibit
+     that isn't built yet shows its teaser only. */
   let open = "";
   if (tp) {
-    const letter = letterOf(tp.key);
-    const roomSign = `<div class="room-sign"><span class="letter big" aria-hidden="true">${letter}</span>
-      <div class="text"><p class="place-eyebrow">${fmt(L.exhibitWord)} ${letter}</p><p class="room-title">${fmt(tp.name)}</p>
+    const roomSign = `<div class="room-sign"><div class="text"><p class="room-title">${fmt(exhibitName(tp))}</p>
       <p class="place-sub">${fmt(cap(tp.about))}</p></div>${icon(tp.icon, "place-icon")}</div>`;
-    open = `<section class="exhibit-open" id="exhibitOpen" aria-label="${fmt(L.exhibitWord)} ${letter}: ${fmt(tp.name)}">${roomSign}` + (E
+    open = `<section class="exhibit-open" id="exhibitOpen" aria-label="${fmt(exhibitName(tp))}">${roomSign}` + (E
       ? `<div class="room-body"><p class="promise">${fmt(E.promise)}</p>${panel(EXHIBIT_ORDER.filter(k => E.parts[k]).map(k => [k, E.parts[k]]))}</div>`
       : `<div class="room-body">${renderBlocks([{ teaser: true }], ctx)}<p class="not-built">${fmt(L.notBuilt)}</p><button type="button" class="pill-btn pill-all next-btn" data-exhibit="water">${fmt(L.tryReady)} <span aria-hidden="true">&rarr;</span></button></div>`) + `</section>`;
   }
@@ -185,6 +197,7 @@ function renderLodge() {
      reader writes the rest. */
   const G = shared.guide, A = G.ahead;
   const guideParts = {
+    nearby: E.finder,
     story: t.story,
     think: { exhibit: "rest", blocks: [{ sub: G.think.lead }, { p: E.situation }, { questions: G.think.questions.map(f) }] },
     tryIt: t.tryIt,
@@ -196,17 +209,17 @@ function renderLodge() {
   };
   const PG = P.guide;
   const printRow = `<p class="print-row"><button type="button" class="pill-btn pill-all next-btn" data-go="printGuide">${fmt(G.print)}</button> <span class="reach">${fmt(G.printHelp)}</span></p>`;
-  /* Its cover says what it's for and how to use it, with Print right
-     there; its parts follow, and Print comes again at the end. */
+  /* Its cover names the reader's trail and exhibit, each on its own line,
+     with one line on how to use it and Print right there. Its parts
+     follow, and Print comes again at the end. */
   const guide = `<li class="stop is-guide" id="guide"><span class="marker" aria-hidden="true">${icon(PG.icon)}</span>
     <div class="guide-card">
       <div class="guide-cover"><div><p class="place-eyebrow">${fmt(PG.eyebrow)}</p><p class="place-title">${fmt(PG.title)}</p>
-        <p class="guide-sub">${fmt(PG.sub)}</p>
-        <p class="guide-for"><span class="blaze" style="background:var(--${c.key.toLowerCase()}-color)" aria-hidden="true"></span>The ${c.key} Trail <span aria-hidden="true">·</span> ${fmt(L.exhibitWord)} ${letterOf(tp.key)}: ${fmt(tp.name)}</p>
-        <p class="place-line">${fmt(f(G.line))}</p>
-        <p class="guide-use">${fmt(G.whatFor)}</p><p class="guide-use">${fmt(G.howTo)}</p>${printRow}</div>${icon(PG.icon, "place-icon")}</div>
+        <p class="guide-for"><span class="blaze" style="background:var(--${c.key.toLowerCase()}-color)" aria-hidden="true"></span>The ${c.key} Trail</p>
+        <p class="guide-for">${icon(tp.icon, "guide-ex-icon")}${fmt(exhibitName(tp))}</p>
+        <p class="guide-use">${fmt(G.cover)}</p>${printRow}</div>${icon(PG.icon, "place-icon")}</div>
       <div class="guide-body">
-        ${panel(GUIDE_ORDER.filter(k => guideParts[k]).map(k => [k, { ...guideParts[k], ahead: A[k], line: G.lines[k] }]))}
+        ${panel(GUIDE_ORDER.filter(k => guideParts[k]).map(k => [k, { ...guideParts[k], ahead: A[k], line: G.lines[k] || guideParts[k].line }]))}
         ${printRow}
       </div></div></li>`;
 
@@ -216,8 +229,7 @@ function renderLodge() {
   const way = (go, w, ic, back, extraAttr = "") => `<li><button type="button" class="way ${back ? "back" : "on"}" data-go="${go}"${extraAttr}>
       <span class="dir">${back ? "&uarr;" : "&rarr;"} ${fmt(f(w.dir))}</span>${icon(ic)}<b>${w.label}</b><span>${fmt(f(w.hint))}</span></button></li>`;
   const bulletin = place("bulletin", "is-board", `<p>${fmt(J.lede)}</p>
-      <div class="recap"><p>${fmt(f(J.recap))}</p></div>
-      ${E.finder ? panel([["nearby", { ...E.finder, ahead: null }]]) : ""}
+      <div class="recap"><p class="recap-title">${fmt(J.recapTitle)}</p><p>${fmt(f(J.recap))}</p></div>
       <h3 class="board-h">${TITLES.next}</h3>
       <ul class="ways">
         ${way("lodge", J.exhibit, P.lodge.icon, true)}
@@ -232,9 +244,9 @@ function renderLodge() {
 function render(trailChanged = true) {
   if (trailChanged) renderTrail();
   renderLodge();
-  const hash = st.trail ? "#" + st.trail.toLowerCase() + (st.exhibit && trails[st.trail] ? "-" + st.exhibit : "") : " ";
-  history.replaceState(null, "", hash.trim() || location.pathname);
-  document.querySelectorAll(".save-link").forEach(i => { i.value = location.href; });
+  /* The frame's own address keeps the spot too, as #green-water. */
+  history.replaceState(null, "", spot() ? "#" + spot() : location.pathname);
+  document.querySelectorAll(".save-link").forEach(i => { i.value = spotUrl(); });
 }
 
 /* ---------- Events (one listener each, so re-rendered parts just work) ---------- */
@@ -288,8 +300,8 @@ document.addEventListener("click", e => {
     store.set(b.dataset.note, ""); $(b.dataset.for).value = "";
     b.textContent = shared.notes.cleared; setTimeout(() => { b.textContent = shared.notes.clear; }, 2000);
   }
-  if (to === "copySpot") copyText(location.href, b, shared.save.paceButton);
-  if (to === "copy") { $(b.dataset.for).select(); copyText(location.href, b, shared.save.copy); }
+  if (to === "copySpot") copyText(spotUrl(), b, shared.save.paceButton);
+  if (to === "copy") { $(b.dataset.for).select(); copyText(spotUrl(), b, shared.save.copy); }
 });
 
 /* Notes save as you type, on this device only. */
@@ -302,8 +314,8 @@ document.addEventListener("toggle", e => {
   if (e.target.tagName === "DETAILS" && e.target.parentNode.classList.contains("stop")) e.target.parentNode.classList.toggle("is-open", e.target.open);
 }, true);
 
-/* Direct links: #green or #green-water. */
-const [hTrail, hExhibit] = location.hash.slice(1).split("-");
+/* Direct links: ?spot=green-water (from the site), or #green-water. */
+const [hTrail, hExhibit] = (new URLSearchParams(location.search).get("spot") || location.hash.slice(1)).split("-");
 const k = COLORS.find(c => c.key.toLowerCase() === (hTrail || "").toLowerCase());
 if (k) { st.trail = k.key; if (topicOf(hExhibit)) st.exhibit = hExhibit; }
 render();

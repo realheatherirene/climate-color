@@ -1,6 +1,6 @@
 /* The Water exhibit. Everything here is written once and shared by every
-   trail: the exhibit itself, a situation for the Field Guide, and the
-   finder for the Bulletin Board. Titles come from titles.js, so none
+   trail: the exhibit itself, plus a situation and a finder for the Field
+   Guide. Titles come from titles.js, so none
    appear here.
    Adult pack: grade 9 reading level or lower. */
 
@@ -80,7 +80,7 @@ export default {
     friend: ["Where does water show up in our community?"]
   },
 
-  /* For the Bulletin Board: where water work turns up close to home. */
+  /* For the Field Guide: where water work turns up close to home. */
   finder: {
     exhibit: "tip",
     line: "Where water work turns up near you.",

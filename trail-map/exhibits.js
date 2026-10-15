@@ -88,6 +88,9 @@ const BLOCKS = {
      shown here and in the exhibit picker's "still being built" note. */
   teaser: (b, ctx) => { const t = ctx.topic(); return `<p>${fmt(t.teaser)}</p>${sources([t.src])}`; },
 
+  /* The places on the map, as a route strip: the Trailhead's key. */
+  route: (b, ctx) => ctx.route(),
+
   /* Buttons for the other trails, keeping the current exhibit. */
   trails: (b, ctx) => `<div class="pills">${ctx.otherTrails().map(c =>
     `<button type="button" class="pill-btn pill-${c.key.toLowerCase()}" data-trail="${c.key}">${c.action} · ${c.key}</button>`).join("")}</div>`,

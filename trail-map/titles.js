@@ -21,7 +21,7 @@ export const TITLES = {
   fit:         "Rest and Reflect",
   community:   "Discover what you bring",
 
-  /* The Lodge and its exhibits, lettered A to I */
+  /* The Lodge and its exhibits */
   pickExhibit: "Pick an exhibit",
   why:         "Discover why it matters",
   changing:    "Find out what's changing",
@@ -33,15 +33,15 @@ export const TITLES = {
   think:       "Think it through",
   tryIt:       "Try it now",
   others:      "Learn other ways to help",
+  nearby:      "Find work close to home",
   first:       "Choose your first step",
 
   /* The Bulletin Board */
-  next:        "Choose what comes next",
-  nearby:      "Find work close to home"
+  next:        "Choose what comes next"
 };
 
 /* The order things appear in. Anything a trail or exhibit hasn't been
    written for yet is skipped. */
 export const TRAIL_ORDER = ["care", "know", "fit", "community"];
 export const EXHIBIT_ORDER = ["why", "changing", "who", "life"];
-export const GUIDE_ORDER = ["story", "think", "tryIt", "others", "first"];
+export const GUIDE_ORDER = ["story", "think", "tryIt", "others", "nearby", "first"];

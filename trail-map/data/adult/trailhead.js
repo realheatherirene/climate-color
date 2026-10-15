@@ -6,20 +6,24 @@ const IMLS = { title: "IMLS: Mass Audubon's Accessible Trails Project", url: "ht
 
 export default {
   title: "The Trail Map",
-  lede: "The Climate Trail Map is an interactive tool that can be used to find your way into climate action.",
-  /* "Here's how it works" is drawn as a route strip from the places in
-     shared.js, so it doubles as the map's key. */
+  lede: "Find your way into the climate movement!",
   todoTitle: "Here's how it works:",
+  intro: [
+    "The Climate Trail Map will help you discover the skills and passions you bring to the climate movement.",
+    "Start by reading the information at the Trailhead, then hop on a trail. You'll move through several activities that will help you understand how to use your unique gifts to support a healthy environment.",
+    "At the end, you'll get a printable field guide that's yours to keep, and a chance to do it all over again, if you wish!"
+  ],
   note: "Make your own choices and move at your own pace.",
 
-  /* The Trailhead's board, with the trail picker at the bottom. The
-     places are in the route strip above, so the key here shows only the
-     two kinds of stop. */
+  /* The Trailhead's board, with the trail picker at the bottom. The key
+     shows the places on the map (drawn from shared.js) and the two kinds
+     of stop. */
   board: {
     open: "**This trail is open to everyone.** You don't need any special knowledge or skills to start.",
-    storyLabel: "Read the story behind it",
+    storyLabel: "Read a story about outdoor accessibility",
     blocks: [
       { p: "This page works like a trail at a nature center. Follow the trail markers from stop to stop, and do each activity as the stop asks. You may skip any activity, if you'd like." },
+      { route: true },
       { legend: [
         { mark: "stop", term: "Action Stop", text: "Open to read. Close when you're done." },
         { mark: "rest", term: "Rest Stop", text: "Think things over. Jot down your thoughts." }

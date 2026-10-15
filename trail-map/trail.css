@@ -13,7 +13,7 @@
        last two: something the reader receives, not a place, so it looks
        like a booklet with a dashed edge.
      - Stops open and close (details/summary). A marker fills in while its
-       stop is open. Rest stops have round markers. Exhibits are lettered.
+       stop is open. Rest stops have round markers.
      - Every kind of content has a word label and an icon, so color is
        never the only signal.
    ========================================================================== */
@@ -42,8 +42,22 @@
     line-height: 1.55;
 }
 
-.trail-page p {
+/* Even line breaks: no single word left alone on a last line, and
+   headings that wrap in balanced lines. */
+.trail-page p,
+.trail-page li,
+.page-header p,
+.odesc,
+.sum-line,
+dd {
     text-wrap: pretty;
+}
+
+.trail-page h2,
+.trail-page h3,
+.place-title,
+.room-title {
+    text-wrap: balance;
 }
 
 .lede,
@@ -52,7 +66,7 @@
 }
 
 .todo {
-    max-width: 52rem;
+    max-width: var(--read);
 }
 
 /* core/atlas.css sets .page-header p in the quieter secondary color; the
@@ -74,12 +88,15 @@
     margin: 0;
 }
 
-/* "Here's how it works": the five places as a route strip, each icon
-   in its place's color. It doubles as the map's key. */
+/* The map's key on the Trailhead's board: the five places as a route
+   strip, each icon in its place's color, the name on its own line and
+   a few words below. */
 .route {
     list-style: none;
-    margin: 0.4rem 0 0;
-    padding: 0;
+    margin: 0.3rem 0 0.6rem;
+    padding: 0.8rem;
+    background: var(--bg-primary);
+    border-radius: 10px;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 0.8rem;
@@ -92,6 +109,15 @@
     font-size: 0.92rem;
     line-height: 1.35;
     color: var(--text-primary);
+}
+
+.route-name {
+    display: block;
+}
+
+.route-text {
+    display: block;
+    color: var(--text-secondary);
 }
 
 .route-icon {
@@ -119,8 +145,20 @@
     border: 2px dashed var(--note);
 }
 
-.page-header .pace {
-    margin: 0;
+.page-header .todo p:not(.sub) {
+    color: var(--text-primary);
+    font-weight: 400;
+    margin: 0.35rem 0 0;
+    max-width: var(--read);
+}
+
+.page-header .pace p {
+    margin: 0 0 0.5rem;
+}
+
+.pace .pill-btn {
+    padding: 0.4rem 0.95rem;
+    font-size: 0.95rem;
 }
 
 .test-note {
@@ -224,12 +262,18 @@ summary {
     padding: 0.75rem 0;
 }
 
-/* The title, then Open / Close right after it. */
+/* The title, then Open / Close right after its last word, so the link
+   never sits alone on a line of its own. */
 .sum {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    column-gap: 1rem;
+    display: block;
+}
+
+.sum h3 {
+    display: inline;
+}
+
+.sum .toggle {
+    margin-left: 0.75rem;
 }
 
 summary::-webkit-details-marker {
@@ -385,8 +429,8 @@ textarea:focus-visible {
     color: var(--text-secondary);
 }
 
-/* The exhibit picker: the same rows, each with its letter and topic
-   icon, three across on wider screens. */
+/* The exhibit picker: the same rows, each with its topic icon, three
+   across on wider screens. */
 .exhibits {
     background: var(--bg-primary);
     border-radius: 10px;
@@ -394,38 +438,13 @@ textarea:focus-visible {
 }
 
 .exhibits .opt {
-    grid-template-columns: 1.7rem 1fr;
+    grid-template-columns: 1.4rem 1fr;
     gap: 0.7rem;
 }
 
 .exhibits .opt[aria-pressed="true"] {
     background: var(--lodge-tint);
     border-color: var(--lodge);
-}
-
-/* An exhibit's letter: a small outlined tag, filled once picked. */
-.letter {
-    display: grid;
-    place-items: center;
-    width: 1.7rem;
-    height: 1.7rem;
-    border: 3px solid var(--lodge);
-    border-radius: 5px;
-    color: var(--lodge);
-    font-weight: 700;
-    font-size: 0.9rem;
-}
-
-.opt[aria-pressed="true"] .letter {
-    flex: none;
-}
-
-.oicon {
-    width: 1.15rem;
-    height: 1.15rem;
-    color: var(--lodge);
-    vertical-align: -0.2rem;
-    margin-right: 0.35rem;
 }
 
 @media (min-width: 700px) {
@@ -585,7 +604,7 @@ textarea:focus-visible {
 
 .room-sign {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 1fr auto;
     align-items: center;
     gap: 0.2rem 0.9rem;
     background: var(--lodge);
@@ -596,15 +615,6 @@ textarea:focus-visible {
 
 .room-sign p {
     margin: 0;
-}
-
-.room-sign .letter.big {
-    width: 2.6rem;
-    height: 3rem;
-    font-size: 1.3rem;
-    border-color: #fff;
-    background: #fff;
-    color: var(--lodge);
 }
 
 .room-title {
@@ -684,14 +694,22 @@ textarea:focus-visible {
     color: var(--note);
 }
 
-.guide-sub {
-    font-weight: 700;
-}
-
 .guide-for {
     color: var(--text-primary);
     font-weight: 700;
     margin-top: 0.6rem !important;
+}
+
+.guide-ex-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-right: 0.45rem;
+    vertical-align: -0.2rem;
+    color: var(--lodge);
+}
+
+.guide-for + .guide-for {
+    margin-top: 0.15rem !important;
 }
 
 .guide-for .blaze {
@@ -1116,6 +1134,11 @@ ul.plain li {
     align-items: flex-start;
 }
 
+/* Each label on its own line, with its words below. */
+.legend b {
+    display: block;
+}
+
 .mark {
     flex: none;
     width: 2.2rem;
@@ -1192,6 +1215,11 @@ ul.plain li {
 .recap p {
     margin: 0;
     max-width: var(--read);
+}
+
+.recap-title {
+    font-weight: 700;
+    margin-bottom: 0.2rem !important;
 }
 
 .ways {
@@ -1405,7 +1433,7 @@ ul.plain li {
     }
 
     .room-sign {
-        grid-template-columns: auto 1fr;
+        grid-template-columns: 1fr;
         padding: 0.7rem 0.7rem;
     }
 

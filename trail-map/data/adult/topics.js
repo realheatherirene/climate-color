@@ -1,4 +1,4 @@
-/* The nine topics, one exhibit each, in the order they're lettered A to I.
+/* The nine topics, one exhibit each, in the order the Lodge shows them.
    The exhibit picker shows each name and its four-item description; the
    teaser and its source open the exhibit. Teasers teach about the topic;
    they never ask "would you do this?" Sources: the Fifth National Climate
