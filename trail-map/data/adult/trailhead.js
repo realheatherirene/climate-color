@@ -12,7 +12,7 @@ export default {
     "**Pick a trail. Each trail name suggests one stewardship style—the mental, emotional, and practical strengths people use to care for the world around them.** (Stop 1)",
     "**Travel down your trail and take part in the activities to learn more about that stewardship style.** (Stops 2 to 5)",
     "**Pick a lodge. Each lodge name suggests one community action topic—the personal, social, and environmental domains affected by climate change.** (Stop 6)",
-    "**Enter the lodge to and take part in the activities to learn more about that community action topic.** (Stop 7)",
+    "**Enter the lodge and take part in the activities to learn more about that community action topic.** (Stop 7)",
     "**Enter the Ranger Station. From the ranger station, you can either visit another lodge, try another trail, save your notes, or leave the trail.** (Stop 8)"
   ],
   note: "Make your own choices and move at your own pace. If you need a break, use the 'Save your spot' link to pause.",
@@ -25,13 +25,11 @@ export default {
     blocks: [
       { p: "This page works like a trail at a nature center. Follow the trail markers from stop to stop, and do each activity as the stop asks. You may skip any activity, if you'd like." },
       { legend: [
-        { mark: "stop", term: "Stops", text: "are numbered. Open one to read it, and close it when you're done." },
-        { mark: "rest", term: "Rest and Reflect stops", text: "have a round marker. They're for thinking things over. You can write your thoughts right on the page; they stay on your device." },
-        { mark: "lodge", icon: "i-pin", term: "Your lodge", text: "is a topic you care about, like food or water. Inside are exhibits to explore." },
-        { mark: "station", icon: "i-station", term: "The Ranger Station", text: "is the end of the trail, where you choose what comes next." }
+        { mark: "stop", term: "Action Stop", text: "Open to read. Close when you're done." },
+        { mark: "rest", term: "Rest Stop", text: "Think things over. Jot down your thoughts." },
+        { mark: "lodge", icon: "i-pin", term: "Lodge", text: "Explore information about a community action topic." },
+        { mark: "station", icon: "i-station", term: "Ranger Station", text: "Choose what to do next." }
       ] },
-      { sub: "Surprises along the way" },
-      { p: "Some stops hold a **hidden find** to guess and reveal, a **stretch** to try right where you are, or a **quote** worth stopping for." },
     ],
     story: [
       { p: "Mass Audubon, a conservation group in Massachusetts, builds All Persons Trails so visitors of all abilities can enjoy nature. Its trails offer features like audio tours, Braille and tactile maps, rope guides, wider boardwalks, and benches. The trail at Brewster's Woods, opened in May 2024, has a wide, stable surface of crushed stone." },
