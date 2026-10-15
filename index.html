@@ -1,0 +1,135 @@
+<!doctype html>
+<!-- ==========================================================================
+     THE TRAIL MAP
+     ==========================================================================
+     A learning trail into climate action. Pick a way of helping (a trail)
+     at the Trailhead, follow four stops, pick a topic in the Lodge
+     (exhibits A-I), take a Field Guide, and end at the Bulletin Board.
+     trail.js draws everything from data/ and core/; this file holds only
+     the page shell and the icon set.
+     ========================================================================== -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Trail Map | Climate Color</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Varela+Round&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../core/atlas.css">
+<link rel="stylesheet" href="trail.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <symbol id="i-food" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 8c-2-1.6-6-1.4-7 2.2-1 3.6 1.4 9.8 4.6 9.8 1 0 1.6-.5 2.4-.5s1.4.5 2.4.5c3.2 0 5.6-6.2 4.6-9.8C18 6.6 14 6.4 12 8z"/>
+      <path d="M12 8c0-2 .8-3.6 2.6-4.6"/>
+    </symbol>
+    <symbol id="i-water" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/>
+      <path d="M9.2 14.5a2.8 2.8 0 0 0 2.3 2.7"/>
+    </symbol>
+    <symbol id="i-land" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 20h18"/>
+      <path d="M12 20v-8"/>
+      <path d="M12 12c0-3.3-2.7-6-6-6 0 3.3 2.7 6 6 6z"/>
+      <path d="M12 14c0-3.3 2.7-6 6-6 0 3.3-2.7 6-6 6z"/>
+    </symbol>
+    <symbol id="i-wildlife" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 12.5c-2.6 0-5 2.6-5 4.8 0 1.6 1.2 2.5 2.6 2.5 1 0 1.6-.5 2.4-.5s1.4.5 2.4.5c1.4 0 2.6-.9 2.6-2.5 0-2.2-2.4-4.8-5-4.8z"/>
+      <ellipse cx="9.3" cy="6.3" rx="1.5" ry="2"/>
+      <ellipse cx="14.7" cy="6.3" rx="1.5" ry="2"/>
+      <ellipse cx="5" cy="10.2" rx="1.4" ry="1.8"/>
+      <ellipse cx="19" cy="10.2" rx="1.4" ry="1.8"/>
+    </symbol>
+    <symbol id="i-energy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13.5 3 6 13.5h5.5L10.5 21 18 10.5h-5.5z"/>
+    </symbol>
+    <symbol id="i-transportation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5" y="3" width="14" height="14" rx="3"/>
+      <path d="M5 10h14"/>
+      <circle cx="9" cy="13.5" r=".6"/>
+      <circle cx="15" cy="13.5" r=".6"/>
+      <path d="M8 17v3M16 17v3"/>
+    </symbol>
+    <symbol id="i-waste" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3"/>
+      <path d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3"/>
+      <path d="M17.5 3.5v3.3h-3.3"/>
+      <path d="M6.5 20.5v-3.3h3.3"/>
+    </symbol>
+    <symbol id="i-health" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 20s-7.5-4.6-7.5-10A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 7.5 3c0 5.4-7.5 10-7.5 10z"/>
+      <path d="M8 12h2l1-2 2 4 1-2h2"/>
+    </symbol>
+    <symbol id="i-shelter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3.5 11 12 4l8.5 7"/>
+      <path d="M6 9.5V20h12V9.5"/>
+      <path d="M10 20v-5h4v5"/>
+    </symbol>
+    <symbol id="i-read" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5c2.7-1 5.7-.8 9 1.2 3.3-2 6.3-2.2 9-1.2V19c-2.7-1-5.7-.8-9 1.2-3.3-2-6.3-2.2-9-1.2z"/><path d="M12 6.7v13.5"/></symbol>
+    <symbol id="i-explore" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></symbol>
+    <symbol id="i-reflect" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.5"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-say" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H10l-5 4v-4H4z"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  
+    <symbol id="i-sign" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 6h11l3 3-3 3H5z"/><path d="M9 21h6"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17c2.5-1 4-3 4-6V7H5v4h4"/><path d="M15 17c2.5-1 4-3 4-6V7h-4v4h4"/></symbol>
+    <symbol id="i-overlook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 19l6-8 4 5 3-4 7 7z"/><circle cx="17" cy="6" r="2"/></symbol>
+    <symbol id="i-stretch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="2.5"/></symbol>
+    <symbol id="i-find" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12l3 5-9 11L3 9z"/><path d="M3 9h18M9 4l3 16M15 4l-3 16"/></symbol>
+    <symbol id="i-tip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></symbol>
+    <symbol id="i-trail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21c1.5-3 4-3.8 7-4.3s5-2 4-4.4-5-2.4-5-5 2.5-3.6 5.5-3.6" stroke-dasharray="3.4 2.6"/><path d="M18 2.5v7" stroke-width="2.2"/><path d="M18 2.8h4l-1.3 1.7 1.3 1.7h-4" stroke-width="2.2" fill="currentColor"/></symbol>
+    <symbol id="i-lodge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20.5h19z"/><path d="M12 3v2.5"/><path d="M9.5 20.5v-5h5v5"/><path d="M6.8 13h10.4"/><path d="M1.5 20.5h21"/></symbol>
+    <symbol id="i-guide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M14.5 6.5c-2.8.3-4.5 2.2-4.5 5.5 3.2-.2 4.8-2.2 4.5-5.5z"/><path d="M10 12l2.2-2.2"/></symbol>
+    <symbol id="i-board" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.5" width="18" height="12" rx="1.5"/><path d="M6.5 15.5V21M17.5 15.5V21"/><path d="M6.5 6.5h4.5v5H6.5zM13.5 6.5h4M13.5 9h4M13.5 11.5h2.5"/></symbol>
+    <symbol id="i-ahead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></symbol>
+</defs></svg>
+<header class="page-header">
+    <h1><span id="title"></span>
+        <svg class="mini-trail" viewBox="0 0 200 56" aria-hidden="true" focusable="false">
+            <path d="M6 46C40 46 52 22 86 26s46 22 74 12 28-24 34-26" style="fill:none;stroke:var(--green-color);stroke-width:3.5;stroke-dasharray:1.5 7;stroke-linecap:round"/>
+            <rect x="34" y="31" width="14" height="17" rx="3" style="fill:#fff;stroke:var(--green-color);stroke-width:2.5"/>
+            <circle cx="104" cy="32" r="8" style="fill:#fff;stroke:var(--green-color);stroke-width:2.5"/>
+            <rect x="140" y="25" width="14" height="17" rx="3" style="fill:#fff;stroke:var(--green-color);stroke-width:2.5"/>
+            <path d="M186 30s-10-9-10-17a10 10 0 0 1 20 0c0 8-10 17-10 17z" style="fill:#0F7393"/>
+            <circle cx="186" cy="13" r="3.8" style="fill:#fff"/>
+        </svg></h1>
+    <p class="lede" id="lede"></p>
+    <div class="todo" id="todo"></div>
+    <p class="pace" id="note"></p>
+</header>
+
+<main class="trail-page">
+    <p class="test-note">This map is still growing. For now, the Green Trail and the Water exhibit are ready.</p>
+    <!-- The Trailhead is written here, with the trail picker on its board.
+         trail.js adds stops 1-4, then the Lodge, the Field Guide, and the
+         Bulletin Board. -->
+    <ol class="line" id="start">
+        <li class="stop place is-trailhead" id="trailhead">
+            <span class="marker" aria-hidden="true"><svg><use href="#i-sign"/></svg></span>
+            <div class="place-sign">
+                <div class="text"><p class="place-eyebrow">Begin here</p><p class="place-title">Trailhead</p></div>
+                <svg class="place-icon" aria-hidden="true"><use href="#i-sign"/></svg>
+            </div>
+            <div class="place-board">
+                <section id="board" aria-labelledby="boardTitle"></section>
+                <section class="pick-body" id="pick" aria-labelledby="pickTitle">
+                    <h3 class="board-h" id="pickTitle"></h3>
+                    <p class="step-hint" id="pickHint"></p>
+                    <ul class="options" id="trailOpts"></ul>
+                    <div id="trailBox" aria-live="polite"></div>
+                </section>
+            </div>
+        </li>
+    </ol>
+    <ol class="line" id="trailStops"></ol>
+    <ol class="line" id="lodgeLine"></ol>
+
+    <p class="footnote" id="footnote"></p>
+</main>
+<script type="module" src="trail.js"></script>
+<!-- Tells the Squarespace page how tall this page is, so its box fits. -->
+<script src="../core/iframe-resize.js"></script>
+</body>
+</html>
