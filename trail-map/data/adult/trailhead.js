@@ -27,7 +27,7 @@ export default {
       { legend: [
         { mark: "stop", term: "Action Stop", text: "Open to read. Close when you're done." },
         { mark: "rest", term: "Rest Stop", text: "Think things over. Jot down your thoughts." },
-        { mark: "lodge", icon: "i-pin", term: "Lodge", text: "Explore information about a community action topic." },
+        { mark: "lodge", icon: "i-pin", term: "Topic Lodge", text: "Learn about a community action topic." },
         { mark: "station", icon: "i-station", term: "Ranger Station", text: "Choose what to do next." }
       ] },
     ],
