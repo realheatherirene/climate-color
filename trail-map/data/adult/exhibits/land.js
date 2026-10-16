@@ -3,7 +3,7 @@
    Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_LAND = { title: "Fifth National Climate Assessment, Ch. 7: Forests, 2023", url: "https://doi.org/10.7930/NCA5.2023.CH7" };
+const NCA5_LAND = { title: "Fifth National Climate Assessment, Ch. 7: Forests, 2023", url: "https://toolkit.climate.gov/NCA5_Ch7_Forests" };
 
 export default {
   key: "land",
@@ -96,11 +96,11 @@ export default {
       { find: {
         prompt: "There's a federal website that lists volunteer work on public lands.",
         button: "Reveal the find",
-        reveal: "It's Volunteer.gov. Search by place, state, or activity for volunteer openings with the National Park Service and five other federal agencies.",
-        link: { name: "Volunteer.gov", url: "https://www.volunteer.gov", reach: "United States only" }
+        reveal: "It's Volunteer.gov, with openings at national parks and other public lands. The National Park Service's volunteer page links to its list of opportunities.",
+        link: { name: "Volunteer with the National Park Service", url: "https://nps.gov/volunteer", reach: "United States only" }
       } },
       { resources: [
-        { verb: "Find", name: "Find a Land Trust", url: "https://www.findalandtrust.org/", reach: "United States only", desc: "A map from the Land Trust Alliance of local groups that protect land, with what each one protects and how many acres." }
+        { verb: "Find", name: "an accredited land trust", url: "https://www.landtrustaccreditation.org/land-trust-locator", reach: "United States only", desc: "The Land Trust Accreditation Commission's locator. Search near an address, by name, or on a map for local groups that protect land." }
       ], label: false },
       { say: [
         { where: "At a nature center", words: "Do you need volunteers for plantings or cleanups?" },

@@ -3,7 +3,7 @@
    Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_ENERGY = { title: "Fifth National Climate Assessment, Ch. 5: Energy Supply, Delivery, and Demand, 2023", url: "https://doi.org/10.7930/NCA5.2023.CH5" };
+const NCA5_ENERGY = { title: "Fifth National Climate Assessment, Ch. 5: Energy Supply, Delivery, and Demand, 2023", url: "https://toolkit.climate.gov/NCA5_Ch5_Energy" };
 
 export default {
   key: "energy",

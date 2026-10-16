@@ -3,7 +3,7 @@
    Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_WILDLIFE = { title: "Fifth National Climate Assessment, Ch. 8: Ecosystems, Ecosystem Services, and Biodiversity, 2023", url: "https://doi.org/10.7930/NCA5.2023.CH8" };
+const NCA5_WILDLIFE = { title: "Fifth National Climate Assessment, Ch. 8: Ecosystems, Ecosystem Services, and Biodiversity, 2023", url: "https://toolkit.climate.gov/NCA5_Ch8_Ecosystems" };
 
 export default {
   key: "wildlife",
@@ -101,7 +101,7 @@ export default {
       } },
       /* Open worldwide, not U.S. only: approved as an exception. */
       { resources: [
-        { verb: "Join", name: "the Great Backyard Bird Count", url: "https://gbbc.birdcount.org/", reach: "open worldwide", desc: "Each February, people count birds for as little as 15 minutes and share what they find. It's free, and it's run by the Cornell Lab of Ornithology and the National Audubon Society." }
+        { verb: "Join", name: "the Great Backyard Bird Count", url: "https://www.birdcount.org/", reach: "open worldwide", desc: "Each February, people count birds for as little as 15 minutes and share what they find. It's run by the Cornell Lab of Ornithology, the National Audubon Society, and Birds Canada." }
       ], label: false },
       { say: [
         { where: "At a nature center", words: "Do you need volunteers for habitat workdays or bird counts?" },

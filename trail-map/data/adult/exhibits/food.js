@@ -3,7 +3,7 @@
    Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_FOOD = { title: "Fifth National Climate Assessment, Ch. 11: Agriculture, Food Systems, and Rural Communities, 2023", url: "https://doi.org/10.7930/NCA5.2023.CH11" };
+const NCA5_FOOD = { title: "Fifth National Climate Assessment, Ch. 11: Agriculture, Food Systems, and Rural Communities, 2023", url: "https://toolkit.climate.gov/NCA5_Ch11_Agriculture" };
 
 export default {
   key: "food",

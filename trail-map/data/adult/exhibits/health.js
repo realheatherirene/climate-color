@@ -3,7 +3,7 @@
    Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_HEALTH = { title: "Fifth National Climate Assessment, Ch. 15: Human Health, 2023", url: "https://doi.org/10.7930/NCA5.2023.CH15" };
+const NCA5_HEALTH = { title: "Fifth National Climate Assessment, Ch. 15: Human Health, 2023", url: "https://toolkit.climate.gov/NCA5_Ch15_Human-Health" };
 
 export default {
   key: "health",
@@ -94,10 +94,10 @@ export default {
         { verb: "Search for", text: "\"community health worker [your county],\" \"cooling center [your city],\" or \"health fair [your town].\"" }
       ] },
       { find: {
-        prompt: "There's a tool from the CDC that tells you how risky the heat is where you live.",
+        prompt: "There's a map from the National Weather Service that tells you how risky the heat will be this week.",
         button: "Reveal the find",
-        reveal: "It's the HeatRisk Dashboard, from the CDC and the National Weather Service. Type in your ZIP code to find today's heat risk, from little or no risk to extreme, plus tips for staying safe.",
-        link: { name: "CDC HeatRisk Dashboard", url: "https://ephtracking.cdc.gov/Applications/HeatRisk/", reach: "United States only" }
+        reveal: "It's NWS HeatRisk. Its map covers the next seven days, with five levels from green, little to no risk, to magenta, rare or long-lasting extreme heat.",
+        link: { name: "NWS HeatRisk", url: "https://www.wpc.ncep.noaa.gov/heatrisk", reach: "United States only" }
       } },
       { resources: [
         { verb: "Find", name: "a health center", url: "https://findahealthcenter.hrsa.gov/", reach: "United States only", desc: "Health centers offer checkups, care when you're sick, and care during pregnancy, even if you don't have insurance. You pay what you can afford, based on your income." }

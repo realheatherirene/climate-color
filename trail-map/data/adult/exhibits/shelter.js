@@ -3,7 +3,7 @@
    Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_SHELTER = { title: "Fifth National Climate Assessment, Ch. 12: Built Environment, Urban Systems, and Cities, 2023", url: "https://doi.org/10.7930/NCA5.2023.CH12" };
+const NCA5_SHELTER = { title: "Fifth National Climate Assessment, Ch. 12: Built Environment, Urban Systems, and Cities, 2023", url: "https://toolkit.climate.gov/NCA5_Ch12_Built-Environment" };
 
 export default {
   key: "shelter",
