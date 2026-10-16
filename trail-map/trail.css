@@ -110,13 +110,39 @@ dd {
 }
 
 .route li {
+    display: flex;
+}
+
+/* Each place in the key is a button that takes you there. */
+.route-btn {
+    flex: 1;
     display: grid;
     gap: 0.35rem;
     align-content: start;
+    min-height: 44px;
+    padding: 0.4rem;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    font: inherit;
     font-size: 0.92rem;
     line-height: 1.35;
     color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
 }
+
+.route-btn:hover {
+    background: var(--park-tint);
+}
+
+.route-btn:focus-visible {
+    outline: 3px solid var(--lodge);
+    outline-offset: 2px;
+}
+
+/* The place you're at shows on the map only; here, screen readers hear
+   "current location" from aria-current. */
 
 .route-name {
     display: block;
@@ -150,6 +176,7 @@ dd {
     color: var(--trail-on);
 }
 .route-bulletin { --route: var(--board); }
+.route-guide    { --route: var(--note); }
 
 /* The Field Guide is received, not a place: a dashed outline. */
 .route-guide .route-icon {
@@ -684,9 +711,59 @@ textarea:focus-visible {
 }
 
 /* ==========================================================================
+   The park map: a picture of the trail, above its key (the route strip).
+   Wide on computers, tall on phones. Colors come from the same tokens as
+   the page, so the trail turns your trail's color.
+   ========================================================================== */
+
+.park-map {
+    --map-trailhead: var(--park);
+    --map-lodge: var(--lodge);
+    --map-bulletin: var(--board);
+    margin: 0.4rem 0 0.2rem;
+}
+
+.park-map svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #F3F8EE;
+    border: 1px solid var(--green-tint-2);
+    border-radius: 10px;
+}
+
+.park-map .map-tall { display: none; }
+
+.map-name {
+    font: 700 14px 'Varela Round', sans-serif;
+    fill: var(--text-primary);
+    stroke: #F3F8EE;
+    stroke-width: 4px;
+    paint-order: stroke;
+}
+
+.map-num { font: 700 14px 'Varela Round', sans-serif; }
+.map-here { font: 700 13px 'Varela Round', sans-serif; fill: #fff; }
+.map-n { font: 700 13px 'Varela Round', sans-serif; fill: var(--text-secondary); }
+.map-lake { fill: #CFE7F0; stroke: #8FC1D4; stroke-width: 1.5px; }
+.map-lake-name { font: italic 13px 'Varela Round', sans-serif; fill: #3D6F82; }
+.map-north { fill: #fff; stroke: var(--text-secondary); stroke-width: 1.5px; }
+
+@media (max-width: 560px) {
+    .park-map .map-wide { display: none; }
+    .park-map .map-tall { display: block; max-width: 26rem; margin: 0 auto; }
+}
+
+/* ==========================================================================
    The Field Guide: something received, not a place. A booklet with a
    dashed edge: a cover, then its parts on a white panel.
    ========================================================================== */
+
+/* It comes after the Bulletin Board, off the trail line: no line, no
+   marker, just the booklet you take with you. */
+.stop.is-guide.off-trail::before {
+    display: none;
+}
 
 .is-guide > .marker {
     border-style: dashed;
@@ -1465,7 +1542,7 @@ ul.plain li {
         gap: 0.45rem;
     }
 
-    .route li {
+    .route-btn {
         grid-template-columns: 2.4rem 1fr;
         align-items: center;
         gap: 0.7rem;

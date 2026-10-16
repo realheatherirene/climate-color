@@ -67,7 +67,7 @@ export default {
           "Who in my community has a hard time getting enough food?"
         ] }
       ],
-      ahead: "Your Field Guide, to take into your own community."
+      ahead: "The Bulletin Board, where you choose what comes next."
     }
   },
 

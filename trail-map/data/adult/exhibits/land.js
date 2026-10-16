@@ -67,7 +67,7 @@ export default {
           "Who near me depends on forests or land for their work or way of life?"
         ] }
       ],
-      ahead: "Your Field Guide, to take into your own community."
+      ahead: "The Bulletin Board, where you choose what comes next."
     }
   },
 

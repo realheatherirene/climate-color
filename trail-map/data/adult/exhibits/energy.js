@@ -67,7 +67,7 @@ export default {
           "Who near me would have a hard time in a long outage?"
         ] }
       ],
-      ahead: "Your Field Guide, to take into your own community."
+      ahead: "The Bulletin Board, where you choose what comes next."
     }
   },
 

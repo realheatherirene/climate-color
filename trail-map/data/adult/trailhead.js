@@ -22,7 +22,8 @@ export default {
     open: "**This trail is open to everyone.** You don't need any special knowledge or skills to start.",
     storyLabel: "Read a story about outdoor accessibility",
     blocks: [
-      { p: "This page works like a trail at a nature center. Follow the trail markers from stop to stop, and do each activity as the stop asks. You may skip any activity, if you'd like." },
+      { p: "This page works like a trail at a nature center. Follow the trail markers from stop to stop, and complete each activity as you wish. You may skip any activity, if you'd like." },
+      { map: true },
       { route: true },
       { legend: [
         { mark: "stop", term: "Action Stop", text: "Open to read. Close when you're done." },

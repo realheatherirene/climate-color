@@ -72,7 +72,7 @@ export default {
           "Who in my community could use food or things others throw away?"
         ] }
       ],
-      ahead: "Your Field Guide, to take into your own community."
+      ahead: "The Bulletin Board, where you choose what comes next."
     }
   },
 

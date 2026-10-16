@@ -56,7 +56,8 @@ const ctx = {
     return { key, action: c.action, meaning: cap(trailhead.ways[key]), mine: key === st.trail, yours: shared.guide.yours };
   }),
   notes: notesBox,
-  route: () => routeStrip()
+  route: () => `<ol class="route" id="route"></ol>`,
+  map: () => `<div class="park-map" id="parkMap" aria-hidden="true"></div>`
 };
 
 /* Fills {trail}, {action}, {meaning}, {words}, {exhibit}, {exhibitName},
@@ -101,12 +102,117 @@ document.title = trailhead.title + " | Climate Color";
 $("title").textContent = trailhead.title;
 $("lede").textContent = trailhead.lede;
 
-/* The places, in order, as a route strip: the map's key on the
-   Trailhead's board. Each icon matches its place's sign. */
-function routeStrip() {
-  return `<ol class="route">${Object.entries(P).map(([key, pl]) =>
-    `<li class="route-${key}"><span class="route-icon" aria-hidden="true">${icon(pl.icon)}</span><span><b class="route-name">${fmt(pl.name)}</b><span class="route-text">${fmt(pl.route)}</span></span></li>`).join("")}</ol>`;
+/* ---------- The park map and its key: getting your bearings ---------- */
+/* A small park-style map at the Trailhead, drawn the way a state park
+   map is: woods, a lake, a north arrow, and one trail from the Trailhead
+   past the four stops to the Lodge and the Bulletin Board, with the
+   Field Guide beside the trail's end. The places are made up: it shows
+   the journey, not real ground. It is a picture only (screen readers
+   skip it); the route strip under it is its key, says the same in words,
+   marks where you are (aria-current), and takes you to each place.
+   Two drawings: wide for computers, tall for phones (trail.css shows
+   one). Each lays out the places in shared.places by key and the stops
+   in TRAIL_ORDER, so names, icons, and order come from the data. The
+   spots are laid out for four stops. */
+const MAPS = {
+  wide: {
+    w: 760, h: 380,
+    at: { trailhead: [60, 320], lodge: [400, 110], bulletin: [600, 196], guide: [700, 290] },
+    stops: [[150, 270], [250, 300], [330, 220], [250, 150]],
+    /* where each place's name sits: [dx, dy, text-anchor] */
+    label: { trailhead: [0, 38, "middle"], lodge: [0, 38, "middle"], bulletin: [0, 36, "middle"], guide: [0, 38, "middle"] },
+    path: {
+      start: "M60,320 C95,300 120,290 150,270",
+      trail: "M150,270 C190,245 215,305 250,300 C290,295 300,250 330,220 C355,195 300,160 250,150 C290,140 340,95 400,110",
+      after: "M400,110 C470,125 540,205 600,196"
+    },
+    lake: "M520,40 C560,18 662,24 692,54 C716,80 682,112 630,106 C588,101 540,96 524,76 C514,63 511,48 520,40 Z", lakeAt: [606, 70],
+    trees: [[78, 96], [100, 110], [58, 122], [88, 140], [122, 88], [380, 250], [404, 268], [428, 246], [452, 276], [410, 300],
+      [300, 40], [324, 54], [276, 58], [560, 300], [584, 318], [536, 320]],
+    north: [40, 40]
+  },
+  tall: {
+    w: 340, h: 532,
+    at: { trailhead: [60, 70], lodge: [170, 360], bulletin: [250, 450], guide: [120, 500] },
+    stops: [[150, 135], [250, 180], [200, 250], [90, 290]],
+    label: { trailhead: [26, 5, "start"], lodge: [26, -6, "start"], bulletin: [0, 38, "middle"], guide: [-26, 5, "end"] },
+    path: {
+      start: "M60,70 C95,100 120,125 150,135",
+      trail: "M150,135 C190,148 240,155 250,180 C262,210 225,230 200,250 C170,273 110,265 90,290 C75,315 120,350 170,360",
+      after: "M170,360 C220,370 255,410 250,450"
+    },
+    lake: "M22,392 C40,370 98,374 116,396 C132,416 120,452 86,458 C56,463 26,450 20,428 C16,414 14,402 22,392 Z", lakeAt: [68, 424],
+    trees: [[240, 74], [262, 90], [226, 98], [20, 190], [42, 208], [18, 230], [282, 290], [304, 308], [276, 330], [290, 500], [314, 516]],
+    north: [312, 40]
+  }
+};
+
+/* Where the reader is, and which stops they've opened. "You are here"
+   moves to the last stop or place opened; it never slides. */
+const here = { at: "trailhead", seen: new Set() };
+
+function drawMap(M) {
+  const W = shared.map, picked = !!trails[st.trail];
+  const kindOf = key => key === "care" ? shared.care : (trails[st.trail] || Object.values(trails)[0])[key];
+  const stopKeys = TRAIL_ORDER.filter(kindOf).slice(0, M.stops.length);
+  const pos = key => M.at[key] || M.stops[stopKeys.indexOf(key)];
+  const line = (d, color, dashed) => `<path d="${d}" fill="none" style="stroke:${color}" stroke-width="${dashed ? 5 : 6}" stroke-linecap="round"${dashed ? ' stroke-dasharray="2 11"' : ""}/>`;
+  const trail = picked
+    ? line(M.path.start, "var(--park)") + line(M.path.trail, "var(--trail)") + line(M.path.after, "var(--lodge)")
+    : line(`${M.path.start} ${M.path.trail.replace(/^M[\d.,]+/, "")} ${M.path.after.replace(/^M[\d.,]+/, "")}`, "#64748B", true);
+  const stops = stopKeys.map((key, i) => {
+    const [x, y] = M.stops[i], seen = picked && here.seen.has(key);
+    const stroke = picked ? "var(--trail)" : "#64748B";
+    const fillC = seen ? "var(--trail)" : "#fff", textC = seen ? "var(--trail-on)" : (picked ? "var(--trail-text)" : "#475569");
+    const shape = kindOf(key).exhibit === "rest"
+      ? `<circle cx="${x}" cy="${y}" r="15" style="fill:${fillC};stroke:${stroke}" stroke-width="4"/>`
+      : `<rect x="${x - 13}" y="${y - 15}" width="26" height="30" rx="4" style="fill:${fillC};stroke:${stroke}" stroke-width="4"/>`;
+    return `${shape}<text x="${x}" y="${y + 5}" class="map-num" text-anchor="middle" style="fill:${textC}">${i + 1}</text>`;
+  }).join("");
+  const places = Object.entries(P).filter(([key]) => M.at[key]).map(([key, pl]) => {
+    const [x, y] = M.at[key], [dx, dy, anchor] = M.label[key];
+    const box = pl.offTrail
+      ? `<rect x="${x - 17}" y="${y - 17}" width="34" height="34" rx="7" style="fill:var(--note-tint);stroke:var(--note)" stroke-width="2" stroke-dasharray="4 3"/>`
+      : `<rect x="${x - 17}" y="${y - 17}" width="34" height="34" rx="7" style="fill:var(--map-${key})"/>`;
+    return `${box}<use href="#${pl.icon}" x="${x - 11}" y="${y - 11}" width="22" height="22" style="color:${pl.offTrail ? "var(--note)" : "#fff"}"/>
+      <text x="${x + dx}" y="${y + dy}" class="map-name" text-anchor="${anchor}">${fmt(pl.name)}</text>`;
+  }).join("");
+  /* "You are here": a tag just above the spot you're at, pointing down
+     at it, kept inside the map. */
+  const [px, py] = pos(here.at) || M.at.trailhead, tip = py - 18;
+  const bx = Math.min(Math.max(px - 52, 4), M.w - 108);
+  const pin = `<path d="M${px - 7},${tip - 8} L${px + 7},${tip - 8} L${px},${tip} Z" style="fill:var(--text-primary)"/>
+    <rect x="${bx}" y="${tip - 34}" width="104" height="26" rx="13" style="fill:var(--text-primary)"/>
+    <text x="${bx + 52}" y="${tip - 16}" class="map-here" text-anchor="middle">${fmt(W.here)}</text>`;
+  const [nx, ny] = M.north;
+  return `<svg class="map-${M === MAPS.wide ? "wide" : "tall"}" viewBox="0 0 ${M.w} ${M.h}" focusable="false">
+    <path d="${M.lake}" class="map-lake"/><text x="${M.lakeAt[0]}" y="${M.lakeAt[1]}" class="map-lake-name" text-anchor="middle">${fmt(W.lake)}</text>
+    ${M.trees.map(([x, y]) => `<use href="#i-tree" x="${x}" y="${y}" width="20" height="22"/>`).join("")}
+    ${trail}${stops}${places}${pin}
+    <circle cx="${nx}" cy="${ny}" r="18" class="map-north"/><path d="M${nx},${ny - 13} L${nx + 6},${ny + 5} L${nx},${ny + 1} L${nx - 6},${ny + 5} Z" style="fill:var(--text-secondary)"/>
+    <text x="${nx}" y="${ny + 34}" class="map-n" text-anchor="middle">${fmt(W.north)}</text></svg>`;
 }
+
+/* The route strip: the map's key. Each place is a button that takes you
+   there; the place you're at says so for screen readers. */
+const placeOf = at => P[at] ? at : "trail";
+function routeStrip() {
+  const now = placeOf(here.at);
+  return Object.entries(P).map(([key, pl]) =>
+    `<li class="route-${key}"><button type="button" class="route-btn" data-go="place-${key}"${key === now ? ' aria-current="location"' : ""}>
+      <span class="route-icon" aria-hidden="true">${icon(pl.icon)}</span><span><b class="route-name">${fmt(pl.name)}</b><span class="route-text">${fmt(pl.route)}</span></span></button></li>`).join("");
+}
+
+function drawBearings() {
+  const map = $("parkMap"), route = $("route");
+  if (map) map.innerHTML = drawMap(MAPS.wide) + drawMap(MAPS.tall);
+  if (route) route.innerHTML = routeStrip();
+}
+
+/* Where each key button goes. A place that isn't on the page yet (no
+   trail picked) sends you to the trail picker. */
+const placeTarget = key => ({ trailhead: $("trailhead"), trail: $("trailStops") && $("trailStops").children.length ? $("trailStops") : null,
+  lodge: $("lodge"), bulletin: $("bulletin"), guide: $("guide") }[key]) || $("pick");
 
 $("todo").innerHTML = `<p class="sub">${fmt(trailhead.todoTitle)}</p>${trailhead.intro.map(t => `<p>${fmt(t)}</p>`).join("")}`;
 
@@ -231,7 +337,9 @@ function renderLodge() {
   /* Its cover names the reader's trail and exhibit, each on its own line,
      with one line on how to use it and Print right there. Its parts
      follow, and Print comes again at the end. */
-  const guide = `<li class="stop is-guide" id="guide"><span class="marker" aria-hidden="true">${icon(PG.icon)}</span>
+  /* The booklet you take with you: after the Bulletin Board, off the
+     trail line. */
+  const guide = `<li class="stop is-guide off-trail" id="guide">
     <div class="guide-card">
       <div class="guide-cover"><div><p class="place-eyebrow">${fmt(PG.eyebrow)}</p><p class="place-title">${fmt(PG.title)}</p>
         <p class="guide-for"><span class="blaze" style="background:var(--${c.key.toLowerCase()}-color)" aria-hidden="true"></span>The ${c.key} Trail</p>
@@ -257,7 +365,7 @@ function renderLodge() {
       </ul>
       <div class="keep" id="keep" hidden>${farewell}${savePanel("saveEnd")}${printRow}</div>`);
 
-  line.innerHTML = lodge + guide + bulletin;
+  line.innerHTML = lodge + bulletin + guide;
 }
 
 /* The trail line, markers, and "your trail" touches take the picked
@@ -278,10 +386,14 @@ function render(trailChanged = true) {
   paintTrail();
   if (trailChanged) renderTrail();
   renderLodge();
+  drawBearings();
   /* The frame's own address keeps the spot too, as #green-water. */
   history.replaceState(null, "", spot() ? "#" + spot() : location.pathname);
   document.querySelectorAll(".save-link").forEach(i => { i.value = spotUrl(); });
 }
+
+/* Moves "You are here" and redraws only the map and its key. */
+function moveHere(at) { here.at = at; drawBearings(); }
 
 /* ---------- Events (one listener each, so re-rendered parts just work) ---------- */
 
@@ -313,19 +425,22 @@ document.addEventListener("click", e => {
   const b = e.target.closest("button");
   if (!b) return;
   if (b.dataset.trail) {
-    st.trail = b.dataset.trail; render();
+    st.trail = b.dataset.trail; here.at = "trailhead"; here.seen.clear(); render();
     /* Bring stop 1 (or the "still being built" note) into view, keeping
        the picked row in sight where the screen allows. */
     const next = trails[st.trail] ? $("trailStops") : $("trailBox");
     if (next) next.scrollIntoView({ behavior: "smooth", block: "nearest" });
     return;
   }
-  if (b.dataset.exhibit) { st.exhibit = b.dataset.exhibit; render(false); go($("exhibitOpen")); return; }
+  if (b.dataset.exhibit) { st.exhibit = b.dataset.exhibit; here.at = "lodge"; render(false); go($("exhibitOpen")); return; }
   if (b.classList.contains("find-btn")) {
     const r = $(b.getAttribute("aria-controls")); r.hidden = !r.hidden;
     b.setAttribute("aria-expanded", String(!r.hidden)); return;
   }
   const to = b.dataset.go;
+  if (to && to.startsWith("place-")) { go(placeTarget(to.slice(6))); return; }
+  if (to === "lodge" || to === "trailhead") moveHere(to);
+  if (to === "keep") moveHere("bulletin");
   if (to === "lodge") go($("lodge"));
   if (to === "trailhead") go($("pick"));
   if (to === "keep") { const k = $("keep"); k.hidden = !k.hidden; b.setAttribute("aria-expanded", String(!k.hidden)); }
@@ -343,15 +458,22 @@ document.addEventListener("input", e => {
   if (e.target.matches("textarea.note")) store.set(e.target.dataset.note, e.target.value);
 });
 
-/* A stop's marker fills in only while it's open. */
+/* A stop's marker fills in only while it's open. Opening a stop or a
+   part of a place also moves "You are here" on the map. */
 document.addEventListener("toggle", e => {
-  if (e.target.tagName === "DETAILS" && e.target.parentNode.classList.contains("stop")) e.target.parentNode.classList.toggle("is-open", e.target.open);
+  if (e.target.tagName !== "DETAILS") return;
+  if (e.target.parentNode.classList.contains("stop")) e.target.parentNode.classList.toggle("is-open", e.target.open);
+  if (!e.target.open) return;
+  const s = e.target.closest("#trailStops > .stop");
+  if (s) { here.seen.add(s.dataset.stop); moveHere(s.dataset.stop); return; }
+  const pl = e.target.closest("#lodge, #bulletin, #guide");
+  if (pl) moveHere(pl.id);
 }, true);
 
 /* Direct links: ?spot=green-water (from the site), or #green-water. */
 const [hTrail, hExhibit] = (new URLSearchParams(location.search).get("spot") || location.hash.slice(1)).split("-");
 const k = COLORS.find(c => c.key.toLowerCase() === (hTrail || "").toLowerCase());
-if (k) { st.trail = k.key; if (topicOf(hExhibit)) st.exhibit = hExhibit; }
+if (k) { st.trail = k.key; if (topicOf(hExhibit)) { st.exhibit = hExhibit; here.at = "lodge"; } }
 render();
 if (k) go(st.exhibit && trails[st.trail] ? $("exhibitOpen") : $("trailStops"));
 

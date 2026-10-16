@@ -95,6 +95,8 @@ const BLOCKS = {
   teaser: (b, ctx) => { const t = ctx.topic(); return `<p>${fmt(t.teaser)}</p>${sources([t.src])}`; },
 
   /* The places on the map, as a route strip: the Trailhead's key. */
+  /* The park map, drawn by the page from the places and stops. */
+  map: (b, ctx) => ctx.map(),
   route: (b, ctx) => ctx.route(),
 
   /* Buttons for the other trails, keeping the current exhibit. */

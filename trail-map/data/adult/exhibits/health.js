@@ -67,7 +67,7 @@ export default {
           "Who near me is most at risk on a very hot day?"
         ] }
       ],
-      ahead: "Your Field Guide, to take into your own community."
+      ahead: "The Bulletin Board, where you choose what comes next."
     }
   },
 

@@ -67,7 +67,7 @@ export default {
           "Who near me lives in housing that's hard to keep cool or dry?"
         ] }
       ],
-      ahead: "Your Field Guide, to take into your own community."
+      ahead: "The Bulletin Board, where you choose what comes next."
     }
   },
 

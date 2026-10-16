@@ -66,7 +66,7 @@ export default {
           "Who helped, and who needed help?"
         ] }
       ],
-      ahead: "Your Field Guide, to take into your own community."
+      ahead: "The Bulletin Board, where you choose what comes next."
     }
   },
 

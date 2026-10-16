@@ -67,7 +67,7 @@ export default {
           "Who in my community fishes, hunts, or works outdoors?"
         ] }
       ],
-      ahead: "Your Field Guide, to take into your own community."
+      ahead: "The Bulletin Board, where you choose what comes next."
     }
   },
 

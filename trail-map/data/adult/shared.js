@@ -16,11 +16,18 @@ export default {
     trail: { name: "Trail", icon: "i-trail", route: "Four stops about your way of helping." },
     lodge: { name: "Lodge", icon: "i-lodge", route: "Pick an exhibit on a topic you care about.",
       eyebrow: "You made it!", title: "The Lodge", sub: "Exhibits on nine community action topics" },
-    guide: { name: "Field Guide", icon: "i-guide", route: "Yours to keep.",
-      eyebrow: "Yours to keep", title: "Field Guide" },
     bulletin: { name: "Bulletin Board", icon: "i-board", route: "Choose what's next.",
-      eyebrow: "End of the trail", title: "Bulletin Board", sub: "Where to go from here" }
+      eyebrow: "End of the trail", title: "Bulletin Board", sub: "Where to go from here" },
+    /* Not a place on the trail: the booklet you take with you, after the
+       Bulletin Board. On the map it sits beside the trail's end. */
+    guide: { name: "Field Guide", icon: "i-guide", route: "Yours to keep.",
+      eyebrow: "Yours to keep", title: "Field Guide", offTrail: true }
   },
+
+  /* The park map at the Trailhead: a picture of the places above, for
+     getting your bearings. Screen readers skip it; the route strip under
+     it says the same in words, and marks where you are. */
+  map: { here: "You are here", lake: "Lake", north: "N" },
 
   care: {
     exhibit: "sign",
@@ -96,8 +103,8 @@ export default {
       think: "Something to try right where you are.",
       tryIt: "Other ways to help, beside yours.",
       others: "Where to find work close to home.",
-      nearby: "Your first step.",
-      first: "The Bulletin Board, where you choose what comes next."
+      nearby: "Your first step."
+      /* The last part: nothing comes after it. */
     },
     print: "Print your Field Guide",
     printHelp: "Prints this guide only, with your notes. If the button doesn't work here, use your browser's Print command."
