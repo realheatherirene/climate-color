@@ -100,7 +100,7 @@ export default {
         link: { name: "Volunteer with the National Park Service", url: "https://nps.gov/volunteer", reach: "United States only" }
       } },
       { resources: [
-        { verb: "Find", name: "an accredited land trust", url: "https://www.landtrustaccreditation.org/land-trust-locator", reach: "United States only", desc: "The Land Trust Accreditation Commission's locator. Search near an address, by name, or on a map for local groups that protect land." }
+        { verb: "Find", name: "a land trust near you", url: "https://landtrustalliance.org/land-trusts/explore", reach: "United States only", desc: "From the Land Trust Alliance. Browse by state, or narrow the list to land trusts with trails, public access, or volunteer opportunities." }
       ], label: false },
       { say: [
         { where: "At a nature center", words: "Do you need volunteers for plantings or cleanups?" },
