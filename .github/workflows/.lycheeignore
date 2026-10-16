@@ -1,0 +1,7 @@
+# Links the weekly check skips, one pattern per line.
+# Font files and saved copies are checked other ways.
+^https://fonts\.googleapis\.com
+^https://fonts\.gstatic\.com
+^https://web\.archive\.org/
+# Sites that turn away automatic checks but work for people: add them
+# here after checking them by hand, so they don't cause false alarms.
