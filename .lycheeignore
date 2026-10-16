@@ -5,3 +5,6 @@
 ^https://web\.archive\.org/
 # Sites that turn away automatic checks but work for people: add them
 # here after checking them by hand, so they don't cause false alarms.
+# Checked by hand October 16, 2026; these sites turn away automatic checks.
+^https://www\.birdcount\.org/
+^https://fema\.gov/sites/default/files/documents/fema_preptalks_aldrich_discussion-guide\.pdf
