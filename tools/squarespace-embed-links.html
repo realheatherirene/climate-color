@@ -15,7 +15,7 @@
      and the Climate Color page inside it is an embedded box with its own
      address, which doesn't know about the link. This script copies those
      settings from the page's address onto every Climate Color box on the
-     page (any iframe whose address contains /stewardship-wheel/, the
+     page (any iframe whose address contains /climate-color/, the
      repo's name). With neither in the address it does nothing.
      ========================================================================== -->
 <script>
@@ -26,7 +26,7 @@
   var frames = document.getElementsByTagName("iframe");
   for (var i = 0; i < frames.length; i++) {
     var src = frames[i].getAttribute("src") || "";
-    if (src.indexOf("/stewardship-wheel/") === -1) continue;
+    if (src.indexOf("/climate-color/") === -1) continue;
     var url = new URL(src, window.location.href);
     pass.forEach(function (k) { url.searchParams.set(k, params.get(k)); });
     frames[i].src = url.href.replace(/%2C/g, ",");
