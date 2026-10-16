@@ -447,6 +447,19 @@ textarea:focus-visible {
     border-color: var(--lodge);
 }
 
+/* Each exhibit's topic icon, sized to sit beside its name. */
+.opt-icon {
+    display: grid;
+    place-items: center;
+    color: var(--lodge);
+    margin-top: 0.1rem;
+}
+
+.opt-icon svg {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
 @media (min-width: 700px) {
     .exhibits {
         grid-template-columns: repeat(3, minmax(0, 1fr));
