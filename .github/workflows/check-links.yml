@@ -1,0 +1,62 @@
+# Checks every outside link in the Trail Map once a week.
+# If a link is broken, it opens an issue in this repo that lists each
+# broken link and the file it's in, and GitHub emails you. When every
+# link works, nothing happens.
+# It also makes sure every source has a saved copy on the Wayback
+# Machine, so the "archived copy" links keep working.
+# To run it any time: Actions tab > Check links > Run workflow.
+
+name: Check links
+
+on:
+  schedule:
+    - cron: "52 13 * * 1"   # Mondays at 8:52 a.m. Central (7:52 in winter)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check every link
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --max-retries 3
+            --timeout 30
+            --max-concurrency 8
+            --accept 200..=299,429
+            --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+            "trail-map/**/*.js"
+            "trail-map/*.html"
+          output: ./lychee/out.md
+          fail: false
+
+      - name: Open an issue if a link is broken
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: Broken links in the Trail Map
+          content-filepath: ./lychee/out.md
+          labels: broken-links
+
+      - name: Save a Wayback Machine copy of any source that lacks one
+        continue-on-error: true
+        run: |
+          grep -rhoE 'archive: "https://web\.archive\.org/web/2026/[^"]+"' trail-map/data \
+            | sed -E 's#.*web/2026/##; s#"$##' | sort -u > sources.txt
+          while read -r url; do
+            if curl -s --max-time 30 "https://archive.org/wayback/available?url=$url" | grep -q '"available": *true'; then
+              echo "has a copy: $url"
+            else
+              curl -s -o /dev/null --max-time 120 -w "%{http_code} saved: $url\n" "https://web.archive.org/save/$url" || true
+              sleep 20
+            fi
+          done < sources.txt
