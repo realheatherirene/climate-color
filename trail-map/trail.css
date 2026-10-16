@@ -19,7 +19,14 @@
    ========================================================================== */
 
 :root {
+    --park: var(--green-color);        /* the park's own green: the Trailhead */
+    --park-tint: var(--green-tint-1);
+    /* The reader's trail. Green until a trail is picked; then trail.js
+       sets all four from the picked color (core/atlas.css tokens). */
     --trail: var(--green-color);       /* the trail line and its stops */
+    --trail-text: var(--green-text);   /* the trail's color, as readable text */
+    --trail-tint: var(--green-tint-1);
+    --trail-on: #fff;                  /* text on the trail's color */
     --lodge: #0F7393;                  /* the Lodge: 4.5:1 or better on white */
     --lodge-tint: #E1F1F7;
     --board: #4A3422;                  /* the Bulletin Board: wood brown */
@@ -135,7 +142,13 @@ dd {
     height: 1.4rem;
 }
 
+.route-trailhead { --route: var(--park); }
 .route-lodge    { --route: var(--lodge); }
+
+/* The trail's own icon takes the reader's trail color once one is picked. */
+.route-trail .route-icon {
+    color: var(--trail-on);
+}
 .route-bulletin { --route: var(--board); }
 
 /* The Field Guide is received, not a place: a dashed outline. */
@@ -226,7 +239,7 @@ dd {
     border: 4px solid var(--trail);
     border-radius: 5px;
     background: var(--bg-primary);
-    color: var(--trail);
+    color: var(--trail-text);
     font-weight: 700;
     font-size: 0.95rem;
     font-variant-numeric: tabular-nums;
@@ -234,7 +247,7 @@ dd {
 
 .stop.is-open > .marker {
     background: var(--trail);
-    color: #fff;
+    color: var(--trail-on);
 }
 
 /* Rest and Reflect: the same colors, a round marker. */
@@ -401,7 +414,7 @@ textarea:focus-visible {
 }
 
 .opt[aria-pressed="true"] {
-    background: var(--green-tint-1);
+    background: var(--trail-tint);
     border-color: var(--trail);
 }
 
@@ -476,7 +489,7 @@ textarea:focus-visible {
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--green-text);
+    color: var(--trail-text);
     vertical-align: 0.1rem;
 }
 
@@ -507,7 +520,7 @@ textarea:focus-visible {
    colored sign over a light board. One --place color sets each one.
    ========================================================================== */
 
-.place.is-trailhead { --place: var(--trail);   --place-tint: var(--green-tint-1); }
+.place.is-trailhead { --place: var(--park);    --place-tint: var(--park-tint); }
 .place.is-lodge     { --place: var(--lodge);   --place-tint: var(--lodge-tint); }
 .place.is-board     { --place: var(--board);   --place-tint: var(--board-tint); }
 
@@ -596,6 +609,7 @@ textarea:focus-visible {
 
 .place.is-trailhead::before {
     top: 3rem;
+    background: var(--park);
 }
 
 /* The Bulletin Board ends the trail: the line arrives from above and
@@ -789,7 +803,7 @@ textarea:focus-visible {
 }
 
 .ways-list li.mine {
-    background: var(--green-tint-1);
+    background: var(--trail-tint);
 }
 
 .ways-list .odesc {
@@ -801,7 +815,7 @@ textarea:focus-visible {
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--green-text);
+    color: var(--trail-text);
 }
 
 
@@ -901,7 +915,7 @@ ul.plain li {
 .actions dt,
 .defs dt {
     font-weight: 700;
-    color: var(--green-text);
+    color: var(--trail-text);
 }
 
 .actions dd,
@@ -1170,8 +1184,8 @@ ul.plain li {
 
 .mark-stop,
 .mark-rest {
-    border: 3px solid var(--trail);
-    color: var(--trail);
+    border: 3px solid var(--park);
+    color: var(--park);
 }
 
 .mark-stop {
@@ -1299,15 +1313,16 @@ ul.plain li {
 }
 
 .way.on:hover {
-    background: var(--green-tint-1);
+    background: var(--trail-tint);
 }
 
 .way.on .dir {
     background: var(--trail);
+    color: var(--trail-on);
 }
 
 .way.on svg {
-    color: var(--trail);
+    color: var(--trail-text);
 }
 
 .keep {

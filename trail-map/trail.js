@@ -12,7 +12,7 @@
    use, passed in by tools/squarespace-embed-links.html), or #green-water.
    ========================================================================== */
 
-import { COLORS, COLOR_KEYS, getColor, SITE } from "../core/climate-color.js";
+import { COLORS, COLOR_KEYS, getColor, cssVar, SITE } from "../core/climate-color.js";
 import { TITLES, TRAIL_ORDER, EXHIBIT_ORDER, GUIDE_ORDER } from "./titles.js";
 import { renderStop, renderBlocks, fmt, icon } from "./exhibits.js";
 
@@ -256,7 +256,22 @@ function renderLodge() {
   line.innerHTML = lodge + guide + bulletin;
 }
 
+/* The trail line, markers, and "your trail" touches take the picked
+   trail's color, from the shared tokens in core/atlas.css. Text on that
+   color follows the Wheel's own rule (each color's `label`), so Yellow
+   and Orange get dark numbers. With no trail picked, trail.css's green
+   defaults apply. */
+const TEXT_ON = { black: "var(--text-primary)", white: "#fff" };
+function paintTrail() {
+  const root = document.documentElement.style;
+  const props = { "--trail": "color", "--trail-text": "text", "--trail-tint": "tint-1" };
+  if (!st.trail) { [...Object.keys(props), "--trail-on"].forEach(p => root.removeProperty(p)); return; }
+  Object.entries(props).forEach(([p, kind]) => root.setProperty(p, `var(${cssVar(st.trail, kind)})`));
+  root.setProperty("--trail-on", TEXT_ON[getColor(st.trail).label] || "#fff");
+}
+
 function render(trailChanged = true) {
+  paintTrail();
   if (trailChanged) renderTrail();
   renderLodge();
   /* The frame's own address keeps the spot too, as #green-water. */
