@@ -890,6 +890,12 @@ textarea:focus-visible {
     color: var(--text-secondary);
 }
 
+/* The saved copy beside a source: smaller and quieter than the source. */
+.archived {
+    font-size: 0.85em;
+    white-space: nowrap;
+}
+
 a.ext svg {
     width: 0.95rem;
     height: 0.95rem;

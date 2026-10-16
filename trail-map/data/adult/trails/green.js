@@ -4,7 +4,7 @@
    plus its story and its "Try it now" for the Field Guide.
    Adult pack: grade 9 reading level or lower. */
 
-const FEMA = { title: "FEMA PrepTalks: Daniel Aldrich, Social Capital in Disaster Mitigation and Recovery", url: "https://fema.gov/sites/default/files/documents/fema_preptalks_aldrich_discussion-guide.pdf" };
+const FEMA = { title: "FEMA PrepTalks: Daniel Aldrich, Social Capital in Disaster Mitigation and Recovery", url: "https://fema.gov/sites/default/files/documents/fema_preptalks_aldrich_discussion-guide.pdf", archive: "https://web.archive.org/web/2026/https://fema.gov/sites/default/files/documents/fema_preptalks_aldrich_discussion-guide.pdf" };
 const PROSPECT = { title: "Casey Sanchez, \"Gulf Coast Notebook,\" The American Prospect, February 2009", url: "https://prospect.org/2009/02/17/gulf-coast-notebook/" };
 
 export default {
@@ -49,7 +49,7 @@ export default {
   community: {
     exhibit: "sign",
     blocks: [
-      { quote: { text: "Social ties are the critical aspect of resilience.", who: "Daniel Aldrich, disaster researcher", src: { title: "FEMA PrepTalks", url: FEMA.url } } },
+      { quote: { text: "Social ties are the critical aspect of resilience.", who: "Daniel Aldrich, disaster researcher", src: { title: "FEMA PrepTalks", url: FEMA.url, archive: FEMA.archive } } },
       { p: "Connecting isn't only about the people you already know. In a community, Connectors build the ties that help everyone get through hard times." },
       { sub: "Three kinds of ties" },
       { p: "Aldrich describes three kinds of social ties:" },

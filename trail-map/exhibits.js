@@ -32,7 +32,13 @@ const ext = (url, name) =>
   `<a class="ext" href="${esc(url)}" target="_blank" rel="noopener">${fmt(name)}${icon("i-ext")}</a>`;
 const label = (id, word, cls = "") =>
   `<p class="lab ${cls}"><span class="badge" aria-hidden="true">${icon(id)}</span>${word}</p>`;
-const sources = list => `<p class="cite">Source${list.length > 1 ? "s" : ""}: ${list.map(s => ext(s.url, s.title)).join(" · ")}</p>`;
+/* A source: the live link, then its saved copy on the Wayback Machine when
+   it has one, so a source that goes offline can still be read. The
+   label comes from the content pack (setArchivedLabel). */
+let ARCHIVED = "archived copy";
+export const setArchivedLabel = word => { ARCHIVED = word; };
+const source = s => ext(s.url, s.title) + (s.archive ? ` <span class="archived">(${ext(s.archive, ARCHIVED)})</span>` : "");
+const sources = list => `<p class="cite">Source${list.length > 1 ? "s" : ""}: ${list.map(source).join(" · ")}</p>`;
 const tag = type => `<p class="exhibit tag">${icon(EXHIBITS[type].icon)}${EXHIBITS[type].label}</p>`;
 const check = inner => `<label class="check"><input type="checkbox"><span>${inner}</span></label>`;
 
@@ -45,7 +51,7 @@ const BLOCKS = {
   cite: b => sources(b.cite),
 
   quote: b => `<figure class="quote">${tag("quote")}<blockquote>${fmt(b.quote.text)}</blockquote>
-    <figcaption>${fmt(b.quote.who)}, ${ext(b.quote.src.url, b.quote.src.title)}</figcaption></figure>`,
+    <figcaption>${fmt(b.quote.who)}, ${source(b.quote.src)}</figcaption></figure>`,
 
   defs: b => `<dl class="defs">${b.defs.map(d => `<dt>${fmt(d.term)}</dt><dd>${fmt(d.def)}</dd>`).join("")}</dl>`,
 

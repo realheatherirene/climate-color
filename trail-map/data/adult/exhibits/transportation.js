@@ -3,7 +3,7 @@
    Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_TRANSPORTATION = { title: "Fifth National Climate Assessment, Ch. 13: Transportation, 2023", url: "https://toolkit.climate.gov/NCA5_Ch13_Transportation" };
+const NCA5_TRANSPORTATION = { title: "Fifth National Climate Assessment, Ch. 13: Transportation, 2023", url: "https://toolkit.climate.gov/NCA5_Ch13_Transportation", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch13_Transportation" };
 
 export default {
   key: "transportation",

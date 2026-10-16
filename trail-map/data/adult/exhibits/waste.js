@@ -6,10 +6,10 @@
 /* The assessment says little about waste, so this exhibit also cites two
    EPA pages and the assessment's health chapter, each under the part it
    supports. */
-const NCA5_MITIGATION = { title: "Fifth National Climate Assessment, Ch. 32: Mitigation, 2023", url: "https://toolkit.climate.gov/NCA5_Ch32_Mitigation" };
-const NCA5_HEALTH = { title: "Fifth National Climate Assessment, Ch. 15: Human Health, 2023", url: "https://toolkit.climate.gov/NCA5_Ch15_Human-Health" };
-const EPA_FOOD = { title: "EPA: Reducing Wasted Food at Home", url: "https://www.epa.gov/recycle/reducing-wasted-food-home" };
-const EPA_LANDFILL = { title: "EPA: Basic Information about Landfill Gas", url: "https://www.epa.gov/lmop/basic-information-about-landfill-gas" };
+const NCA5_MITIGATION = { title: "Fifth National Climate Assessment, Ch. 32: Mitigation, 2023", url: "https://toolkit.climate.gov/NCA5_Ch32_Mitigation", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch32_Mitigation" };
+const NCA5_HEALTH = { title: "Fifth National Climate Assessment, Ch. 15: Human Health, 2023", url: "https://toolkit.climate.gov/NCA5_Ch15_Human-Health", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch15_Human-Health" };
+const EPA_FOOD = { title: "EPA: Reducing Wasted Food at Home", url: "https://www.epa.gov/recycle/reducing-wasted-food-home", archive: "https://web.archive.org/web/2026/https://www.epa.gov/recycle/reducing-wasted-food-home" };
+const EPA_LANDFILL = { title: "EPA: Basic Information about Landfill Gas", url: "https://www.epa.gov/lmop/basic-information-about-landfill-gas", archive: "https://web.archive.org/web/2026/https://www.epa.gov/lmop/basic-information-about-landfill-gas" };
 
 export default {
   key: "waste",

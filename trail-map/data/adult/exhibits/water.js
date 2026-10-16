@@ -4,7 +4,7 @@
    appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_WATER = { title: "Fifth National Climate Assessment, Ch. 4: Water, 2023", url: "https://toolkit.climate.gov/NCA5_Ch4_Water" };
+const NCA5_WATER = { title: "Fifth National Climate Assessment, Ch. 4: Water, 2023", url: "https://toolkit.climate.gov/NCA5_Ch4_Water", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch4_Water" };
 
 export default {
   key: "water",

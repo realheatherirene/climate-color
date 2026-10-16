@@ -4,7 +4,7 @@
    plus its story and its "Try it now" for the Field Guide.
    Adult pack: grade 9 reading level or lower. */
 
-const BAIN = { title: "Bain and others, 2016, Nature Climate Change, via the University of Bath", url: "https://researchportal.bath.ac.uk/en/publications/co-benefits-of-addressing-climate-change-can-motivate-action-arou/" };
+const BAIN = { title: "Bain and others, 2016, Nature Climate Change, via the University of Bath", url: "https://researchportal.bath.ac.uk/en/publications/co-benefits-of-addressing-climate-change-can-motivate-action-arou/", archive: "https://web.archive.org/web/2026/https://researchportal.bath.ac.uk/en/publications/co-benefits-of-addressing-climate-change-can-motivate-action-arou/" };
 const FINLEY = { title: "Ron Finley, \"They Tried to Arrest Me for Planting Carrots,\" Fortune, February 25, 2015", url: "https://fortune.com/2015/02/25/they-tried-to-arrest-me-for-planting-carrots" };
 
 export default {

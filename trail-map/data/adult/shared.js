@@ -4,7 +4,7 @@
    {words}, {exhibit}, {exhibitName}, {lower}, and {about}.
    Adult pack: grade 9 reading level or lower. */
 
-const SPARKMAN = { title: "Sparkman, Geiger & Weber, 2022", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9399177/" };
+const SPARKMAN = { title: "Sparkman, Geiger & Weber, 2022", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9399177/", archive: "https://web.archive.org/web/2026/https://pmc.ncbi.nlm.nih.gov/articles/PMC9399177/" };
 
 export default {
   /* The places on the map, in order: the one source for their names,
@@ -112,6 +112,10 @@ export default {
     trail: { dir: "Back to the Trailhead", label: "Try another trail", hint: "Stay with the {exhibitName} and pick a different way of helping. Your trail stops change to fit it." },
     keep: { dir: "Onward", label: "Take this with you", hint: "A few words to carry home, a link to come back to, and your Field Guide to print." }
   },
+
+  /* Beside each source: its saved copy on the Wayback Machine, in case
+     the source goes offline. */
+  sources: { archived: "archived copy" },
 
   /* Notes at rest stops and in the Field Guide. Kept with the browser's
      own storage, on this device only, and never sent anywhere. */

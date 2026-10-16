@@ -4,8 +4,8 @@
    plus its story and its "Try it now" for the Field Guide.
    Adult pack: grade 9 reading level or lower. */
 
-const YALE_SOLAR = { title: "Yale School of the Environment, October 24, 2018", url: "https://environment.yale.edu/news/article/want-to-nudge-others-to-install-solar-actions-speak-louder-than-words" };
-const ROUTE50 = { title: "Daniel C. Vock, Route Fifty, September 29, 2022", url: "https://www.route-fifty.com/infrastructure/2022/09/how-schools-bike-buses-won-over-students-and-charmed-internet/377863/" };
+const YALE_SOLAR = { title: "Yale School of the Environment, October 24, 2018", url: "https://environment.yale.edu/news/article/want-to-nudge-others-to-install-solar-actions-speak-louder-than-words", archive: "https://web.archive.org/web/2026/https://environment.yale.edu/news/article/want-to-nudge-others-to-install-solar-actions-speak-louder-than-words" };
+const ROUTE50 = { title: "Daniel C. Vock, Route Fifty, September 29, 2022", url: "https://www.route-fifty.com/infrastructure/2022/09/how-schools-bike-buses-won-over-students-and-charmed-internet/377863/", archive: "https://web.archive.org/web/2026/https://www.route-fifty.com/infrastructure/2022/09/how-schools-bike-buses-won-over-students-and-charmed-internet/377863/" };
 
 export default {
   key: "Yellow",

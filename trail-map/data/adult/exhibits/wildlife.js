@@ -3,7 +3,7 @@
    Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_WILDLIFE = { title: "Fifth National Climate Assessment, Ch. 8: Ecosystems, Ecosystem Services, and Biodiversity, 2023", url: "https://toolkit.climate.gov/NCA5_Ch8_Ecosystems" };
+const NCA5_WILDLIFE = { title: "Fifth National Climate Assessment, Ch. 8: Ecosystems, Ecosystem Services, and Biodiversity, 2023", url: "https://toolkit.climate.gov/NCA5_Ch8_Ecosystems", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch8_Ecosystems" };
 
 export default {
   key: "wildlife",

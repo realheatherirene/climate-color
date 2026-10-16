@@ -4,8 +4,8 @@
    plus its story and its "Try it now" for the Field Guide.
    Adult pack: grade 9 reading level or lower. */
 
-const YALE = { title: "Goldberg, van der Linden, Maibach & Leiserowitz, 2019, via the Yale Program on Climate Change Communication", url: "https://climatecommunication.yale.edu/publications/discussing-global-warming-leads-to-greater-acceptance-of-climate-science/" };
-const CNN = { title: "CNN, March 8, 2019", url: "https://edition.cnn.com/2019/03/08/us/climate-change-tv-weathercaster" };
+const YALE = { title: "Goldberg, van der Linden, Maibach & Leiserowitz, 2019, via the Yale Program on Climate Change Communication", url: "https://climatecommunication.yale.edu/publications/discussing-global-warming-leads-to-greater-acceptance-of-climate-science/", archive: "https://web.archive.org/web/2026/https://climatecommunication.yale.edu/publications/discussing-global-warming-leads-to-greater-acceptance-of-climate-science/" };
+const CNN = { title: "CNN, March 8, 2019", url: "https://edition.cnn.com/2019/03/08/us/climate-change-tv-weathercaster", archive: "https://web.archive.org/web/2026/https://edition.cnn.com/2019/03/08/us/climate-change-tv-weathercaster" };
 
 export default {
   key: "Blue",

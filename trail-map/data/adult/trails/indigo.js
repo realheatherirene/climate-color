@@ -4,8 +4,8 @@
    plus its story and its "Try it now" for the Field Guide.
    Adult pack: grade 9 reading level or lower. */
 
-const HESS = { title: "Hess and others, 2018, via Emory University", url: "https://open.library.emory.edu/concern/publications/82bff187-33e6-4db0-aa67-0d2af8bf6d6f" };
-const SEVENDAYS = { title: "Lauren Ober, Seven Days, September 9, 2011", url: "https://www.sevendaysvt.com/news/btv-lawyer-helps-flood-victims-and-proves-not-all-lawyers-are-jerks-2177020/" };
+const HESS = { title: "Hess and others, 2018, via Emory University", url: "https://open.library.emory.edu/concern/publications/82bff187-33e6-4db0-aa67-0d2af8bf6d6f", archive: "https://web.archive.org/web/2026/https://open.library.emory.edu/concern/publications/82bff187-33e6-4db0-aa67-0d2af8bf6d6f" };
+const SEVENDAYS = { title: "Lauren Ober, Seven Days, September 9, 2011", url: "https://www.sevendaysvt.com/news/btv-lawyer-helps-flood-victims-and-proves-not-all-lawyers-are-jerks-2177020/", archive: "https://web.archive.org/web/2026/https://www.sevendaysvt.com/news/btv-lawyer-helps-flood-victims-and-proves-not-all-lawyers-are-jerks-2177020/" };
 
 export default {
   key: "Indigo",

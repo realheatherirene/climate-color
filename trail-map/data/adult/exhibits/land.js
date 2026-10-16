@@ -3,7 +3,7 @@
    Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_LAND = { title: "Fifth National Climate Assessment, Ch. 7: Forests, 2023", url: "https://toolkit.climate.gov/NCA5_Ch7_Forests" };
+const NCA5_LAND = { title: "Fifth National Climate Assessment, Ch. 7: Forests, 2023", url: "https://toolkit.climate.gov/NCA5_Ch7_Forests", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch7_Forests" };
 
 export default {
   key: "land",

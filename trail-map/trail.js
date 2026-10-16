@@ -14,10 +14,11 @@
 
 import { COLORS, COLOR_KEYS, getColor, cssVar, SITE } from "../core/climate-color.js";
 import { TITLES, TRAIL_ORDER, EXHIBIT_ORDER, GUIDE_ORDER } from "./titles.js";
-import { renderStop, renderBlocks, fmt, icon } from "./exhibits.js";
+import { renderStop, renderBlocks, fmt, icon, setArchivedLabel } from "./exhibits.js";
 
 const pack = await import("./data/adult/index.js");
 const { trailhead, shared, topics, trails, exhibits } = pack;
+setArchivedLabel(shared.sources.archived);
 
 const $ = id => document.getElementById(id);
 const st = { trail: null, exhibit: null };

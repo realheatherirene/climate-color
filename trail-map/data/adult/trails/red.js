@@ -4,8 +4,8 @@
    plus its story and its "Try it now" for the Field Guide.
    Adult pack: grade 9 reading level or lower. */
 
-const NOBEL = { title: "The Nobel Prize, press release, October 12, 2009", url: "https://www.nobelprize.org/prizes/economic-sciences/2009/press-release/" };
-const LCN = { title: "The Lincoln County News, October 31, 2012", url: "https://lcnme.com/currentnews/national-weather-service-recognizes-newcastle-volunteer" };
+const NOBEL = { title: "The Nobel Prize, press release, October 12, 2009", url: "https://www.nobelprize.org/prizes/economic-sciences/2009/press-release/", archive: "https://web.archive.org/web/2026/https://www.nobelprize.org/prizes/economic-sciences/2009/press-release/" };
+const LCN = { title: "The Lincoln County News, October 31, 2012", url: "https://lcnme.com/currentnews/national-weather-service-recognizes-newcastle-volunteer", archive: "https://web.archive.org/web/2026/https://lcnme.com/currentnews/national-weather-service-recognizes-newcastle-volunteer" };
 
 export default {
   key: "Red",
