@@ -524,6 +524,11 @@ textarea:focus-visible {
 .place.is-lodge     { --place: var(--lodge);   --place-tint: var(--lodge-tint); }
 .place.is-board     { --place: var(--board);   --place-tint: var(--board-tint); }
 
+/* Past the trail, the line takes the color of the place you're in:
+   the trail's own color runs only from the Trailhead to the Lodge. */
+.place::before { background: var(--place); }
+.stop.is-guide::before { background: var(--note); }
+
 .place > .marker {
     border-color: var(--place);
     background: var(--place);

@@ -114,7 +114,10 @@ const S0 = shared.save;
 $("note").innerHTML = `<p>${fmt(trailhead.note)} ${fmt(S0.pace)}</p>
   <p><button type="button" class="pill-btn pill-all next-btn" data-go="copySpot">${fmt(S0.paceButton)}</button></p>`;
 $("footnote").textContent = trailhead.footnote;
-$("testNote").textContent = trailhead.testNote.replace("{trails}", trailsReady).replace("{exhibits}", exhibitsReady);
+/* The test note shows only while something is still being built. */
+const allBuilt = builtTrails.length === COLOR_KEYS.length && builtExhibits.length === topics.topics.length;
+$("testNote").hidden = allBuilt;
+if (!allBuilt) $("testNote").textContent = trailhead.testNote.replace("{trails}", trailsReady).replace("{exhibits}", exhibitsReady);
 
 $("trailheadMarker").innerHTML = icon(P.trailhead.icon);
 $("trailheadSign").outerHTML = sign(P.trailhead);
