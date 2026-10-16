@@ -5,6 +5,7 @@ export { default as trailhead } from "./trailhead.js";
 export { default as shared } from "./shared.js";
 export { default as topics } from "./topics.js";
 import green from "./trails/green.js";
+import blue from "./trails/blue.js";
 import water from "./exhibits/water.js";
-export const trails = { Green: green };
+export const trails = { Green: green, Blue: blue };
 export const exhibits = { water };

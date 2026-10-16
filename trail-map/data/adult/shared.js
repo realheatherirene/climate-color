@@ -46,8 +46,10 @@ export default {
     pickHint: "Each exhibit name suggests one community action topic—the personal, social, and environmental domains affected by climate change. You may care about all of them. Start with one, and come back for the others anytime.",
     /* How every topic is named, everywhere: "Water Exhibit." */
     exhibitName: "{exhibit} Exhibit",
-    notBuilt: "This exhibit is still being built. For now, the Water Exhibit is ready.",
-    tryReady: "Try the Water Exhibit"
+    /* {ready}, {verb}, and {name} are filled in from the exhibits that are
+       built. */
+    notBuilt: "This exhibit is still being built. For now, {ready} {verb} ready.",
+    tryReady: "Try the {name}"
   },
 
   /* The Field Guide: the same for everyone. The page fills in the

@@ -53,6 +53,10 @@ export default {
     Indigo: "sorting out what matters most, adjusting when things change, and helping people find their way"
   },
 
-  notBuilt: "This trail is still being built. For now, the Green Trail is ready.",
+  /* {ready} and {verb} are filled in from the trails that are built, so
+     these lines never need editing when a trail is added. */
+  notBuilt: "This trail is still being built. For now, {ready} {verb} ready.",
+  tryReady: "Try the {name} Trail",
+  testNote: "This map is still growing. For now, {trails} and {exhibits} are ready.",
   footnote: "How we choose resources: free, no account where possible, checked, and re-checked yearly. Climate Color isn't affiliated with these organizations. For now, the map lists resources in the United States only."
 };

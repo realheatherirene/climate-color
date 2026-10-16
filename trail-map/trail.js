@@ -67,6 +67,19 @@ const fill = (txt, c, tp) => txt.replace(/\{trail\}/g, c.key).replace(/\{action\
   .replace(/\{exhibit\}/g, tp ? tp.name : "").replace(/\{lower\}/g, tp ? tp.name.toLowerCase() : "")
   .replace(/\{about\}/g, tp ? tp.about : "");
 
+/* ---------- What's built: one source for every "for now" line ---------- */
+/* Lists the trails and exhibits that exist in the content pack, so
+   adding a trail or exhibit file updates every "still being built" note
+   and the test note on its own. */
+const listOf = n => n.length < 3 ? n.join(" and ") : `${n.slice(0, -1).join(", ")}, and ${n[n.length - 1]}`;
+const builtTrails = COLOR_KEYS.filter(k => trails[k]);
+const builtExhibits = topics.topics.filter(t => exhibits[t.key]);
+const trailsReady = "the " + (builtTrails.length === 1 ? `${builtTrails[0]} Trail` : `${listOf(builtTrails)} Trails`);
+const exhibitsReady = builtExhibits.length === 1 ? "the " + exhibitName(builtExhibits[0])
+  : `the ${listOf(builtExhibits.map(t => t.name))} Exhibits`;
+const isAre = n => n === 1 ? "is" : "are";
+const readyLine = (txt, ready, n) => txt.replace("{ready}", ready).replace("{verb}", isAre(n));
+
 /* ---------- Places: one source for names, icons, and signs ---------- */
 
 const P = shared.places;
@@ -101,6 +114,7 @@ const S0 = shared.save;
 $("note").innerHTML = `<p>${fmt(trailhead.note)} ${fmt(S0.pace)}</p>
   <p><button type="button" class="pill-btn pill-all next-btn" data-go="copySpot">${fmt(S0.paceButton)}</button></p>`;
 $("footnote").textContent = trailhead.footnote;
+$("testNote").textContent = trailhead.testNote.replace("{trails}", trailsReady).replace("{exhibits}", exhibitsReady);
 
 $("trailheadMarker").innerHTML = icon(P.trailhead.icon);
 $("trailheadSign").outerHTML = sign(P.trailhead);
@@ -150,7 +164,8 @@ function renderTrail() {
   const t = trails[st.trail];
   /* The picked row carries the "Your trail" tag; a box below appears
      only for a trail that isn't built yet. */
-  box.innerHTML = t ? "" : `<p class="not-built">${fmt(trailhead.notBuilt)}</p><button type="button" class="pill-btn pill-all next-btn" data-trail="Green">Try the Green Trail <span aria-hidden="true">&rarr;</span></button>`;
+  box.innerHTML = t ? "" : `<p class="not-built">${fmt(readyLine(trailhead.notBuilt, trailsReady, builtTrails.length))}</p>` +
+    builtTrails.map(k => `<button type="button" class="pill-btn pill-all next-btn" data-trail="${k}">${fmt(trailhead.tryReady.replace("{name}", k))} <span aria-hidden="true">&rarr;</span></button>`).join(" ");
   if (!t) { stops.innerHTML = ""; return; }
   let n = 1;
   const stopFor = key => key === "care" ? shared.care : t[key];
@@ -182,7 +197,7 @@ function renderLodge() {
       <p class="place-sub">${fmt(cap(tp.about))}</p></div>${icon(tp.icon, "place-icon")}</div>`;
     open = `<section class="exhibit-open" id="exhibitOpen" aria-label="${fmt(exhibitName(tp))}">${roomSign}` + (E
       ? `<div class="room-body"><p class="promise">${fmt(E.promise)}</p>${panel(EXHIBIT_ORDER.filter(k => E.parts[k]).map(k => [k, E.parts[k]]))}</div>`
-      : `<div class="room-body">${renderBlocks([{ teaser: true }], ctx)}<p class="not-built">${fmt(L.notBuilt)}</p><button type="button" class="pill-btn pill-all next-btn" data-exhibit="water">${fmt(L.tryReady)} <span aria-hidden="true">&rarr;</span></button></div>`) + `</section>`;
+      : `<div class="room-body">${renderBlocks([{ teaser: true }], ctx)}<p class="not-built">${fmt(readyLine(L.notBuilt, exhibitsReady, builtExhibits.length))}</p>${builtExhibits.map(x => `<button type="button" class="pill-btn pill-all next-btn" data-exhibit="${x.key}">${fmt(L.tryReady.replace("{name}", exhibitName(x)))} <span aria-hidden="true">&rarr;</span></button>`).join(" ")}</div>`) + `</section>`;
   }
 
   const lodge = place("lodge", "is-lodge", `<p>${fmt(f(L.welcome))}</p>
