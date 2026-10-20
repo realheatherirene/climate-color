@@ -186,7 +186,7 @@ export const WHEEL_TEXT = {
 export const SITE = {
   pathways: "https://climatecolor.com/pathways",
   wheel: "https://climatecolor.com/wheel",
-  trailMap: "https://trailmap.climatecolor.com"
+  trailMap: "https://stewardshiptrail.com"
 };
 
 /* A link to a page on the site with colors in it, in any order and
