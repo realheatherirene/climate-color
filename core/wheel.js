@@ -16,13 +16,16 @@
                  name with its archetype in smaller text beneath.
                  "brand": the full brand wheel. Same inner ring, plus an
                  outer ring with each color's three words.
-     links       A function, color key -> URL (usually pathwayUrl from
+     links       A function, color key -> URL (usually trailUrl from
                  core/climate-color.js). A tap on a wedge then opens that
                  color's card (core/color-card.js) under the wheel, with a
                  button to the URL, and the other five colors fade back.
-                 The button opens in the whole window, since the wheel
-                 sits inside a page the site embeds. A tap on white space,
-                 a second tap on the same color, or Escape closes the card.
+                 A tap on white space, a second tap on the same color, or
+                 Escape closes the card.
+     target      With links: the button's target ("" by default; "_top"
+                 when the wheel sits inside an embedded box).
+     open        With links: a color to open on arrival, e.g. from a link
+                 like ?color=green.
      panel       With links: an element elsewhere on the page to show the
                  card in, instead of under the wheel. The hint then stays
                  under the wheel.
@@ -300,7 +303,7 @@ export function renderWheel(container, options = {}) {
       current = el;
       items.forEach(i => i.setAttribute("aria-pressed", String(i === el)));
       svg.classList.add("ccw-has-choice");
-      panel.innerHTML = colorCard(el.dataset.color, { href: links(el.dataset.color), target: "_top" });
+      panel.innerHTML = colorCard(el.dataset.color, { href: links(el.dataset.color), target: options.target || "" });
       if (options.onSelect) options.onSelect(el.dataset.color);
     };
 
@@ -320,6 +323,10 @@ export function renderWheel(container, options = {}) {
       if (!onWedge && !panel.contains(e.target)) close();
     });
     listen("keydown", e => { if (e.key === "Escape") close(); });
+    if (options.open) {
+      const first = items.find(i => i.dataset.color.toLowerCase() === String(options.open).toLowerCase());
+      if (first) choose(first);
+    }
     return svg;
   }
   if (!tooltip) return svg;

@@ -1,16 +1,15 @@
 /* ==========================================================================
    CLIMATE COLOR: one card per color
    ==========================================================================
-   The same card everywhere a color is introduced: the Wheel page and the
-   Pathways index. It shows the color with its archetype, what it
-   provides, and its three words, each with its plain meaning, plus a
-   button to the color's page. Everything comes from
+   The card the Stewardship Wheel shows for a color. It shows the color
+   with its archetype, what it provides, and its three words, each with
+   its plain meaning, plus a button to that color's trail. Everything comes from
    core/climate-color.js; the card's look is in core/atlas.css
    (.color-card).
 
    USE
      import { colorCard } from "../core/color-card.js";
-     el.innerHTML = colorCard("Blue", { href: pathwayUrl("Blue"), target: "_top" });
+     el.innerHTML = colorCard("Blue", { href: trailUrl("Blue") });
 
    OPTIONS (all optional)
      href     Where the button goes. Leave out for a card with no button.
@@ -23,7 +22,7 @@ import { getColor } from "./climate-color.js";
 // The card's own words.
 export const CARD_TEXT = {
   provides: "Provides",
-  button: key => `Explore ${key}`
+  button: key => `Take the ${key} Trail`
 };
 
 const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;")

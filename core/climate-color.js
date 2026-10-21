@@ -32,7 +32,10 @@
      - `words` are the outer ring, clockwise. Each one covers one of
        purpose, process and people, in that order. Those three are for
        writing content only and never appear on the site. `phrase` is the
-       plain meaning of each word, shown on the color's card and page.
+       plain meaning of each word, shown on the color's card on the Wheel.
+       The Stewardship Trail explains the same words in action form ("Unite:
+       bringing people who care about the same thing together"), in its own
+       trail files. When a phrase changes here, check the Trail's to match.
      - `label` is the wheel's text color on that wedge: whichever of black
        or white clears 4.5:1 on the brand color. core/index.html checks it
        live and flags it if a palette change ever breaks it.
@@ -175,30 +178,32 @@ export const WHEEL_TEXT = {
   more: "Learn about the Stewardship Wheel"
 };
 
-/* The site's own pages, which embed the Wheel, Pathways, and the Trail
-   Map. Links to them open in the whole window (target="_top"), so a
-   visitor leaves the embedded box and lands on the site page with its
-   header and navigation. The Pathways page passes ?style= on to the page
-   it embeds, and the Trail Map page passes ?spot= the same way
-   (tools/squarespace-embed-links.html). Pathways opens the one color's
-   page when ?style= names just one; the Trail Map opens the reader's
-   saved trail and exhibit. */
+/* The two Climate Color tools, each a site of its own: the Stewardship
+   Wheel, where people discover their color, and the Stewardship Trail,
+   where they put it to work. (The Pathways pages retired on Oct 21, 2026;
+   climatecolor.com/pathways and /wheel forward to the Wheel.) The key
+   trailMap keeps its old name, since other pages already read it. */
 export const SITE = {
-  pathways: "https://climatecolor.com/pathways",
-  wheel: "https://climatecolor.com/wheel",
+  home: "https://climatecolor.com",
+  wheel: "https://stewardshipwheel.com",
   trailMap: "https://stewardshiptrail.com"
 };
 
-/* A link to a page on the site with colors in it, in any order and
-   capitalization. Commas are left readable:
-   siteUrl("pathways", ["Green"]) ->
-   "https://climatecolor.com/pathways?style=Green". */
-export function siteUrl(page, colors = []) {
-  return colors.length ? `${SITE[page]}?style=${colors.map(encodeURIComponent).join(",")}` : SITE[page];
+/* A link that opens the Trail with one color's trail already picked:
+   trailUrl("Green") -> "https://stewardshiptrail.com/?spot=green".
+   The one place these links are built, so a future teen version can
+   change them in one line. */
+export function trailUrl(name) {
+  const key = resolveColor(name);
+  return key ? `${SITE.trailMap}/?spot=${key.toLowerCase()}` : SITE.trailMap;
 }
 
-/* The site's page for one color. */
-export const pathwayUrl = key => siteUrl("pathways", [key]);
+/* A link that opens the Wheel with one color's card showing:
+   wheelUrl("Green") -> "https://stewardshipwheel.com/?color=green". */
+export function wheelUrl(name) {
+  const key = resolveColor(name);
+  return key ? `${SITE.wheel}/?color=${key.toLowerCase()}` : SITE.wheel;
+}
 
 /* The live hex value from core/atlas.css, e.g. colorValue("Green") ->
    "#46760F". Needs a page that has loaded atlas.css. Returns "" if it
