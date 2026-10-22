@@ -25,10 +25,11 @@
      light tint. Every one clears 4.5:1 against white. Red, Green, Blue,
      and Indigo already clear it at full strength, so their shade is the
      same as the color; Orange and Yellow are darkened toward black until
-     they do. */
+     they do. Yellow is darkened further (#786200), so it also clears
+     4.5:1 on its own light tint (5.3:1 on --yellow-tint-1). */
   --red-text: #EB0333;
   --orange-text: #AA6518;
-  --yellow-text: #8D7301;
+  --yellow-text: #786200;
   --green-text: #46760F;
   --blue-text: #196BB7;
   --indigo-text: #231566;
@@ -101,16 +102,13 @@ body {
   scrollbar-width: none;     /* Firefox */
 }
 
-/* Keeps the page's first and last margins inside the page, so its measured
-   height is its real height. The resize script relies on this, or
-   the Squarespace box comes out too short and cuts off the top. Looks the
-   same either way. */
+/* Keeps the page's first and last margins inside the page. */
 body {
   display: flow-root;
 }
 
 /* Breathing room at the edges on phones, the same on every page. On wider
-   screens, Squarespace's own page margins provide it. */
+   screens, each site sets its own margins. */
 @media (max-width: 640px) {
   body {
     padding: 1.25rem 0.85rem;
@@ -308,8 +306,8 @@ body {
 .theme-indigo { color: var(--indigo-text); }
 
 /* ==========================================================================
-   Color card (core/color-card.js): one card per color, the same on the
-   Pathways index and under the wheel, with a 6px edge in its color on
+   Color card (core/color-card.js): one card per color, shown with the
+   Stewardship Wheel, with a 6px edge in its color on
    the left. Words in a color use its text shade. The button sits at the
    foot of the card, so buttons line up across a row.
    ========================================================================== */
