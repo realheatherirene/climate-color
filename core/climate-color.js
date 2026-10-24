@@ -2,7 +2,11 @@
    CLIMATE COLOR: the one source of truth for what each color means
    ==========================================================================
    Every page reads the color system from here, so nothing drifts out of
-   sync. What lives where in core/:
+   sync: every Climate Color experience loads these files. The Trail
+   (climatecolor.com/trail/) loads them from the same site, at /core/; the
+   Wheel (stewardshipwheel.com, on hold) loads them from this repo's old
+   GitHub Pages address, which forwards to climatecolor.com/core/.
+   What lives where in core/:
 
      climate-color.js  What each color MEANS (this file): the six colors of
                        the Stewardship Wheel, their archetypes, what each
@@ -13,8 +17,7 @@
                        page shares (header, pills, cards, buttons). No hex
                        codes live in this file.
      wheel.js          The wheel, drawn from the two files above.
-     color-card.js     One card per color, with a button to its page.
-     iframe-resize.js  Tells Squarespace how tall an embedded page is.
+     color-card.js     One card per color, with a button to its trail.
      index.html        The reference page that shows all of it, with
                        wheel downloads and contrast checks.
 
@@ -178,24 +181,24 @@ export const WHEEL_TEXT = {
   more: "Learn about the Stewardship Wheel"
 };
 
-/* The two Climate Color tools, each a site of its own: the Stewardship
-   Wheel, where people discover their color, and the Stewardship Trail,
-   where they put it to work. (The Pathways pages retired on Oct 21, 2026;
-   climatecolor.com/pathways and /wheel forward to the Wheel.) The key
-   trailMap keeps its old name, since other pages already read it. */
+/* Climate Color (climatecolor.com), a project of Kinfeather, and its
+   experiences: the Trail, where people find their way of helping and put
+   it to work, and the Wheel, where groups learn how the ways fit together
+   (on hold, shown on the home page as coming later). The key trailMap
+   keeps its old name, since other pages already read it. */
 export const SITE = {
   home: "https://climatecolor.com",
   wheel: "https://stewardshipwheel.com",
-  trailMap: "https://stewardshiptrail.com"
+  trailMap: "https://climatecolor.com/trail"
 };
 
 /* A link that opens the Trail with one color's trail already picked:
-   trailUrl("Green") -> "https://stewardshiptrail.com/?spot=green".
+   trailUrl("Green") -> "https://climatecolor.com/trail/#green".
    The one place these links are built, so a future teen version can
    change them in one line. */
 export function trailUrl(name) {
   const key = resolveColor(name);
-  return key ? `${SITE.trailMap}/?spot=${key.toLowerCase()}` : SITE.trailMap;
+  return key ? `${SITE.trailMap}/#${key.toLowerCase()}` : `${SITE.trailMap}/`;
 }
 
 /* A link that opens the Wheel with one color's card showing:
