@@ -1,0 +1,16 @@
+# Links the weekly check skips, one pattern per line.
+# Font files and saved copies are checked other ways.
+^https://fonts\.googleapis\.com
+^https://fonts\.gstatic\.com
+^https://web\.archive\.org/
+# Sites that turn away automatic checks but work for people: add them
+# here after checking them by hand, so they don't cause false alarms.
+# Checked by hand October 16, 2026; these sites turn away automatic checks.
+^https://www\.birdcount\.org/
+^https://fema\.gov/sites/default/files/documents/fema_preptalks_aldrich_discussion-guide\.pdf
+# Checked by hand October 20, 2026: loads for people, too slow for the check.
+^https://search\.earth911\.com/
+# Added October 22, 2026: the journal Science turns away automatic checks.
+^https://www\.science\.org/
+# Checked by hand October 24, 2026: loads for people, turns away the check.
+^https://vote\.gov/?$
