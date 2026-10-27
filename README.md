@@ -35,9 +35,9 @@ The Trail stays at /trail/ on purpose: its saved-spot links
 
 Old addresses keep working. stewardshiptrail.com and
 trailmap.climatecolor.com forward to /trail/ at the registrar. The one-line
-pages in `trail-map/`, `pathways/`, `wheel/`, and `directory/` forward old
-links to /trail/, and the ones in `terms/`, `privacy/`, and
-`accessibility/` forward to kinfeather.com.
+pages in `terms/`, `privacy/`, and `accessibility/` forward to
+kinfeather.com. Links to retired pages land on the 404 page, which points
+to the Trail.
 
 Until October 2026, the site also held a home page, the Climate Color
 Wheel, and the Climate Color Directory. They retired when the site became
@@ -67,8 +67,8 @@ with care and recompute the fingerprint after any change.
 ## Making common changes
 
 * **A color's archetype, words, or "provides":** edit `COLORS` in
-  `core/climate-color.js`. If you rename an archetype, add the old name to
-  `ALIASES` so old links still work.
+  `core/climate-color.js`. Links use color names, so renaming an archetype
+  breaks nothing.
 * **A brand color or shade:** edit `core/atlas.css`, then open
   `core/index.html` and check that every contrast check still passes.
 * **Trail words:** edit the files in `trail/data/adult/`. Titles live once in
