@@ -18,7 +18,7 @@ stewardshiptrail.com and trailmap.climatecolor.com forward here.
 - `trail.css`: the page's look.
 - `data/adult/`: all the words. One file per trail and per exhibit, plus
   `shared.js`, `topics.js`, and `trailhead.js`. Adding a trail or an
-  exhibit is one file plus one line in `data/adult/index.js`.
+  exhibit is one file, plus its import and entry in `data/adult/index.js`.
 
 ## The shared core
 
@@ -43,3 +43,7 @@ check and its skip list live at the top of the climate-color repository
 This folder is served at climatecolor.com/trail/. Renaming the folder
 changes the address and breaks every saved-spot link
 (climatecolor.com/trail/#green-water), so keep the name.
+
+Saved-spot links name exhibits by key. If an exhibit's key changes, add
+the old key to `OLD_KEYS` in `trail.js`, so saved links still open the
+exhibit that took it in.

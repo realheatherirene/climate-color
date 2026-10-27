@@ -12,17 +12,13 @@
    exhibits visited can be linked directly: ?spot=green-water,food.
    ========================================================================== */
 
-import { COLORS, COLOR_KEYS, getColor, cssVar } from "climate-color/climate-color.js";
+import { COLOR_KEYS, getColor, cssVar } from "climate-color/climate-color.js";
 import { renderSiteFoot } from "climate-color/site-foot.js";
 import { TITLES, TRAIL_ORDER, EXHIBIT_ORDER, GUIDE_TRAIL, GUIDE_TOPIC } from "./titles.js";
-import { renderStop, renderBlocks, fmt, icon, setArchivedLabel, setSayLabel, setNewTabLabel, setSourceLabels } from "./exhibits.js";
+import { renderStop, renderBlocks, fmt, icon, setLabels } from "./exhibits.js";
 
-const pack = await import("./data/adult/index.js");
-const { trailhead, shared, topics, trails, exhibits } = pack;
-setArchivedLabel(shared.sources.archived);
-setSourceLabels(shared.sources.web, shared.sources.official);
-setSayLabel(shared.say);
-if (shared.newTab) setNewTabLabel(shared.newTab);
+const { trailhead, shared, topics, trails, exhibits } = await import("./data/adult/index.js");
+setLabels({ ...shared.sources, say: shared.say, newTab: shared.newTab });
 
 const $ = id => document.getElementById(id);
 /* The trail picked; the exhibit open now; every exhibit visited, in the
@@ -32,6 +28,10 @@ const kept = () => st.visited.filter(k => !st.dropped.has(k));
 let uid = 0;
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const topicOf = key => topics.topics.find(t => t.key === key);
+/* A topic's four everyday examples, with dots between them. Screen
+   readers skip the dots and hear commas instead. A line can break after
+   a dot, never before one. */
+const examples = tp => tp.about.map(fmt).join(`<span aria-hidden="true">&nbsp;·</span><span class="vh">,</span> `);
 /* How every topic is named, from one setting: "Water Exhibit." */
 const exhibitName = tp => shared.lodge.exhibitName.replace("{exhibit}", tp.name);
 
@@ -70,34 +70,23 @@ const ctx = {
 };
 
 /* Fills {trail}, {action}, {meaning}, {words}, {exhibit}, {exhibitName},
-   {lower}, and {about} in shared wording. */
+   and {lower} in shared wording. */
 const fill = (txt, c, tp) => txt.replace(/\{trail\}/g, c.key).replace(/\{action\}/g, c.action).replace(/\{archetype\}/g, c.archetype)
   .replace(/\{meaning\}/g, trailhead.ways[c.key])
   .replace(/\{words\}/g, c.words.map(w => w.word).join(", ").replace(/, ([^,]*)$/, ", or $1"))
   .replace(/\{exhibitName\}/g, tp ? exhibitName(tp) : "")
-  .replace(/\{exhibit\}/g, tp ? tp.name : "").replace(/\{lower\}/g, tp ? tp.name.toLowerCase() : "")
-  .replace(/\{about\}/g, tp ? tp.about : "");
+  .replace(/\{exhibit\}/g, tp ? tp.name : "").replace(/\{lower\}/g, tp ? tp.name.toLowerCase() : "");
 
-/* ---------- What's built: one source for every "for now" line ---------- */
-/* Lists the trails and exhibits that exist in the content pack, so
-   adding a trail or exhibit file updates every "still being built" note
-   and the test note on its own. */
+/* "Water and Food"; "Water, Food, and Air." */
 const listOf = n => n.length < 3 ? n.join(" and ") : `${n.slice(0, -1).join(", ")}, and ${n[n.length - 1]}`;
-const builtTrails = COLOR_KEYS.filter(k => trails[k]);
-const builtExhibits = topics.topics.filter(t => exhibits[t.key]);
-const trailsReady = "the " + (builtTrails.length === 1 ? `${builtTrails[0]} Trail` : `${listOf(builtTrails)} Trails`);
-const exhibitsReady = builtExhibits.length === 1 ? "the " + exhibitName(builtExhibits[0])
-  : `the ${listOf(builtExhibits.map(t => t.name))} Exhibits`;
-const isAre = n => n === 1 ? "is" : "are";
-const readyLine = (txt, ready, n) => txt.replace("{ready}", ready).replace("{verb}", isAre(n));
 
 /* ---------- Places: one source for names, icons, and signs ---------- */
 
 const P = shared.places;
 
-/* A place's sign: an eyebrow, a title, a short line, and its icon. */
-const sign = (pl, line = "") => `<div class="place-sign"><div class="text">${pl.eyebrow ? `<p class="place-eyebrow">${fmt(pl.eyebrow)}</p>` : ""}<h2 class="place-title">${fmt(pl.title)}</h2>
-    ${pl.sub ? `<p class="place-sub">${fmt(pl.sub)}</p>` : ""}${line ? `<p class="place-line">${fmt(line)}</p>` : ""}</div>${icon(pl.icon, "place-icon")}</div>`;
+/* A place's heading: a title, and a short line if it has one. */
+const sign = pl => `<div class="place-sign"><div class="text"><h2 class="place-title">${fmt(pl.title)}</h2>
+    ${pl.sub ? `<p class="place-sub">${fmt(pl.sub)}</p>` : ""}</div></div>`;
 
 /* A place on the trail: its sign over a light board. */
 const place = (key, cls, board) => `<li class="stop place ${cls}" id="${key}">
@@ -108,16 +97,12 @@ const place = (key, cls, board) => `<li class="stop place ${cls}" id="${key}">
 /* ---------- Static parts: the header, footer, and Trailhead ---------- */
 
 /* The "a Kinfeather project" tag and the footer tie the Trail to its
-   owner. The footer is the one every page shares (core/site-foot.js); the
-   Trail adds its feedback line on top while it's a preview. */
-const SB = shared.site;
-/* The tag under the title: {owner} links to Kinfeather. */
-/* "Preview": while readers test the Trail, a tag beside it links to
-   the footer's feedback line. Remove `preview` from the content pack to
-   take both away. */
-const PV = SB.preview;
-const byLine = fmt(SB.by)
-  .replace("{owner}", SB.owner ? `<a href="${SB.owner.url}">${fmt(SB.owner.name)}</a>` : "");
+   owner. The footer is the one every page shares (core/site-foot.js).
+   "Preview": while readers test the Trail, a tag beside the by-line links
+   to a feedback line above the footer. Remove `preview` from the content
+   pack to take both away. */
+const SB = shared.site, PV = SB.preview;
+const byLine = fmt(SB.by).replace("{owner}", `<a href="${SB.owner.url}">${fmt(SB.owner.name)}</a>`);
 $("by").innerHTML = `${byLine}${PV ? ` <a class="preview-tag" href="#feedback">${fmt(PV.tag)}</a>` : ""}`;
 renderSiteFoot($("siteFoot"),
   PV ? `<p class="feedback" id="feedback">${fmt(PV.line)} <a href="mailto:${PV.email}?subject=${encodeURIComponent(PV.subject)}">${fmt(PV.email)}</a></p>` : "");
@@ -132,12 +117,11 @@ $("lede").textContent = trailhead.lede;
    past the four stops to the Lodge and the Bulletin Board, with the
    Field Guide beside the trail's end. The places are made up: it shows
    the journey, not real ground. It is a picture only (screen readers
-   skip it); the route strip under it is its key, says the same in words,
-   marks where you are (aria-current), and takes you to each place.
-   Two drawings: wide for computers, tall for phones (trail.css shows
-   one). Each lays out the places in shared.places by key and the stops
-   in TRAIL_ORDER, so names, icons, and order come from the data. The
-   spots are laid out for four stops. */
+   skip it); the route strip under it is its key and says the same in
+   words. Two drawings: wide for computers, tall for phones (trail.css
+   shows one). Each lays out the places in shared.places by key and the
+   four stops in TRAIL_ORDER, so names, icons, and order come from the
+   data. */
 const MAPS = {
   wide: {
     w: 760, h: 380,
@@ -175,25 +159,22 @@ const MAPS = {
   }
 };
 
-/* Where the reader is, and which stops they've opened. "You are here"
-   moves to the last stop or place opened; it never slides. */
-const here = { at: "trailhead", seen: new Set() };
+/* The trail stops the reader has opened. */
+const seen = new Set();
 
 function drawMap(M) {
-  const W = shared.map, picked = !!trails[st.trail];
+  const W = shared.map, picked = !!st.trail;
   const kindOf = key => key === "care" ? shared.care : (trails[st.trail] || Object.values(trails)[0])[key];
-  const stopKeys = TRAIL_ORDER.filter(kindOf).slice(0, M.stops.length);
   const line = (d, color, dashed) => `<path d="${d}" fill="none" style="stroke:${color}" stroke-width="${dashed ? 5 : 6}" stroke-linecap="round"${dashed ? ' stroke-dasharray="2 11"' : ""}/>`;
   const trail = picked
     ? line(M.path.start, "var(--park)") + line(M.path.trail, "var(--trail)") + line(M.path.after, "var(--board)", true)
     : line(`${M.path.start} ${M.path.trail.replace(/^M[\d.,]+/, "")} ${M.path.after.replace(/^M[\d.,]+/, "")}`, "#64748B", true);
-  const stops = stopKeys.map((key, i) => {
-    const [x, y] = M.stops[i], seen = false;
-    const stroke = picked ? "var(--trail)" : "#64748B";
-    const fillC = seen ? "var(--trail)" : "#fff", textC = seen ? "var(--trail-on)" : (picked ? "var(--trail-text)" : "#475569");
+  const stops = TRAIL_ORDER.map((key, i) => {
+    const [x, y] = M.stops[i];
+    const stroke = picked ? "var(--trail)" : "#64748B", textC = picked ? "var(--trail-text)" : "#475569";
     const shape = kindOf(key).exhibit === "rest"
-      ? `<circle cx="${x}" cy="${y}" r="15" style="fill:${fillC};stroke:${stroke}" stroke-width="4"/>`
-      : `<rect x="${x - 13}" y="${y - 15}" width="26" height="30" rx="4" style="fill:${fillC};stroke:${stroke}" stroke-width="4"/>`;
+      ? `<circle cx="${x}" cy="${y}" r="15" style="fill:#fff;stroke:${stroke}" stroke-width="4"/>`
+      : `<rect x="${x - 13}" y="${y - 15}" width="26" height="30" rx="4" style="fill:#fff;stroke:${stroke}" stroke-width="4"/>`;
     return `${shape}<text x="${x}" y="${y + 5}" class="map-num" text-anchor="middle" style="fill:${textC}">${i + 1}</text>`;
   }).join("");
   const places = Object.entries(P).filter(([key]) => M.at[key]).map(([key, pl]) => {
@@ -206,12 +187,11 @@ function drawMap(M) {
   }).join("");
   /* The map is a picture for getting your bearings, not a tracker: the
      progress bar at the top of the screen shows where you are. */
-  const pin = "";
   const [nx, ny] = M.north;
-  return `<svg class="map-${M === MAPS.wide ? "wide" : "tall"}" viewBox="0 ${M.top || 0} ${M.w} ${M.h - (M.top || 0)}" focusable="false">
+  return `<svg class="map-${M === MAPS.wide ? "wide" : "tall"}" viewBox="0 ${M.top} ${M.w} ${M.h - M.top}" focusable="false">
     <path d="${M.lake}" class="map-lake"/><text x="${M.lakeAt[0]}" y="${M.lakeAt[1]}" class="map-lake-name" text-anchor="middle">${fmt(W.lake)}</text>
     ${M.trees.map(([x, y]) => `<use href="#i-tree" x="${x}" y="${y}" width="20" height="22"/>`).join("")}
-    ${trail}${stops}${places}${pin}
+    ${trail}${stops}${places}
     <circle cx="${nx}" cy="${ny}" r="18" class="map-north"/><path d="M${nx},${ny - 13} L${nx + 6},${ny + 5} L${nx},${ny + 1} L${nx - 6},${ny + 5} Z" style="fill:var(--text-secondary)"/>
     <text x="${nx}" y="${ny + 34}" class="map-n" text-anchor="middle">${fmt(W.north)}</text></svg>`;
 }
@@ -220,7 +200,7 @@ function drawMap(M) {
    what happens at each. Getting around is the progress bar's job. */
 function routeStrip() {
   return Object.entries(P).map(([key, pl]) =>
-    `<li class="route-${key}"><div class="route-btn">
+    `<li class="route-${key}"><div class="route-place">
       <span class="route-icon" aria-hidden="true">${key === "trail" ? "1" : icon(pl.icon)}</span><span><b class="route-name">${fmt(pl.legendName || pl.name)}</b><span class="route-text">${fmt(pl.route)}</span></span></div></li>`).join("");
 }
 
@@ -233,17 +213,14 @@ const PLACES_IN_ORDER = ["trailhead", "trail", "lodge", "guide", "bulletin"];
 let now = "trailhead";
 function drawProgress() {
   const bar = $("progress"), t = trails[st.trail];
-  if (!bar) return;
   bar.hidden = !t || now === "trailhead";
   if (bar.hidden) return;
-  const PR = shared.progress, built = st.visited.filter(k => exhibits[k]).length;
-  const keptN = st.visited.filter(k => exhibits[k] && !st.dropped.has(k)).length;
-  const stopKeys = TRAIL_ORDER.filter(k => k === "care" || t[k]);
-  const opened = stopKeys.filter(k => here.seen.has(k)).length;
+  const PR = shared.progress, built = st.visited.length, keptN = kept().length;
+  const opened = TRAIL_ORDER.filter(k => seen.has(k)).length;
   bar.innerHTML = `<ol>${PLACES_IN_ORDER.map(key => {
     const pl = P[key], ready = key === "bulletin" || key === "guide" ? built > 0 : true;
     const extra = key === "trail"
-      ? `<span class="prog-dots" aria-hidden="true">${stopKeys.map(k => `<i${here.seen.has(k) ? ' class="done"' : ""}></i>`).join("")}</span><span class="vh">, ${fmt(PR.stops.replace("{n}", opened).replace("{total}", stopKeys.length))}</span>`
+      ? `<span class="prog-dots" aria-hidden="true">${TRAIL_ORDER.map(k => `<i${seen.has(k) ? ' class="done"' : ""}></i>`).join("")}</span><span class="vh">, ${fmt(PR.stops.replace("{n}", opened).replace("{total}", TRAIL_ORDER.length))}</span>`
       : key === "lodge" && built ? `<span class="prog-count" aria-hidden="true">${built}</span><span class="vh">, ${fmt(shared.lodge.visitedCount.replace("{n}", built))}</span>`
       : key === "guide" && keptN ? `<span class="prog-count" aria-hidden="true">${keptN}</span><span class="vh">, ${fmt(PR.topics.replace("{n}", keptN))}</span>` : "";
     return `<li><button type="button" class="prog-btn prog-${key}" data-go="place-${key}"${key === now ? ' aria-current="location"' : ""}${ready ? "" : " disabled"}>
@@ -253,27 +230,23 @@ function drawProgress() {
 
 /* Which place the reader is in: whichever crosses a line about a third
    of the way down the screen. Watched again after every redraw. */
-const watcher = "IntersectionObserver" in window ? new IntersectionObserver(entries => {
+const watcher = new IntersectionObserver(entries => {
   let changed = false;
   entries.forEach(e => { if (e.isIntersecting) { const at = e.target.id === "trailStops" ? "trail" : e.target.id; if (at !== now) { now = at; changed = true; } } });
   if (changed) drawProgress();
-}, { rootMargin: "-30% 0px -65% 0px" }) : null;
+}, { rootMargin: "-30% 0px -65% 0px" });
 function watchPlaces() {
-  if (!watcher) return;
   watcher.disconnect();
   ["trailhead", "trailStops", "lodge", "bulletin", "guide"].forEach(id => { const el = $(id); if (el) watcher.observe(el); });
 }
 
 function drawBearings() {
-  const map = $("parkMap"), route = $("route");
-  if (map) map.innerHTML = drawMap(MAPS.wide) + drawMap(MAPS.tall);
-  if (route) route.innerHTML = routeStrip();
+  $("parkMap").innerHTML = drawMap(MAPS.wide) + drawMap(MAPS.tall);
+  $("route").innerHTML = routeStrip();
 }
 
-/* Where each key button goes. A place that isn't on the page yet (no
-   trail picked) sends you to the trail picker. */
-const placeTarget = key => ({ trailhead: $("trailhead"), trail: $("trailStops") && $("trailStops").children.length ? $("trailStops") : null,
-  lodge: $("lodge"), bulletin: $("bulletin"), guide: $("guide"), pick: $("pick") }[key]) || $("pick");
+/* Where each progress bar button goes. */
+const placeTarget = key => key === "trail" ? $("trailStops") : $(key);
 
 /* One line on the whole journey. */
 $("todo").innerHTML = `<p class="intro">${fmt(trailhead.intro)}</p>`;
@@ -285,10 +258,6 @@ $("note").innerHTML = `<p class="pace-q">${fmt(S0.pace)}
   <button type="button" class="pill-btn pill-all next-btn" data-go="saveOpen" aria-expanded="false" aria-controls="saveTop">${fmt(S0.paceButton)}</button></p>
   <div id="saveTop" hidden>${savePanel("saveLinkTop")}</div>`;
 $("footnote").textContent = trailhead.footnote;
-/* The test note shows only while something is still being built. */
-const allBuilt = builtTrails.length === COLOR_KEYS.length && builtExhibits.length === topics.topics.length;
-$("testNote").hidden = allBuilt;
-if (!allBuilt) $("testNote").textContent = trailhead.testNote.replace("{trails}", trailsReady).replace("{exhibits}", exhibitsReady);
 
 $("trailheadMarker").innerHTML = icon(P.trailhead.icon);
 $("trailheadSign").outerHTML = sign(P.trailhead);
@@ -300,7 +269,7 @@ const B = trailhead.board;
 $("board").setAttribute("aria-label", TITLES.how);
 $("board").innerHTML = `<p class="open-all">${fmt(B.open)}</p>
   ${renderBlocks(B.blocks, ctx)}
-  ${B.storyIntro ? `<p class="story-intro">${fmt(B.storyIntro)}</p>` : ""}
+  <p class="story-intro">${fmt(B.storyIntro)}</p>
   <details class="mini"><summary>${fmt(B.storyLabel)}</summary><div class="story">${renderBlocks(B.story, ctx)}</div></details>`;
 
 $("pickTitle").textContent = TITLES.pickTrail;
@@ -319,7 +288,7 @@ $("trailOpts").innerHTML = COLOR_KEYS.map(key => {
    and the exhibits visited after a #: #green-water,food, and nothing
    else. Browsers never send the part after # to any server, so no one
    but the reader sees it. Older ?spot= links still open (see the end). */
-const spot = () => st.trail ? st.trail.toLowerCase() + (st.visited.length && trails[st.trail] ? "-" + st.visited.join(",") : "") : "";
+const spot = () => st.trail ? st.trail.toLowerCase() + (st.visited.length ? "-" + st.visited.join(",") : "") : "";
 /* The page's own address: climatecolor.com/trail/. */
 const home = location.origin + location.pathname;
 const spotUrl = () => spot() ? `${home}#${spot()}` : home;
@@ -344,29 +313,24 @@ const panel = parts => `<ul class="rooms">${parts.map(([key, s, next]) =>
 
 /* ---------- The trail: stops 1-4 ---------- */
 
+/* The picked row in the trail picker carries the "Your trail" tag. */
 function renderTrail() {
   document.querySelectorAll("[data-trail].opt").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.trail === st.trail)));
-  const box = $("trailBox"), stops = $("trailStops");
-  if (!st.trail) { box.innerHTML = ""; stops.innerHTML = ""; return; }
-  const t = trails[st.trail];
-  /* The picked row carries the "Your trail" tag; a box below appears
-     only for a trail that isn't built yet. */
-  box.innerHTML = t ? "" : `<p class="not-built">${fmt(readyLine(trailhead.notBuilt, trailsReady, builtTrails.length))}</p>` +
-    builtTrails.map(k => `<button type="button" class="pill-btn pill-all next-btn" data-trail="${k}">${fmt(trailhead.tryReady.replace("{name}", k))} <span aria-hidden="true">&rarr;</span></button>`).join(" ");
-  if (!t) { stops.innerHTML = ""; return; }
-  const c = getColor(st.trail), TT = shared.trailTop;
+  const stops = $("trailStops");
+  if (!st.trail) { stops.innerHTML = ""; return; }
+  const t = trails[st.trail], c = getColor(st.trail), TT = shared.trailTop;
   /* Stop 1 ends with the trail's "Try it now": something to do in the
      first minute. The Field Guide keeps it too. */
-  const tryNow = t.tryIt && t.tryIt.blocks.filter(b => b.stretch).map(b =>
+  const tryNow = t.tryIt.blocks.filter(b => b.stretch).map(b =>
     ({ stretch: { ...b.stretch, title: `${TITLES.tryIt}: ${b.stretch.title.charAt(0).toLowerCase()}${b.stretch.title.slice(1)}` } }));
   const stopFor = key => key === "care" ? { ...shared.care, ahead: fill(shared.care.ahead, c) }
-    : key === "know" && tryNow ? { ...t.know, blocks: [...t.know.blocks, ...tryNow] } : t[key];
+    : key === "know" ? { ...t.know, blocks: [...t.know.blocks, ...tryNow] } : t[key];
   /* The top of the trail: its marker, name, and what it's about. */
   const top = `<li class="stop place is-trail" id="trailTop">
     <span class="marker" aria-hidden="true">${icon(P.trail.icon)}</span>
     <div class="place-sign"><div class="text"><h2 class="place-title">${fmt(fill(TT.title, c))}</h2><p class="place-sub">${fmt(fill(TT.line, c))}</p></div></div></li>`;
   let n = 1;
-  stops.innerHTML = top + TRAIL_ORDER.filter(stopFor).map(key =>
+  stops.innerHTML = top + TRAIL_ORDER.map(key =>
     renderStop({ n: n++, key, title: TITLES[key], stop: stopFor(key), ctx })).join("");
 }
 
@@ -377,16 +341,16 @@ function renderTrail() {
    reader's way of helping, their first steps, a way to pass the trail on,
    the other trails, Save for later, and the trail's closing words. */
 /* "You opened 3 of 4 stops": kept current as stops are opened. */
-function tripTrailLine(t) {
-  const B = shared.bulletin.board, stopKeys = TRAIL_ORDER.filter(k => k === "care" || t[k]), opened = stopKeys.filter(k => here.seen.has(k)).length;
-  return (opened ? B.trailOpened : B.trailAll).replace("{n}", opened).replace("{total}", stopKeys.length);
+function tripTrailLine() {
+  const B = shared.bulletin.board, opened = TRAIL_ORDER.filter(k => seen.has(k)).length;
+  return (opened ? B.trailOpened : B.trailAll).replace("{n}", opened).replace("{total}", TRAIL_ORDER.length);
 }
-function boardBody(c, t, built, farewell) {
+function boardBody(c, built, farewell) {
   const J = shared.bulletin, B = J.board, kept = built.filter(k => !st.dropped.has(k));
   const names = list => list.length === 1 ? exhibitName(topicOf(list[0])) : `${listOf(list.map(k => topicOf(k).name))} Exhibits`;
   const did = {
     trailhead: fill(B.trailhead, c),
-    trail: tripTrailLine(t),
+    trail: tripTrailLine(),
     lodge: B.lodge.replace("{exhibits}", names(built)),
     guide: (kept.length === 1 ? B.guideOne : B.guideMany).replace("{n}", kept.length),
     bulletin: B.here
@@ -406,7 +370,7 @@ function boardBody(c, t, built, farewell) {
     <ul class="way-words">${c.words.map(w => `<li>${fmt(w.word)}</li>`).join("")}</ul></article>`;
   /* With more than one, the reader picks a first step to start with. It
      moves to the top and is kept on this device (startKey). */
-  const firsts = kept.map(k => [k, exhibits[k] && exhibits[k].work && exhibits[k].work[c.key]]).filter(([, w]) => w);
+  const firsts = kept.map(k => [k, exhibits[k].work[c.key]]);
   const picking = firsts.length > 1, chosen = picking ? store.get(startKey()) : "";
   if (chosen) firsts.sort(([a], [b]) => (b === chosen) - (a === chosen));
   const firstItem = ([k, w]) => {
@@ -435,14 +399,13 @@ function boardBody(c, t, built, farewell) {
 }
 
 /* An exhibit's parts, then "Put your [action] to work": where the reader's
-   trail meets the topic, written for each trail. A trail without one yet
-   goes straight from the last part to the Field Guide. */
+   trail meets the topic, written for each trail. */
 const aAn = w => /^[AEIOU]/.test(w) ? "an" : "a";
 function exhibitParts(E, c, tp) {
-  const W = shared.work, Wk = E.work && E.work[c.key];
+  const W = shared.work, Wk = E.work[c.key];
   const line = fill(W.line, c, tp).replace("{a}", aAn(c.archetype));
-  const parts = EXHIBIT_ORDER.filter(k => E.parts[k]).map(k => [k, k === "life" ? { ...E.parts[k], ahead: Wk ? line : W.toGuide } : E.parts[k]]);
-  if (Wk) parts.push(["work", { exhibit: "sign", title: fill(TITLES.work, c), line, ahead: W.ahead, blocks: [
+  const parts = EXHIBIT_ORDER.map(k => [k, k === "life" ? { ...E.parts[k], ahead: line } : E.parts[k]]);
+  parts.push(["work", { exhibit: "sign", title: fill(TITLES.work, c), line, ahead: W.ahead, blocks: [
     { sub: W.imagine }, { p: E.situation },
     { list: c.words.map(w => `**${w.word}:** ${Wk[w.word]}`) },
     { p: `**${W.first}** ${Wk.first}` },
@@ -452,9 +415,9 @@ function exhibitParts(E, c, tp) {
 }
 
 function renderLodge() {
-  const line = $("lodgeLine"), t = trails[st.trail];
-  if (!t) { line.innerHTML = ""; return; }
-  const c = getColor(st.trail), L = shared.lodge;
+  const line = $("lodgeLine");
+  if (!st.trail) { line.innerHTML = ""; return; }
+  const t = trails[st.trail], c = getColor(st.trail), L = shared.lodge;
   const tp = topicOf(st.exhibit), E = exhibits[st.exhibit];
   const visitedMark = `<span class="visited">${icon("i-check")}${fmt(L.visited)}</span>`;
 
@@ -462,21 +425,16 @@ function renderLodge() {
      as they like; each one visited says so. */
   const opts = topics.topics.map(x => `<li><button type="button" class="opt${st.visited.includes(x.key) ? " is-visited" : ""}" data-exhibit="${x.key}" aria-pressed="${st.exhibit === x.key}">
     <span class="opt-icon" aria-hidden="true">${icon(x.icon)}</span>${st.exhibit === x.key ? `<span class="here" aria-hidden="true">${fmt(shared.map.here)}</span>` : ""}
-    <span><span class="oname">${fmt(x.name)}</span><span class="odesc">${fmt(cap(x.about))}.</span>${st.visited.includes(x.key) && st.exhibit !== x.key ? visitedMark : ""}</span></button></li>`).join("");
+    <span><span class="oname">${fmt(x.name)}</span><span class="odesc">${examples(x)}</span>${st.visited.includes(x.key) && st.exhibit !== x.key ? visitedMark : ""}</span></button></li>`).join("");
 
   /* The open exhibit: a room in the Lodge, with its own sign (its name
-     and what it covers), a one-line promise, then its parts. An exhibit
-     that isn't built yet shows its teaser only. */
-  let open = "";
-  if (tp) {
-    const roomSign = `<div class="room-sign"><div class="text"><p class="room-title">${fmt(exhibitName(tp))}</p>
-      <p class="place-sub">${fmt(cap(tp.about))}</p></div>${icon(tp.icon, "place-icon")}</div>`;
-    open = `<section class="exhibit-open" id="exhibitOpen" aria-label="${fmt(exhibitName(tp))}">${roomSign}` + (E
-      ? `<div class="room-body"><p class="promise">${fmt(E.promise)}</p>${panel(exhibitParts(E, c, tp))}</div>`
-      : `<div class="room-body">${renderBlocks([{ teaser: true }], ctx)}<p class="not-built">${fmt(readyLine(L.notBuilt, exhibitsReady, builtExhibits.length))}</p>${builtExhibits.map(x => `<button type="button" class="pill-btn pill-all next-btn" data-exhibit="${x.key}">${fmt(L.tryReady.replace("{name}", exhibitName(x)))} <span aria-hidden="true">&rarr;</span></button>`).join(" ")}</div>`) + `</section>`;
-  }
+     and what it covers), a one-line promise, then its parts. */
+  const open = tp ? `<section class="exhibit-open" id="exhibitOpen" aria-label="${fmt(exhibitName(tp))}">
+    <div class="room-sign"><div class="text"><p class="room-title">${fmt(exhibitName(tp))}</p>
+      <p class="place-sub">${examples(tp)}</p></div>${icon(tp.icon, "place-icon")}</div>
+    <div class="room-body"><p class="promise">${fmt(E.promise)}</p>${panel(exhibitParts(E, c, tp))}</div></section>` : "";
 
-  const built = st.visited.filter(k => exhibits[k]);
+  const built = st.visited;
 
   /* The Lodge: a building of its own, like the park map and the Field
      Guide. The exhibit cards are its rooms, a floor plan you can click:
@@ -486,7 +444,7 @@ function renderLodge() {
   <span class="marker" aria-hidden="true">${icon(P.lodge.icon)}</span>
   ${sign(P.lodge)}
   <div class="lodge-card">
-    <div class="place-board">${shared.reality ? `<div class="reality">${panel([["reality", shared.reality]])}</div>` : ""}<h3 class="board-h">${TITLES.pickExhibit}</h3>
+    <div class="place-board"><div class="reality">${panel([["reality", shared.reality]])}</div><h3 class="board-h">${TITLES.pickExhibit}</h3>
       <p class="step-hint">${fmt(L.pickHint)}</p>
       <div class="floor"><ul class="options exhibits">${opts}</ul></div>
       ${open}</div></div></li>`;
@@ -505,9 +463,9 @@ function renderLodge() {
      the reader kept adds its own pages (the situation, work close to
      home, and a first step). */
   const G = shared.guide, A = G.ahead;
-  const keep = kept().filter(k => exhibits[k]);
+  const keep = kept();
   const names = listOf(keep.map(k => topicOf(k).name));
-  const many = { name: names, about: "" };
+  const many = { name: names };
   const trailParts = {
     story: t.story,
     tryIt: t.tryIt,
@@ -519,12 +477,12 @@ function renderLodge() {
       think: { exhibit: "rest", blocks: [{ sub: G.think.lead }, { p: X.situation }, { questions: G.think.questions.map(fx) }] },
       nearby: { ...X.finder, blocks: [X.finder.blocks[0], ...G.local, ...X.finder.blocks.slice(1)] },
       first: { exhibit: "rest", blocks: [
-        { questions: [...G.first.questions, ...(X.first ? X.first.questions : [])] },
-        { questions: [...G.first.friend, ...(X.first ? X.first.friend : [])], title: "With a friend" }
+        { questions: [...G.first.questions, ...X.first.questions] },
+        { questions: [...G.first.friend, ...X.first.friend], title: "With a friend" }
       ] }
     };
   };
-  const partList = (order, parts) => order.filter(k => parts[k]).map(k => [k, { ...parts[k], ahead: A[k], line: G.lines[k] || parts[k].line }]);
+  const partList = (order, parts) => order.map(k => [k, { ...parts[k], ahead: A[k], line: G.lines[k] || parts[k].line }]);
   /* Every visited topic gets its pages; one left unchecked is hidden, so
      checking or unchecking never redraws the page or moves it. */
   const topicPages = built.map(k => {
@@ -550,7 +508,7 @@ function renderLodge() {
     <div class="guide-card">
       <div class="guide-body">
         ${printRow}
-        ${G.safety ? `<p class="guide-safety">${fmt(G.safety)}</p>` : ""}
+        <p class="guide-safety">${fmt(G.safety)}</p>
         ${door}
         <section class="guide-topic" aria-label="${fmt(fill(G.forTrail, c))}">
           <h3 class="guide-h"><span class="guide-h-blaze" style="background:var(--${c.key.toLowerCase()}-color)" aria-hidden="true"></span>${fmt(fill(G.forTrail, c))}</h3>
@@ -561,25 +519,19 @@ function renderLodge() {
 
   /* The Bulletin Board: outside the Lodge, the end of the trail and the
      place to choose. */
-  const farewell = [...(t.farewell || []), ...(shared.bulletin.close || [])].map(p => `<p>${fmt(p.replace("{topic}", (names || tp.name).toLowerCase()))}</p>`).join("");
-  const bulletin = place("bulletin", "is-board", boardBody(c, t, built, farewell));
+  const farewell = [...t.farewell, ...shared.bulletin.close].map(p => `<p>${fmt(p.replace("{topic}", (names || tp.name).toLowerCase()))}</p>`).join("");
+  const bulletin = place("bulletin", "is-board", boardBody(c, built, farewell));
 
   line.innerHTML = lodge + guide + bulletin;
   const lead = document.querySelector('#guide [data-stop="others"] .body p');
   if (lead) lead.id = "othersLead";
 }
 
-/* The Field Guide's cover line and "other ways" lead name the topics
-   kept: "The Green Trail, with Water and Food." */
-const keptNames = () => listOf(kept().filter(k => exhibits[k]).map(k => topicOf(k).name));
-function guideWith() {
-  const tp = topicOf(st.exhibit);
-  return shared.guide.with.replace("{trail}", st.trail).replace("{exhibits}", keptNames() || (tp ? exhibitName(tp) : ""));
-}
+/* The Field Guide's "other ways" lead names the topics kept: "How the
+   other ways of helping fit with Water and Food." */
 function refreshGuideNames() {
-  const c = getColor(st.trail), n = keptNames();
-  if ($("guideFor")) $("guideFor").textContent = guideWith();
-  if ($("othersLead") && n) $("othersLead").textContent = fill(shared.guide.others.lead, c, { name: n, about: "" });
+  const n = listOf(kept().map(k => topicOf(k).name));
+  if (n) $("othersLead").textContent = fill(shared.guide.others.lead, getColor(st.trail), { name: n });
 }
 
 /* The trail line, markers, and "your trail" touches take the picked
@@ -617,17 +569,18 @@ function render(trailChanged = true) {
     a.href = `mailto:?subject=${encodeURIComponent(S.emailSubject)}&body=${encodeURIComponent(S.emailBody + "\n" + spotUrl())}`; });
 }
 
-/* Notes where the reader is and redraws only the progress bar. */
-function moveHere(at) {
-  here.at = at; drawProgress();
+/* After a stop opens: the progress bar's dots and the Bulletin Board's
+   "You opened 3 of 4 stops." */
+function stopOpened() {
+  drawProgress();
   const line = document.querySelector(".trip-trail .trip-did");
-  if (line && trails[st.trail]) line.textContent = tripTrailLine(trails[st.trail]);
+  if (line) line.textContent = tripTrailLine();
 }
 
 /* ---------- Events (one listener each, so re-rendered parts just work) ---------- */
 
 /* Smooth scrolling, unless the device asks for less motion. */
-const motion = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+const motion = () => matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 const go = el => el && el.scrollIntoView({ behavior: motion(), block: "start" });
 
 /* Copies a link to the reader's spot, then says "Copied" on the button
@@ -656,17 +609,16 @@ document.addEventListener("click", e => {
   const b = e.target.closest("button");
   if (!b) return;
   if (b.dataset.trail) {
-    st.trail = b.dataset.trail; here.at = "trailhead"; here.seen.clear(); render();
-    /* Bring stop 1 (or the "still being built" note) into view, keeping
-       the picked row in sight where the screen allows. */
-    const next = trails[st.trail] ? $("trailStops") : $("trailBox");
-    if (next) next.scrollIntoView({ behavior: motion(), block: "nearest" });
+    st.trail = b.dataset.trail; seen.clear(); render();
+    /* Bring stop 1 into view, keeping the picked row in sight where the
+       screen allows. */
+    $("trailStops").scrollIntoView({ behavior: motion(), block: "nearest" });
     return;
   }
   if (b.dataset.exhibit) {
     st.exhibit = b.dataset.exhibit;
     if (!st.visited.includes(st.exhibit)) st.visited.push(st.exhibit);
-    here.at = "lodge"; render(false); go($("exhibitOpen")); return;
+    render(false); go($("exhibitOpen")); return;
   }
   if (b.classList.contains("find-btn")) {
     const r = $(b.getAttribute("aria-controls")); r.hidden = !r.hidden;
@@ -674,12 +626,6 @@ document.addEventListener("click", e => {
   }
   const to = b.dataset.go;
   if (to && to.startsWith("place-")) { go(placeTarget(to.slice(6))); return; }
-  if (to === "bulletin") { moveHere("bulletin"); go($("bulletin")); return; }
-  if (to === "lodge" || to === "trailhead") moveHere(to);
-  if (to === "keep") moveHere("bulletin");
-  if (to === "lodge") go($("lodge"));
-  if (to === "trailhead") go($("pick"));
-  if (to === "keep") { const k = $("keep"); k.hidden = !k.hidden; b.setAttribute("aria-expanded", String(!k.hidden)); }
   if (to === "printGuide") printGuide();
   if (to === "clearNote") {
     store.set(b.dataset.note, ""); $(b.dataset.for).value = "";
@@ -714,8 +660,8 @@ document.addEventListener("input", e => {
   if (e.target.matches("textarea.note")) store.set(e.target.dataset.note, e.target.value);
 });
 
-/* A stop's marker fills in only while it's open. Opening a stop or a
-   part of a place also moves "You are here" on the map. */
+/* A stop's marker fills in only while it's open. Opening a trail stop
+   fills its dot on the progress bar. */
 document.addEventListener("toggle", e => {
   if (e.target.tagName !== "DETAILS") return;
   if (e.target.parentNode.classList.contains("stop")) e.target.parentNode.classList.toggle("is-open", e.target.open);
@@ -732,25 +678,25 @@ document.addEventListener("toggle", e => {
     if (Math.abs(shift) > 1) window.scrollBy(0, shift);
   }
   const s = e.target.closest("#trailStops > .stop");
-  if (s) { here.seen.add(s.dataset.stop); moveHere(s.dataset.stop); return; }
-  const pl = e.target.closest("#lodge, #bulletin, #guide");
-  if (pl) moveHere(pl.id);
+  if (s) { seen.add(s.dataset.stop); stopOpened(); }
 }, true);
 
 /* Direct links: ?spot=green-water,food, or #green-water,food. The last
-   exhibit listed opens. */
+   exhibit listed opens. Links saved before the Lodge's topics changed
+   still work: each old key opens the exhibit that took it in. */
+const OLD_KEYS = { wildlife: "land", waste: "goods", shelter: "housing" };
 const [hTrail, hExhibits = ""] = (new URLSearchParams(location.search).get("spot") || location.hash.slice(1)).split("-");
-const k = COLORS.find(c => c.key.toLowerCase() === (hTrail || "").toLowerCase());
+const k = COLOR_KEYS.find(key => key.toLowerCase() === (hTrail || "").toLowerCase());
 if (k) {
-  st.trail = k.key;
-  st.visited = [...new Set(hExhibits.split(",").map(s => s.trim().toLowerCase()).filter(topicOf))];
-  if (st.visited.length) { st.exhibit = st.visited[st.visited.length - 1]; here.at = "lodge"; }
+  st.trail = k;
+  st.visited = [...new Set(hExhibits.split(",").map(s => s.trim().toLowerCase()).map(s => OLD_KEYS[s] || s).filter(topicOf))];
+  if (st.visited.length) st.exhibit = st.visited[st.visited.length - 1];
 }
 render();
 /* Drawn: show the page (index.html starts with class="loading", which
    hides the empty frames so they don't flash before this point). */
 document.documentElement.classList.remove("loading");
-if (k) go(st.exhibit && trails[st.trail] ? $("exhibitOpen") : $("trailStops"));
+if (k) go(st.exhibit ? $("exhibitOpen") : $("trailStops"));
 
 /* Printing the page opens every stop, so the printout carries it all. */
 window.addEventListener("beforeprint", () => document.querySelectorAll("details").forEach(d => { d.open = true; }));

@@ -36,14 +36,10 @@ export const TITLES = {
   tryIt:       "Try it now",
   others:      "Learn other ways to help",
   nearby:      "Find ways to help close to home",
-  first:       "Choose your first step",
-
-  /* The Bulletin Board */
-  next:        "Choose what comes next"
+  first:       "Choose your first step"
 };
 
-/* The order things appear in. Anything a trail or exhibit hasn't been
-   written for yet is skipped. */
+/* The order things appear in. */
 export const TRAIL_ORDER = ["know", "care", "fit", "community"];
 export const EXHIBIT_ORDER = ["why", "changing", "who", "life"];
 /* The Field Guide: the trail's pages once, then a set for each topic the
