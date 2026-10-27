@@ -7,8 +7,8 @@
    What lives where in core/:
 
      climate-color.js  What each color MEANS (this file): the six colors,
-                       their archetypes, what each provides, their three
-                       words, and the site's page addresses.
+                       their archetypes, what each provides, and their
+                       three words.
      atlas.css         What everything LOOKS like: the brand colors, their
                        text shades and light tints, plus the styles every
                        page shares (header, pills, buttons).
@@ -18,8 +18,7 @@
 
    RULES
      - Color names are the keys (links and data). Archetypes are display
-       labels only, so they can be renamed without breaking links. When
-       one is renamed, add the old name to ALIASES so old links still work.
+       labels only, so they can be renamed without breaking links.
      - Lead with the color, then its archetype: "Blue · Communicator".
        In sentences, people use the archetype or the action form:
        "I am a Communicator", "I like Communicating".
@@ -96,83 +95,27 @@ export const COLORS = [
   }
 ];
 
-/* Old archetype names, so old links still find their color:
-   { OldName: "ColorKey" }. When an archetype is renamed, add its old name
-   here and keep it. */
-export const ALIASES = {};
-
 /* Color keys in list order, for pills, cards and tables: rainbow order,
    starting at Red. */
 export const COLOR_KEYS = ["Red", "Orange", "Yellow", "Green", "Blue", "Indigo"];
 
 const byKey = new Map(COLORS.map(c => [c.key, c]));
 
-/* Any name a link might carry (color, archetype, plural, action form, or
-   old alias, in any capitalization) mapped to its color key. */
-const lookup = new Map();
-for (const c of COLORS) {
-  for (const n of [c.key, c.archetype, c.plural, c.action]) lookup.set(n.toLowerCase(), c.key);
-}
-for (const [oldName, key] of Object.entries(ALIASES)) {
-  lookup.set(oldName.toLowerCase(), key);
-  lookup.set((oldName + "s").toLowerCase(), key);
-}
-
-/* "blue", "Communicator", "communicators", "Communicating" -> "Blue".
-   Returns null for anything that isn't one of the six. */
-export function resolveColor(name) {
-  if (typeof name !== "string") return null;
-  return lookup.get(name.trim().toLowerCase()) || null;
-}
-
-/* A list of colors from a link, like "Green,Indigo,Orange". Each name
-   resolves the same way as resolveColor. Unknown names and repeats are
-   dropped, and the order given is kept:
-   resolveColors("green, navigators, green") -> ["Green", "Indigo"]. */
-export function resolveColors(text) {
-  if (typeof text !== "string") return [];
-  return [...new Set(text.split(",").map(resolveColor).filter(Boolean))];
-}
-
-/* How many of a palette's colors an item carries. Pages use it to show
-   the best matches first:
-   paletteMatches(["Green", "Orange"], ["Green", "Indigo", "Orange"]) -> 2. */
-export function paletteMatches(itemColors, palette) {
-  return itemColors.filter(k => palette.includes(k)).length;
-}
-
-/* The full record for a color key (or any name resolveColor accepts). */
-export function getColor(name) {
-  return byKey.get(resolveColor(name)) || null;
+/* The full record for a color key: getColor("Green"). */
+export function getColor(key) {
+  return byKey.get(key) || null;
 }
 
 /* The atlas.css variable names for a color: cssVar("Green") ->
    "--green-color", cssVar("Green", "text") -> "--green-text". Use in
    styles as `var(${cssVar(key)})`. */
-export function cssVar(name, kind = "color") {
-  const key = resolveColor(name);
-  return key ? `--${key.toLowerCase()}-${kind}` : null;
-}
-
-/* The Climate Color Trail's address. climatecolor.com forwards here. The
-   key trailMap keeps its old name from when the Trail was the Trail Map. */
-export const SITE = {
-  trailMap: "https://climatecolor.com/trail"
-};
-
-/* A link that opens the Trail with one color's trail already picked:
-   trailUrl("Green") -> "https://climatecolor.com/trail/#green".
-   The one place these links are built, so a future teen version can
-   change them in one line. */
-export function trailUrl(name) {
-  const key = resolveColor(name);
-  return key ? `${SITE.trailMap}/#${key.toLowerCase()}` : `${SITE.trailMap}/`;
+export function cssVar(key, kind = "color") {
+  return `--${key.toLowerCase()}-${kind}`;
 }
 
 /* The live hex value from core/atlas.css, e.g. colorValue("Green") ->
    "#46760F". Needs a page that has loaded atlas.css. Returns "" if it
    can't find one. */
-export function colorValue(name, kind = "color", el = document.documentElement) {
-  const v = cssVar(name, kind);
-  return v ? getComputedStyle(el).getPropertyValue(v).trim().toUpperCase() : "";
+export function colorValue(key, kind = "color", el = document.documentElement) {
+  return getComputedStyle(el).getPropertyValue(cssVar(key, kind)).trim().toUpperCase();
 }
