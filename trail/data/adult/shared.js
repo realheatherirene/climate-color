@@ -1,7 +1,7 @@
 /* Words shared by every trail and every exhibit: the places on the map,
    the first trail stop, the Lodge, the Field Guide, the Bulletin Board,
    notes, and saving. The page fills in {trail}, {action}, {meaning},
-   {words}, {exhibit}, {exhibitName}, {lower}, and {about}.
+   {words}, {exhibit}, {exhibitName}, and {lower}.
    Adult pack: grade 9 reading level or lower. */
 
 const PEW = { title: "Pew Research Center, 2018", url: "https://www.pewresearch.org/politics/2018/04/26/10-political-engagement-knowledge-and-the-midterms/" };
@@ -13,8 +13,8 @@ const SPARKMAN = { title: "Sparkman, Geiger & Weber, 2022", url: "https://pmc.nc
 
 export default {
   /* The places on the map, in order: the one source for their names,
-     icons, and signs. The route strip at the top of the page, each
-     place's sign, and the Bulletin Board all read from here. */
+     icons, and signs. The progress bar, the park map and its route strip,
+     each place's sign, and the Bulletin Board all read from here. */
   places: {
     trailhead: { name: "Trailhead", icon: "i-sign", route: "Pick your trail.",
       title: "Trailhead" },
@@ -91,8 +91,7 @@ export default {
     imagine: "Imagine this:",
     first: "One first step:",
     added: "Added to your Field Guide.",
-    ahead: "Your Field Guide, where this exhibit's pages are gathered for you.",
-    toGuide: "Your Field Guide, where this exhibit's pages are gathered for you."
+    ahead: "Your Field Guide, where this exhibit's pages are gathered for you."
   },
 
   /* The top of the trail, once a trail is picked: its name and what it's
@@ -119,7 +118,7 @@ export default {
       { p: "Grief, worry, and anger about climate change are common, and they make sense. You don't have to carry them alone." },
       { resources: [
         { verb: "Find", name: "a climate-aware therapist", url: "https://www.climatepsychology.us/practitioner-directory/", reach: "North America", desc: "From the Climate Psychology Alliance of North America: a directory of therapists and others who help with climate feelings. Each listing says whether the person is a licensed therapist, a coach, or a consultant. The Alliance doesn't check licenses, so confirm one before you book. Each person sets their own fees." }
-      ], label: false },
+      ] },
       { p: "If you're in crisis, call or text **988**, the Suicide & Crisis Lifeline." }
     ],
     ahead: "A rest stop to check whether {action} fits you."
@@ -131,21 +130,13 @@ export default {
     pickHint: "Visit as many as you like. Each one you visit adds its pages to your Field Guide.",
     /* How every topic is named, everywhere: "Water Exhibit." */
     exhibitName: "{exhibit} Exhibit",
-    /* {ready}, {verb}, and {name} are filled in from the exhibits that are
-       built. */
-    notBuilt: "This exhibit is still being built. For now, {ready} {verb} ready.",
-    tryReady: "Try the {name}",
-    /* Each exhibit card says so once you've opened it, and the route strip
-       counts them: "Lodge · 2 visited." */
+    /* Each exhibit card says so once you've opened it, and the progress
+       bar counts them: "Lodge · 2 visited." */
     visited: "Visited",
     visitedCount: "{n} visited",
     /* At the Bulletin Board: the reader picks which visited exhibits go
        in the Field Guide. */
-    door: "Which topics go in your Field Guide?",
-    /* The two doorways on the Lodge floor plan. */
-    doorIn: "In from your trail",
-    doorOut: "Out to your Field Guide",
-    toGuide: "Go to my Field Guide"
+    door: "Which topics go in your Field Guide?"
   },
 
   /* The Field Guide: the same for everyone. The page fills in the
@@ -186,7 +177,7 @@ export default {
       { resources: [
         { verb: "Find", name: "your elected officials", url: "https://www.usa.gov/elected-officials", reach: "United States only", desc: "Type in your address to find who represents you, from your city or county to Congress." },
         { verb: "Learn", name: "how voting works in your state", url: "https://vote.gov", reach: "United States only", desc: "Registration, deadlines, and ways to vote, from the U.S. government." }
-      ], label: false }
+      ] }
     ],
     /* One line near the top of the Field Guide, for every reader. */
     safety: "Put your own safety first. In an emergency, follow official alerts and call 911.",
@@ -213,8 +204,6 @@ export default {
        each topic the reader keeps. */
     forTrail: "For your {trail} Trail",
     forTopic: "For {exhibit}",
-    /* Under the title: "The Green Trail, with Water and Food." */
-    with: "The {trail} Trail, with {exhibits}.",
     print: "Print your Field Guide",
     back: { label: "Back to the Climate Lodge", hint: "Visit more exhibits. Each one you visit adds its pages here." },
     printHelp: "Prints this guide only, with your notes. If the button doesn't work here, use your browser's Print command."
@@ -222,10 +211,6 @@ export default {
 
   /* The Bulletin Board: the end of the trail. */
   bulletin: {
-    recap: "You took the {trail} Trail and visited the {exhibitName}.",
-    /* With more than one exhibit visited: {exhibits} lists them. */
-    recapMany: "You took the {trail} Trail and visited the {exhibits} Exhibits.",
-    /* The one choice left, as a link at the end. */
     /* After each trail's own closing words, on every trail. The first
        circles back to the guess on the Care stop. */
     close: [
