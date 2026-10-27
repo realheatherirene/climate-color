@@ -5,6 +5,13 @@
 
 const NCA5_FOOD = { title: "Fifth National Climate Assessment, Ch. 11: Agriculture, Food Systems, and Rural Communities, 2023", url: "https://toolkit.climate.gov/NCA5_Ch11_Agriculture", web: "https://nca5.climate.us/chapter/11", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch11_Agriculture" };
 
+/* Wasted food draws on the assessment's mitigation and health chapters and
+   two EPA pages, each cited under the part it supports. */
+const NCA5_MITIGATION = { title: "Fifth National Climate Assessment, Ch. 32: Mitigation, 2023", url: "https://toolkit.climate.gov/NCA5_Ch32_Mitigation", web: "https://nca5.climate.us/chapter/32", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch32_Mitigation" };
+const NCA5_HEALTH = { title: "Fifth National Climate Assessment, Ch. 15: Human Health, 2023", url: "https://toolkit.climate.gov/NCA5_Ch15_Human-Health", web: "https://nca5.climate.us/chapter/15", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch15_Human-Health" };
+const EPA_FOOD = { title: "EPA: Reducing Wasted Food at Home", url: "https://www.epa.gov/recycle/reducing-wasted-food-home", archive: "https://web.archive.org/web/2026/https://www.epa.gov/recycle/reducing-wasted-food-home" };
+const EPA_LANDFILL = { title: "EPA: Basic Information about Landfill Gas", url: "https://www.epa.gov/lmop/basic-information-about-landfill-gas", archive: "https://web.archive.org/web/2026/https://www.epa.gov/lmop/basic-information-about-landfill-gas" };
+
 export default {
   key: "food",
 
@@ -19,10 +26,10 @@ export default {
       line: "A quick guess, then why food matters.",
       blocks: [
         { find: {
-          prompt: "Take a guess: farmers buy insurance to cover crops they lose. From 1991 to 2017, how much of what that insurance paid out was caused by rising temperatures?",
+          prompt: "Take a guess: how much does the average family of four spend each year on food that never gets eaten?",
           button: "Reveal the answer",
-          reveal: "About 19 percent, nearly 1 dollar in every 5.",
-          src: NCA5_FOOD
+          reveal: "Almost $3,000.",
+          src: EPA_FOOD
         } },
         { teaser: true }
       ],
@@ -31,16 +38,17 @@ export default {
 
     changing: {
       exhibit: "sign",
-      line: "Growing seasons, prices, and healthy food.",
+      line: "Growing seasons, prices, healthy food, and wasted food.",
       blocks: [
         { p: "Everyone depends on food, from the farm to the grocery store to the kitchen table. Climate change is changing when and where food can grow, and what it costs." },
         { list: [
           "**Growing seasons.** Climate change is disrupting growing zones and growing days, which depend on rain, temperature, and soil moisture.",
           "**Prices.** By 2050, climate change is expected to raise some crop prices. Corn and wheat could each cost about 26 percent more.",
           "**Healthy food.** Climate change is expected to make nutritious food harder to find and harder to afford.",
-          "**Hope on the farm.** Some farmers and ranchers are using practices that protect the land, cut heat-trapping gases, and help their farms handle climate change."
+          "**Wasted food.** More than a third of all food in the U.S. goes to waste, and more than 40 percent of that is thrown out by stores and households. In 2019, about 96 percent of the food households wasted was sent to landfills or burned, not composted. In landfills, it gives off methane, a heat-trapping gas.",
+          "**Hope on the farm.** Some farmers and ranchers are using practices that protect the land, cut heat-trapping gases, and help their farms handle climate change. Campaigns in five other wealthy countries cut food waste per person by 8 to 29 percent."
         ] },
-        { cite: [NCA5_FOOD] }
+        { cite: [NCA5_FOOD, NCA5_MITIGATION, EPA_LANDFILL, EPA_FOOD] }
       ],
       ahead: "Who feels these changes first."
     },
@@ -49,9 +57,9 @@ export default {
       exhibit: "sign",
       line: "The communities hit hardest.",
       blocks: [
-        { p: "Climate change won't affect everyone's food the same way. Many risks are greater in some Black, Indigenous, Latino, and lower-income communities." },
+        { p: "Climate change won't affect everyone's food the same way. Many risks are greater in some Black, Indigenous, Latino, and low-income communities. And while food goes to waste, 10.5 percent of U.S. households didn't always have enough food in 2020." },
         { p: "Farmworkers face more heat-related illness and death than other U.S. workers, and the number of unsafe working days is expected to double by midcentury. Farmworkers are also more likely to face food insecurity: not always having enough food. People who hunt, fish, and forage for their food may find it harder to get." },
-        { cite: [NCA5_FOOD] }
+        { cite: [NCA5_FOOD, NCA5_HEALTH] }
       ],
       ahead: "A rest stop to think about food where you live."
     },
@@ -141,8 +149,9 @@ export default {
         link: { name: "Find Your Local Food Bank", url: "https://www.feedingamerica.org/find-your-local-foodbank", reach: "United States only" }
       } },
       { resources: [
-        { verb: "Explore", name: "USDA's National Farmers Market Directory", url: "https://www.ams.usda.gov/local-food-directories/farmersmarkets", reach: "United States only", desc: "It lists markets with two or more farm vendors, with their locations, hours, products, and the kinds of payment they take." }
-      ], label: false },
+        { verb: "Explore", name: "USDA's National Farmers Market Directory", url: "https://www.ams.usda.gov/local-food-directories/farmersmarkets", reach: "United States only", desc: "It lists markets with two or more farm vendors, with their locations, hours, products, and the kinds of payment they take." },
+        { verb: "Explore", name: "EPA: Reducing Wasted Food at Home", url: "https://www.epa.gov/recycle/reducing-wasted-food-home", reach: "United States only", desc: "Tips for planning, storing, and cooking food so less goes to waste, with printable guides and a toolkit for households and community groups." }
+      ] },
       { say: [
         { where: "At the library desk", words: "Do any groups here run a community garden or a food drive?" },
         { where: "At a food pantry", words: "What do you need most right now?" },
@@ -152,7 +161,7 @@ export default {
         { verb: "Pass", text: "one idea along to a neighbor.", reach: "Close to home" },
         { verb: "Bring", text: "a friend to a garden workday.", reach: "A little further" },
         { verb: "Introduce", text: "a farm stand to the food pantry, or welcome newcomers to your group.", reach: "Further still" }
-      ] } ], label: false }
+      ] } ] }
     ]
   }
 };

@@ -141,7 +141,7 @@ export default {
       } },
       { resources: [
         { verb: "Find", name: "the Alternative Fueling Station Locator", url: "https://afdc.energy.gov/stations", reach: "United States and Canada", desc: "From the U.S. Department of Energy. Search by location, or along a driving route, for public electric vehicle charging and other cleaner fuels." }
-      ], label: false },
+      ] },
       { say: [
         { where: "At the library desk", words: "Are there groups here working on buses, bikes, or safer streets?" },
         { where: "At a transit meeting", words: "How can riders share ideas for better service?" },
@@ -151,7 +151,7 @@ export default {
         { verb: "Pass", text: "one idea along to a neighbor.", reach: "Close to home" },
         { verb: "Bring", text: "a friend to a transit meeting.", reach: "A little further" },
         { verb: "Introduce", text: "a bike group to your school or block club, or welcome newcomers to your group.", reach: "Further still" }
-      ] } ], label: false }
+      ] } ] }
     ]
   }
 };

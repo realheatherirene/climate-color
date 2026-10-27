@@ -3,7 +3,8 @@
    Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
-const NCA5_LAND = { title: "Fifth National Climate Assessment, Ch. 7: Forests, 2023", url: "https://toolkit.climate.gov/NCA5_Ch7_Forests", web: "https://nca5.climate.us/chapter/7", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch7_Forests" };
+const NCA5_FORESTS = { title: "Fifth National Climate Assessment, Ch. 7: Forests, 2023", url: "https://toolkit.climate.gov/NCA5_Ch7_Forests", web: "https://nca5.climate.us/chapter/7", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch7_Forests" };
+const NCA5_ECOSYSTEMS = { title: "Fifth National Climate Assessment, Ch. 8: Ecosystems, Ecosystem Services, and Biodiversity, 2023", url: "https://toolkit.climate.gov/NCA5_Ch8_Ecosystems", web: "https://nca5.climate.us/chapter/8", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch8_Ecosystems" };
 
 export default {
   key: "land",
@@ -19,10 +20,10 @@ export default {
       line: "A quick guess, then why land matters.",
       blocks: [
         { find: {
-          prompt: "Take a guess: from 2014 to 2017, how many trees died in California's forests?",
+          prompt: "Take a guess: many U.S. crops need pollinators, like bees, to grow. About what share of those crops have too few pollinators?",
           button: "Reveal the answer",
-          reveal: "More than 100 million. Scientists link about 30 percent of those deaths to warming, which sped up the life cycle of a tree-killing beetle.",
-          src: NCA5_LAND
+          reveal: "Nearly 40 percent.",
+          src: NCA5_ECOSYSTEMS
         } },
         { teaser: true }
       ],
@@ -31,16 +32,16 @@ export default {
 
     changing: {
       exhibit: "sign",
-      line: "Wildfire, homes, and insects.",
+      line: "Wildfire, insects, and moving species.",
       blocks: [
-        { p: "The United States has 766 million acres of forest land. Climate change is making some threats to forests more frequent, larger, and more severe." },
+        { p: "The United States has 766 million acres of forest land, and its plants and animals depend on each other, and on us. Climate change is making some threats to forests more frequent, larger, and more severe, and it's changing where plants and animals can live." },
         { list: [
-          "**Wildfire.** Three of the five worst wildfire years have happened since 2015. In the West, the area burned by severe fire has grown about eightfold since 1985.",
-          "**Homes.** Homes lost to wildfire were five times higher in the 2010s than the average from 1990 to 2010.",
+          "**Wildfire.** Three of the five worst wildfire years have happened since 2015. In the West, the area burned by severe fire has grown about eightfold since 1985. Homes lost to wildfire were five times higher in the 2010s than the average from 1990 to 2010.",
           "**Insects.** In Alaska, a spruce beetle outbreak has spread across more than 1.6 million acres since 2016.",
+          "**Moving species.** Plants and animals are shifting where they live.",
           "**Help from forests.** Each year, U.S. forests take in carbon equal to more than 13 percent of the country's carbon dioxide emissions. Caring for forests ahead of time helps keep them healthy."
         ] },
-        { cite: [NCA5_LAND] }
+        { cite: [NCA5_FORESTS, NCA5_ECOSYSTEMS] }
       ],
       ahead: "Who feels these changes first."
     },
@@ -49,9 +50,9 @@ export default {
       exhibit: "sign",
       line: "The communities hit hardest.",
       blocks: [
-        { p: "Indigenous and Tribal Peoples' food, ways of life, and cultural practices depend on forests that are changing. Half of Diné (Navajo) households heat their homes mainly with wood. Black landowners in the South have a long history of unequal access to help managing their forests." },
-        { p: "People who live where homes meet wildland are losing more homes to wildfire. Wildfire smoke is linked to more hospital visits for breathing and heart problems." },
-        { cite: [NCA5_LAND] }
+        { p: "The food, ways of life, and cultural practices of Tribes and Indigenous Peoples depend on forests and animals that are changing. Half of Diné (Navajo) households heat their homes mainly with wood. A parasite called brainworm is shrinking moose herds, which affects some Tribes' hunting for food. Black landowners in the South have a long history of unequal access to help managing their forests." },
+        { p: "People who live where homes meet wildland are losing more homes to wildfire. Communities of color often have less access to green space." },
+        { cite: [NCA5_FORESTS, NCA5_ECOSYSTEMS] }
       ],
       ahead: "A rest stop to think about land where you live."
     },
@@ -63,7 +64,7 @@ export default {
         { sub: "Land where you live" },
         { questions: [
           "Where do trees, parks, and open spaces show up in my day?",
-          "Has wildfire smoke, a storm, or drought touched my community?",
+          "Which plants or animals in my area seem to be changing?",
           "Who near me depends on forests or land for their work or way of life?"
         ] }
       ],
@@ -73,47 +74,47 @@ export default {
 
   /* For the Field Guide's "Think it through." The reader writes how
      their own way of helping fits. */
-  situation: "Wildfire smoke drifts into your town for the third summer in a row. The air quality alert is posted online, and the senior center has no air filters.",
+  situation: "The creek behind the school used to be full of frogs every spring. This year there are hardly any, and nobody knows why.",
 
   /* Added to the shared questions in the Field Guide's first step. */
   /* "Put your [action] to work": this topic, for each trail. One line
      for each of the trail's three actions, then one first step. */
   work: {
     Red: {
-      Focus: "Ask the senior center's staff what would help most on smoky days, and focus your help there.",
-      Build: "Set up a simple plan with neighbors to collect what the center asks for, like donated fans.",
-      Secure: "Be someone the center can count on: check in with its staff each smoke season to ask what's needed.",
-      first: "Ask a park office or land trust about a regular volunteer role, like a monthly tree care day."
+      Focus: "Help your neighbors start with one clear question, like \"When did the frogs start to disappear?\", before trying to fix everything.",
+      Build: "Set up a shared notes page where neighbors can write down what they know about the creek, and when.",
+      Secure: "Keep those notes safe from year to year, so you can share them with a nature center or the school.",
+      first: "Ask a nature center or your state wildlife agency about joining a regular count, like a yearly bird count."
     },
     Orange: {
-      Dream: "Imagine the senior center as a clean-air spot on smoky days, and share the idea with the center's staff.",
-      Invent: "Think up a new way to get the word out about smoke alerts, like a sign at the center's front desk, and offer it to the staff.",
-      Invite: "Ask the center's staff what members say would make smoky days easier, and offer ideas that build on theirs.",
-      first: "Ask at a park office or nature center about a tree planting or native plant workday."
+      Dream: "Imagine the creek full of frogs again. Make a list of what frogs might need, and share it with a teacher or nature center.",
+      Invent: "Try a new way to keep track, like a shared online page where neighbors can post what they know about the creek.",
+      Invite: "Ask longtime neighbors and families for their ideas about what changed at the creek.",
+      first: "Ask a nature center about native plant sales or habitat workdays."
     },
     Yellow: {
-      Inspire: "Share why clean air matters to you and the people you love, and invite friends to join a tree planting.",
-      Rally: "Gather a few friends to sign up together for the next park or tree planting workday, and celebrate afterward.",
-      Encourage: "Thank the senior center's staff for keeping members safe on smoky days.",
-      first: "Ask at a park office or nature center about the next tree planting, and invite a friend."
+      Inspire: "Share a favorite memory of the creek to spark your neighbors' interest.",
+      Rally: "Invite a few friends to a habitat workday together, and celebrate what you get done.",
+      Encourage: "Cheer on the teachers and students who care for the creek. Tell them their work matters.",
+      first: "Ask a nature center or Audubon chapter about the next bird count or habitat workday, and bring a friend."
     },
     Green: {
-      Unite: "Ask the senior center's staff what they need on smoky days, like donated fans, and gather a few neighbors to help collect it.",
-      Network: "Pass the air quality alert to people you know who don't follow it online.",
-      Include: "Ask a teacher or a neighborhood group who spends the most time outdoors on smoky days, and share the alert with them.",
-      first: "Ask at a park office or nature center about tree plantings and cleanups."
+      Unite: "Bring together a few neighbors who care about the creek, and share what each of you knows about it.",
+      Network: "Pass along the name of a nature center or local Audubon chapter to a teacher at the school. They may be able to help find out what's going on.",
+      Include: "Invite longtime neighbors to share what the creek was like years ago.",
+      first: "Ask a nature center or Audubon chapter about bird counts or habitat workdays."
     },
     Blue: {
-      Clarify: "Explain the air quality alert in plain words, and point people to the health department's tips.",
-      Inform: "Share the alert with people you know who don't follow it online.",
-      Influence: "Tell your city council or parks department about your town's smoke summers, and ask about plans for cleaner air.",
-      first: "Sign up for your parks department's news or a local land trust's newsletter, and share what you learn."
+      Clarify: "Ask a nature center why frogs matter to a creek, and share what you learn in plain words.",
+      Inform: "Share what you learn in your neighborhood group chat or the school newsletter.",
+      Influence: "Tell the creek's story in a way that brings people in, like a short post with an old photo.",
+      first: "Sign up for news from your state wildlife agency or a local nature center."
     },
     Indigo: {
-      Assess: "Ask the senior center's staff what matters most to them on smoky days.",
-      Adapt: "If smoke comes earlier than usual, help shift plans, like moving an outdoor event indoors.",
-      Guide: "Help a neighbor find the air quality alerts and the health department's tips.",
-      first: "Ask at a park office or nature center which volunteer roles they need filled most."
+      Assess: "Sort out what's known about the creek and what's still a mystery, before deciding what to do.",
+      Adapt: "If a first idea doesn't work out, try another, like asking a different nature group.",
+      Guide: "Help a teacher or neighbor find the right group to contact, like a nature center or your state wildlife agency.",
+      first: "Ask a nature center or your state wildlife agency what kind of help would matter most for the creek."
     }
   },
 
@@ -127,32 +128,36 @@ export default {
     exhibit: "tip",
     line: "Where land projects turn up near you.",
     blocks: [
-      { p: "Opportunities are local, and they change. Tree plantings, park cleanups, and trail workdays are where people who care about land find each other." },
+      { p: "Opportunities are local, and they change. Tree plantings, bird counts, and habitat workdays are where people who care about land find each other." },
       { tips: [
-        { verb: "Check", text: "bulletin boards at the library, park office, or nature center for tree plantings and cleanups." },
-        { verb: "Ask", text: "at a park office, nature center, or the county extension office how you can help." },
-        { verb: "Sign up for", text: "your parks department's news or a local land trust's newsletter." },
-        { verb: "Search for", text: "\"tree planting [your town],\" \"park cleanup [your city],\" or \"land trust [your county].\"" }
+        { verb: "Check", text: "bulletin boards at the library, park office, nature center, or garden center for tree plantings, bird counts, and habitat workdays." },
+        { verb: "Ask", text: "at a park office, nature center, or local Audubon chapter how you can help." },
+        { verb: "Sign up for", text: "your parks department's news, a land trust's newsletter, or your state wildlife agency's news." },
+        { verb: "Search for", text: "\"tree planting [your town],\" \"land trust [your county],\" or \"bird count [your city].\"" }
       ] },
       { find: {
-        prompt: "There's a federal website that lists volunteer work on public lands.",
+        prompt: "There's a tool that tells you which native plants help the birds where you live.",
         button: "Find out",
-        reveal: "It's Volunteer.gov, with openings at national parks and other public lands. The National Park Service's volunteer page links to its list of opportunities.",
-        link: { name: "Volunteer with the National Park Service", url: "https://nps.gov/volunteer", reach: "United States only" }
+        reveal: "It's Audubon's Native Plants Database. Type in your ZIP code to get a list of native plants that help local birds, plus nearby nurseries and Audubon groups.",
+        link: { name: "Audubon Native Plants Database", url: "https://www.audubon.org/native-plants", reach: "United States only" }
       } },
+      /* The bird count is open worldwide, not U.S. only: approved as an
+         exception. */
       { resources: [
-        { verb: "Find", name: "a land trust near you", url: "https://landtrustalliance.org/land-trusts/explore", reach: "United States only", desc: "From the Land Trust Alliance. Browse by state, or narrow the list to land trusts with trails, public access, or volunteer opportunities." }
-      ], label: false },
+        { verb: "Find", name: "a land trust near you", url: "https://landtrustalliance.org/land-trusts/explore", reach: "United States only", desc: "From the Land Trust Alliance. Browse by state, or narrow the list to land trusts with trails, public access, or volunteer opportunities." },
+        { verb: "Volunteer", name: "with the National Park Service", url: "https://nps.gov/volunteer", reach: "United States only", desc: "Its volunteer page links to Volunteer.gov, with openings at national parks and other public lands." },
+        { verb: "Join", name: "the Great Backyard Bird Count", url: "https://www.birdcount.org/", reach: "open worldwide", desc: "Each February, people count birds for as little as 15 minutes and share what they find. It's run by the Cornell Lab of Ornithology, the National Audubon Society, and Birds Canada." }
+      ] },
       { say: [
-        { where: "At a nature center", words: "Do you need volunteers for plantings or cleanups?" },
-        { where: "At town hall", words: "Who takes care of the trees in our parks and along our streets?" },
+        { where: "At a nature center", words: "Do you need volunteers for plantings, cleanups, or bird counts?" },
+        { where: "At a garden center", words: "Which native plants help birds and bees here?" },
         { where: "To a neighbor", words: "There's a tree planting at the park on Saturday. Want to come?" }
       ] },
       { more: [ { sub: "Then grow it", items: [
         { verb: "Pass", text: "one idea along to a neighbor.", reach: "Close to home" },
         { verb: "Bring", text: "a friend to a planting day.", reach: "A little further" },
-        { verb: "Introduce", text: "a land trust to your block club, or welcome newcomers to your group.", reach: "Further still" }
-      ] } ], label: false }
+        { verb: "Introduce", text: "a land trust or nature center to your school or block club, or welcome newcomers to your group.", reach: "Further still" }
+      ] } ] }
     ]
   }
 };

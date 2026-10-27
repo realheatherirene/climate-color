@@ -1,10 +1,11 @@
 /* The Water exhibit. Everything here is written once and shared by every
    trail: the exhibit itself, plus a situation and a finder for the Field
-   Guide. Titles come from titles.js, so none
-   appear here.
+   Guide. Titles come from titles.js, so none appear here.
    Adult pack: grade 9 reading level or lower. */
 
 const NCA5_WATER = { title: "Fifth National Climate Assessment, Ch. 4: Water, 2023", url: "https://toolkit.climate.gov/NCA5_Ch4_Water", web: "https://nca5.climate.us/chapter/4", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch4_Water" };
+const NCA5_COASTS = { title: "Fifth National Climate Assessment, Ch. 9: Coastal Effects, 2023", url: "https://toolkit.climate.gov/NCA5_Ch9_Coasts", web: "https://nca5.climate.us/chapter/9", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch9_Coasts" };
+const NCA5_ECOSYSTEMS = { title: "Fifth National Climate Assessment, Ch. 8: Ecosystems, Ecosystem Services, and Biodiversity, 2023", url: "https://toolkit.climate.gov/NCA5_Ch8_Ecosystems", web: "https://nca5.climate.us/chapter/8", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch8_Ecosystems" };
 
 export default {
   key: "water",
@@ -32,15 +33,18 @@ export default {
 
     changing: {
       exhibit: "sign",
-      line: "Heavier rain, drought, and water quality.",
+      line: "Rain, drought, the coast, and the ocean.",
       blocks: [
-        { p: "Everyone depends on water, from the tap at home to the creek down the street. Climate change is changing how much water falls, when it comes, and how clean it stays." },
+        { p: "Everyone depends on water, from the tap at home to the creek down the street to the ocean. Climate change is changing how much water falls, when it comes, how clean it stays, and how high the seas rise." },
         { list: [
           "**Heavier rain.** Heavy rainstorms are expected to increase across the country, and flood damage is already growing.",
           "**Drought.** The harm from droughts is growing too.",
-          "**Water quality.** Floods and droughts can both make water less safe to drink, fish, and swim in."
+          "**Water quality.** Floods and droughts can both make water less safe to drink, fish, and swim in.",
+          "**Rising seas.** Along most U.S. coasts, sea level is expected to rise about 11 inches by 2050. Without action, damaging floods could come as often as today's disruptive high-tide flooding.",
+          "**Ocean life.** Ocean species are moving more, and faster, than species on land. U.S. coral reefs help protect coasts, a benefit worth more than $1.8 billion a year. Warming, more acidic oceans, and ocean heat waves threaten them.",
+          "**Hope at the coast.** Restoring coastal wetlands stores carbon and reduces flooding and erosion, often at low cost. Protected ocean areas can help sea life recover after heat waves."
         ] },
-        { cite: [NCA5_WATER] }
+        { cite: [NCA5_WATER, NCA5_COASTS, NCA5_ECOSYSTEMS] }
       ],
       ahead: "Who feels these changes first."
     },
@@ -49,8 +53,9 @@ export default {
       exhibit: "sign",
       line: "The communities hit hardest.",
       blocks: [
-        { p: "Every community will feel these changes. Communities on the front lines of climate change, including Tribal and Indigenous communities, face the most risk, often with the fewest resources to prepare." },
-        { cite: [NCA5_WATER] }
+        { p: "Every community will feel these changes. Communities on the front lines of climate change, including Tribes and Indigenous Peoples, rural communities, and low-income communities, face the most risk, often with the fewest resources to prepare." },
+        { p: "Many Tribes depend on fish that are changing. Chinook salmon, important to Pacific Northwest Tribes, are expected to decline sharply. People who fish or work in tourism are losing income as coral disease spreads." },
+        { cite: [NCA5_WATER, NCA5_COASTS, NCA5_ECOSYSTEMS] }
       ],
       ahead: "A rest stop to think about water where you live."
     },
@@ -140,9 +145,11 @@ export default {
         reveal: "It's called How's My Waterway. Type in your address to find the condition of rivers, lakes, and streams near you, and restoration work happening nearby. No account is needed.",
         link: { name: "How's My Waterway", url: "https://www.epa.gov/waterdata/hows-my-waterway", reach: "United States only" }
       } },
+      /* The cleanup is open worldwide, not U.S. only: approved as an exception. */
       { resources: [
-        { verb: "Join", name: "Fix a Leak Week", url: "https://www.epa.gov/watersense/fix-leak-week", reach: "United States only", desc: "A yearly week each March to find and fix water leaks at home. Free tips explain a toilet dye test and a water meter test, with a printable checklist." }
-      ], label: false },
+        { verb: "Join", name: "Fix a Leak Week", url: "https://www.epa.gov/watersense/fix-leak-week", reach: "United States only", desc: "A yearly week each March to find and fix water leaks at home. Free tips explain a toilet dye test and a water meter test, with a printable checklist." },
+        { verb: "Join", name: "the International Coastal Cleanup", url: "https://oceanconservancy.org/work/plastics/cleanups-icc/", reach: "open worldwide", desc: "From Ocean Conservancy: volunteers clean up beaches and waterways near them. Its map lists cleanups in your area, or you can start your own. Each cleanup is run by a local host; check their page for details." }
+      ] },
       { say: [
         { where: "At the library desk", words: "Do any groups meet here about creeks, rivers, or water?" },
         { where: "At town hall", words: "Are there volunteer programs for keeping our water clean?" },
@@ -152,7 +159,7 @@ export default {
         { verb: "Pass", text: "one idea along to a neighbor.", reach: "Close to home" },
         { verb: "Bring", text: "a friend to a meeting.", reach: "A little further" },
         { verb: "Introduce", text: "two groups, or welcome newcomers to yours.", reach: "Further still" }
-      ] } ], label: false }
+      ] } ] }
     ]
   }
 };

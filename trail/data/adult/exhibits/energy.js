@@ -31,13 +31,13 @@ export default {
 
     changing: {
       exhibit: "sign",
-      line: "Heat, energy bills, and extreme cold.",
+      line: "Cooling, energy bills, and outages.",
       blocks: [
         { p: "Everyone depends on energy, to keep homes warm or cool, to keep food cold, and to get to work and school. Climate change is putting the ways we make and deliver energy at risk." },
         { list: [
-          "**Heat.** Hotter summers mean more cooling. In Sacramento, Los Angeles, and New York City, summer cooling makes up 30 to 50 percent of daily electricity use.",
+          "**Cooling.** Hotter summers mean more cooling. In Sacramento, Los Angeles, and New York City, summer cooling makes up 30 to 50 percent of daily electricity use.",
           "**Energy bills.** Low-income households in rural areas spend a median of 9 percent of their income on energy, and up to 15 percent in some regions. Rural middle- and high-income households spend 3 percent.",
-          "**Extreme cold.** At least 210 people died during the 2021 power outages and cold weather in Texas.",
+          "**Outages in the cold.** At least 210 people died during the 2021 power outages and cold weather in Texas.",
           "**Hope in clean power.** Over the last decade, wind costs dropped 70 percent and solar costs dropped 90 percent. Some Tribal governments, like the Blue Lake Rancheria in California, have built solar microgrids: small, local power systems."
         ] },
         { cite: [NCA5_ENERGY] }
@@ -142,7 +142,7 @@ export default {
       } },
       { resources: [
         { verb: "Explore", name: "the Weatherization Assistance Program", url: "https://www.energy.gov/scep/wap/how-apply-weatherization-assistance", reach: "United States only", desc: "It's run by state and local agencies. This page lists the steps: check if you qualify, find your local provider, and apply." }
-      ], label: false },
+      ] },
       { say: [
         { where: "At the library desk", words: "Are there any energy-saving workshops or programs around here?" },
         { where: "At town hall", words: "Does our town have a plan to help people during long power outages?" },
@@ -152,7 +152,7 @@ export default {
         { verb: "Pass", text: "one idea along to a neighbor.", reach: "Close to home" },
         { verb: "Bring", text: "a friend to an energy fair.", reach: "A little further" },
         { verb: "Introduce", text: "a neighbor to the energy assistance hotline, or welcome newcomers to your group.", reach: "Further still" }
-      ] } ], label: false }
+      ] } ] }
     ]
   }
 };

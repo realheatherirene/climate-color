@@ -4,6 +4,7 @@
    Adult pack: grade 9 reading level or lower. */
 
 const NCA5_HEALTH = { title: "Fifth National Climate Assessment, Ch. 15: Human Health, 2023", url: "https://toolkit.climate.gov/NCA5_Ch15_Human-Health", web: "https://nca5.climate.us/chapter/15", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch15_Human-Health" };
+const NCA5_ECOSYSTEMS = { title: "Fifth National Climate Assessment, Ch. 8: Ecosystems, Ecosystem Services, and Biodiversity, 2023", url: "https://toolkit.climate.gov/NCA5_Ch8_Ecosystems", web: "https://nca5.climate.us/chapter/8", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch8_Ecosystems" };
 
 export default {
   key: "health",
@@ -31,16 +32,17 @@ export default {
 
     changing: {
       exhibit: "sign",
-      line: "Heat, ticks, and smoke.",
+      line: "Minds, disease, heat illness, and care.",
       blocks: [
         { p: "Everyone depends on good health, and on the clinics, hospitals, and people who care for us. Climate change is already harming people's physical, mental, and community health." },
         { list: [
-          "**Heat.** Heat sends more people to the emergency room for heart disease, diabetes, and other conditions. From 2011 to 2019, U.S. workers reported an average of 3,500 heat-related injuries and 38 deaths a year.",
-          "**Ticks.** Ticks cause about 80 percent of the reported U.S. diseases spread by ticks and insects.",
-          "**Smoke.** Wildfire smoke is linked to more emergency room visits, hospital stays, and deaths.",
-          "**Hope in care.** Heat warnings, green spaces, and fair access to cooling centers help protect people. Limiting warming could greatly reduce heat deaths, especially in cities."
+          "**Minds.** Disasters and extreme heat can harm mental health. After the Camp Fire in California, survivors faced post-traumatic stress, depression, and anxiety.",
+          "**Disease.** Ticks cause about 80 percent of the reported U.S. diseases spread by ticks and insects, and tick-borne disease cases have risen steadily for 20 years. A warmer climate keeps ticks active longer. In one review of diseases that spread between animals and people, climate change made 58 percent of them worse.",
+          "**Care.** Floods and storms can cut people off from care, and the harm can last for months. About 9 percent of U.S. hospitals, 10 percent of nursing homes, and 12 percent of pharmacies are at risk of flooding.",
+          "**Heat illness.** Heat sends more people to the emergency room for heart disease, diabetes, and other conditions.",
+          "**Hope in acting together.** Feeling able to take climate action can help protect people's mental health during disasters. Cutting heat-trapping gases and air pollution would save lives and ease the load on hospitals."
         ] },
-        { cite: [NCA5_HEALTH] }
+        { cite: [NCA5_HEALTH, NCA5_ECOSYSTEMS] }
       ],
       ahead: "Who feels these changes first."
     },
@@ -49,8 +51,8 @@ export default {
       exhibit: "sign",
       line: "The communities hit hardest.",
       blocks: [
-        { p: "Heat harms children, adults over 65, people with disabilities, pregnant people, people without cooling, and outdoor workers the most. Latino people are 43 percent more likely than other groups to live where heat cuts work hours the most." },
-        { p: "Low-income communities, communities of color, and Tribal and Indigenous Peoples carry a heavier share of climate's harm to health." },
+        { p: "Low-income communities, communities of color, and Tribes and Indigenous Peoples carry a heavier share of climate's harm to health." },
+        { p: "The harm can last for years. One in six low-income mothers still had post-traumatic stress symptoms 12 years after Hurricane Katrina. People who need regular care, like dialysis, are put at risk when storms cut off access." },
         { cite: [NCA5_HEALTH] }
       ],
       ahead: "A rest stop to think about health where you live."
@@ -64,7 +66,7 @@ export default {
         { questions: [
           "How does the weather affect how I feel, in body and mind?",
           "Where do people in my community go for care?",
-          "Who near me is most at risk on a very hot day?"
+          "Who near me would have a hard time getting care after a storm or flood?"
         ] }
       ],
       ahead: "The Bulletin Board, where you choose what comes next."
@@ -73,47 +75,47 @@ export default {
 
   /* For the Field Guide's "Think it through." The reader writes how
      their own way of helping fits. */
-  situation: "A heat wave hits your town in June. The cooling center opens at the library, but many older neighbors don't know about it, and some can't get there.",
+  situation: "A flood closes your town's only clinic for two weeks. Some neighbors need regular care, like insulin refills or dialysis, and aren't sure where to go. Others are still shaken from the flood and having trouble sleeping.",
 
   /* Added to the shared questions in the Field Guide's first step. */
   /* "Put your [action] to work": this topic, for each trail. One line
      for each of the trail's three actions, then one first step. */
   work: {
     Red: {
-      Focus: "Help your block put the people most at risk first on hot days: older adults, babies, and people who are sick.",
-      Build: "Make a simple heat plan with neighbors: a contact list, the cooling center's hours, and a time each day to send a check-in text.",
-      Secure: "Be the one who sends the check-in texts every hot day, and keep the list current.",
-      first: "Ask your public health department or senior center whether they need volunteers for heat check-in calls."
+      Focus: "Help your block agree on the first goal: everyone who needs regular care can still get it.",
+      Build: "Start a simple list of nearby clinics and pharmacies, their hours, and who needs a ride to reach them.",
+      Secure: "Keep the list current until the clinic reopens, and be someone neighbors can call.",
+      first: "Ask a community health center or your public health department how neighbors can help after a disaster."
     },
     Orange: {
-      Dream: "Imagine a block where no one faces a heat wave alone. What would that take?",
-      Invent: "Try a new way to share the cooling center's hours, like a post in your building's group chat or a note on the lobby board.",
-      Invite: "Ask older neighbors you know what would make hot days easier, and build on their ideas.",
-      first: "Ask your senior center or public health department how you can help share heat alerts."
+      Dream: "Imagine your town after the next flood, with no one cut off from care. What would need to be in place?",
+      Invent: "Try a new way to get medicine to neighbors who can't travel, like a shared ride or a pharmacy that delivers.",
+      Invite: "Ask neighbors who were shaken by the flood what would help, and make room for their ideas.",
+      first: "Ask a community health center how people can share ideas about what the town needs."
     },
     Yellow: {
-      Inspire: "Share why caring for each other in the heat matters to you, in your building's group chat or a conversation.",
-      Rally: "On hot days, send a friendly reminder with the cooling center's hours.",
-      Encourage: "Thank the library staff and volunteers who run the cooling center.",
-      first: "Sign up for heat alerts from your health department, and pass them on to your group chats."
+      Inspire: "Share why caring for each other's health matters to you, in a conversation or your group chat.",
+      Rally: "Send a friendly reminder with the open clinic's hours and the pharmacy's delivery number.",
+      Encourage: "Thank the nurses, pharmacists, and neighbors who kept people cared for.",
+      first: "Find a health fair or volunteer day at a health center near you, and invite a friend."
     },
     Green: {
-      Unite: "Swap numbers with older neighbors you know, and send a quick check-in text on hot days.",
-      Network: "Know where the cooling center is and when it's open, and share that with neighbors and your group chats.",
-      Include: "Ask the neighbors you check in with whether they can get to the cooling center. If they need a ride, help them find the city's or senior center's ride line.",
-      first: "Sign up for heat alerts from your health department, and share them with your neighbors."
+      Unite: "Swap numbers with neighbors who need regular care, so no one has to sort it out alone.",
+      Network: "Know where the nearest open clinic and pharmacy are, and the number for emotional support, and pass them along.",
+      Include: "Check in with neighbors who live alone or read little English, and make sure the information reaches them.",
+      first: "Ask a community health center or senior center how you can help neighbors get care."
     },
     Blue: {
-      Clarify: "Explain heat safety in plain words, using the health department's tips.",
-      Inform: "Share the cooling center's location and hours in your group chats and your building.",
-      Influence: "Share your block's story with the library or the city, and ask whether more cooling centers could open next summer.",
-      first: "Sign up for heat alerts from your health department, and share them with your group chats."
+      Clarify: "Explain in plain words where people can get care while the clinic is closed.",
+      Inform: "Share the open clinic's hours and the pharmacy's delivery number in your group chats.",
+      Influence: "Tell your city council or health department how the closure affected your neighbors, and ask about plans for the next flood.",
+      first: "Sign up for your health department's news and emergency alerts."
     },
     Indigo: {
-      Assess: "Among the neighbors you know, sort out who is most at risk in the heat.",
-      Adapt: "If the cooling center is hard to reach, help find another cool place, like a library branch.",
-      Guide: "Help a neighbor find heat alerts and the cooling center's hours.",
-      first: "Ask your senior center or public health department how you can help neighbors get ready for heat waves."
+      Assess: "Sort out who needs care most urgently: medicine, dialysis, or someone to talk to.",
+      Adapt: "If one clinic is full, help find another, or a pharmacy that delivers.",
+      Guide: "Help a neighbor find the nearest open health center and set up a ride.",
+      first: "Ask your public health department or a health center what help is needed most after a disaster."
     }
   },
 
@@ -131,28 +133,28 @@ export default {
       { tips: [
         { verb: "Check", text: "bulletin boards at the library, clinic, or pharmacy for health fairs and volunteer calls." },
         { verb: "Ask", text: "at a community health center, senior center, or public health department how you can help." },
-        { verb: "Sign up for", text: "heat and air quality alerts from your health department or the weather service." },
-        { verb: "Search for", text: "\"community health worker [your county],\" \"cooling center [your city],\" or \"health fair [your town].\"" }
+        { verb: "Sign up for", text: "your health department's news and emergency alerts." },
+        { verb: "Search for", text: "\"community health worker [your county],\" \"health fair [your town],\" or \"mental health first aid [your city].\"" }
       ] },
       { find: {
-        prompt: "There's a map from the National Weather Service that tells you how risky the heat will be this week.",
+        prompt: "There's a free number to call or text when you or someone you know needs emotional support.",
         button: "Find out",
-        reveal: "It's NWS HeatRisk. Its map covers the next seven days, with five levels from green, little to no risk, to magenta, rare or long-lasting extreme heat.",
-        link: { name: "NWS HeatRisk", url: "https://www.wpc.ncep.noaa.gov/heatrisk", reach: "United States only" }
+        reveal: "It's the 988 Lifeline. Call, text, or chat with 988 any time, day or night. It's free and confidential, and it's offered in English and Spanish.",
+        link: { name: "988 Lifeline", url: "https://988lifeline.org/", reach: "United States only" }
       } },
       { resources: [
         { verb: "Find", name: "a health center", url: "https://findahealthcenter.hrsa.gov/", reach: "United States only", desc: "Health centers offer checkups, care when you're sick, and care during pregnancy, even if you don't have insurance. You pay what you can afford, based on your income." }
-      ], label: false },
+      ] },
       { say: [
-        { where: "At the library desk", words: "Does anyone here help people find cooling centers or sign up for heat alerts?" },
-        { where: "At a senior center", words: "Do you need volunteers to check on members during heat waves?" },
-        { where: "To a neighbor", words: "If it gets really hot this week, can I check on you?" }
+        { where: "At the library desk", words: "Are there groups here that help people get to health care?" },
+        { where: "At a health center", words: "Do you need volunteers after storms or floods?" },
+        { where: "To a neighbor", words: "If you need a ride to the clinic, can I help?" }
       ] },
       { more: [ { sub: "Then grow it", items: [
         { verb: "Pass", text: "one idea along to a neighbor.", reach: "Close to home" },
         { verb: "Bring", text: "a friend to a health fair.", reach: "A little further" },
-        { verb: "Introduce", text: "a senior center to the cooling center, or welcome newcomers to your group.", reach: "Further still" }
-      ] } ], label: false }
+        { verb: "Introduce", text: "a senior center to a community health center, or welcome newcomers to your group.", reach: "Further still" }
+      ] } ] }
     ]
   }
 };
