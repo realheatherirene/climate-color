@@ -1,0 +1,469 @@
+/* ==========================================================================
+   CLIMATE COLOR CARDS: styles
+   ==========================================================================
+   The page's frame, header, footer, and green buttons come from
+   core/atlas.css. This file holds the cards and the page around them.
+
+   Every size on a card is in em, so one font size scales the whole card:
+   15px on screen makes the 300 x 420 card from the design canvas, and
+   12px in print makes a 2.5 x 3.5 inch playing card.
+
+   CONTENTS
+     1. Page
+     2. Cards: shared parts
+     3. Action cards
+     4. Topic cards
+     5. Card back
+     6. Draw a pair
+     7. Phones
+     8. Print sheet
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Page
+   ========================================================================== */
+
+:root {
+  --lodge: #0F7393;        /* the Lodge's teal, as in trail.css: the topic suit */
+  --lodge-tint: #E1F1F7;
+  --card-size: 15px;
+}
+
+.icon-set {
+  position: absolute;
+}
+
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+main section {
+  margin-top: 2.5rem;
+}
+
+main h2 {
+  margin: 0 0 0.4rem;
+  font-family: 'ADLaM Display', 'Varela Round', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--lodge);
+}
+
+main section > p {
+  max-width: 44rem;
+  margin: 0 0 1.2rem;
+  color: var(--text-secondary);
+}
+
+.deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, calc(20 * var(--card-size)));
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.go {
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.check input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0.25rem 0 0;
+  flex: none;
+  accent-color: var(--green-color);
+}
+
+/* The print sheet is for paper only. */
+.sheet {
+  display: none;
+}
+
+/* ==========================================================================
+   2. Cards: shared parts
+   ========================================================================== */
+
+.card {
+  width: 20em;
+  height: 28em;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-size: var(--card-size);
+  line-height: 1.35;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.9333em;
+  box-shadow: 0 0.4em 1.2em rgba(15, 23, 42, 0.10);
+}
+
+.card p {
+  margin: 0;
+}
+
+.card-head {
+  height: 3.4667em;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.2em;
+  background: var(--suit);
+  color: #FFFFFF;
+}
+
+.card-head p {
+  font-weight: 700;
+}
+
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5333em;
+  padding: 1.2em 1.3333em 0.9333em;
+}
+
+.card-name {
+  margin: 0;
+  font-family: 'ADLaM Display', 'Varela Round', sans-serif;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--suit-text);
+}
+
+.card-box {
+  padding: 0.8em 0.9333em;
+  border-radius: 0.5333em;
+  background: var(--suit-tint);
+}
+
+.box-label {
+  margin-bottom: 0.3636em;
+  font-size: 0.7333em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #333333;
+}
+
+.card-foot {
+  font-size: 0.7333em;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   3. Action cards
+   ========================================================================== */
+
+.color-red    { --suit: var(--red-color);    --suit-text: var(--red-text);    --suit-tint: var(--red-tint-1); }
+.color-orange { --suit: var(--orange-color); --suit-text: var(--orange-text); --suit-tint: var(--orange-tint-1); }
+.color-yellow { --suit: var(--yellow-color); --suit-text: var(--yellow-text); --suit-tint: var(--yellow-tint-1); }
+.color-green  { --suit: var(--green-color);  --suit-text: var(--green-text);  --suit-tint: var(--green-tint-1); }
+.color-blue   { --suit: var(--blue-color);   --suit-text: var(--blue-text);   --suit-tint: var(--blue-tint-1); }
+.color-indigo { --suit: var(--indigo-color); --suit-text: var(--indigo-text); --suit-tint: var(--indigo-tint-1); }
+
+/* The text on each color's band: black or white, per core/climate-color.js. */
+.action .label-black {
+  color: var(--text-primary);
+}
+
+.dots {
+  display: flex;
+  gap: 0.3333em;
+}
+
+.dot {
+  width: 0.6em;
+  height: 0.6em;
+  border: 0.1333em solid currentColor;
+  border-radius: 50%;
+}
+
+.dot.on {
+  background: currentColor;
+}
+
+.action .card-name {
+  font-size: 2.6667em;
+}
+
+.action .card-line {
+  font-size: 1.1333em;
+}
+
+.action .card-box {
+  margin-top: auto;
+}
+
+.action .card-box p:last-child {
+  font-size: 0.8667em;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   4. Topic cards
+   ========================================================================== */
+
+.topic {
+  --suit: var(--lodge);
+  --suit-text: var(--lodge);
+  --suit-tint: var(--lodge-tint);
+}
+
+.topic svg {
+  flex: none;
+  color: var(--lodge);
+}
+
+.head-icon {
+  width: 1.4667em;
+  height: 1.4667em;
+}
+
+.topic .head-icon {
+  color: #FFFFFF;
+}
+
+.topic-icon {
+  width: 2.9333em;
+  height: 2.9333em;
+}
+
+.topic .card-name {
+  font-size: 2em;
+}
+
+.topic .card-box {
+  margin-top: 0.6667em;
+}
+
+.topic .card-box p:last-child {
+  font-size: 0.9333em;
+  line-height: 1.45;
+}
+
+.topic .card-foot {
+  margin-top: auto;
+  font-size: 0.7em;
+  line-height: 1.3;
+}
+
+/* ==========================================================================
+   5. Card back
+   ========================================================================== */
+
+.back {
+  justify-content: center;
+  gap: 1.2em;
+  padding: 1.8667em 1.6em;
+  text-align: center;
+}
+
+.back-name {
+  font-family: 'ADLaM Display', 'Varela Round', sans-serif;
+  font-size: 2.5333em;
+  line-height: 1.1;
+  color: var(--lodge);
+}
+
+.bars {
+  display: flex;
+  gap: 0.3333em;
+}
+
+.bar {
+  flex: 1;
+  height: 0.6667em;
+  border-radius: 0.2em;
+}
+
+.bar-red    { background: var(--red-color); }
+.bar-orange { background: var(--orange-color); }
+.bar-yellow { background: var(--yellow-color); }
+.bar-green  { background: var(--green-color); }
+.bar-blue   { background: var(--blue-color); }
+.bar-indigo { background: var(--indigo-color); }
+
+.back-line {
+  font-size: 1.2667em;
+  font-weight: 700;
+  color: var(--green-color);
+}
+
+.back-url {
+  font-size: 0.8667em;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   6. Draw a pair
+   ========================================================================== */
+
+.pair {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.plus {
+  margin: 0;
+  font-size: 2.5rem;
+  color: var(--text-muted);
+}
+
+.flip {
+  width: calc(20 * var(--card-size));
+  height: calc(28 * var(--card-size));
+  perspective: 1200px;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.face-front,
+.up .face-back {
+  transform: rotateY(180deg);
+}
+
+.up .flip-inner {
+  transform: rotateY(180deg);
+}
+
+/* The turn takes 450ms; cards.js waits the same time (TURN). */
+@media (prefers-reduced-motion: no-preference) {
+  .flip-inner {
+    transition: transform 0.45s ease;
+  }
+}
+
+.idea {
+  max-width: 40rem;
+  margin-top: 1.5rem;
+}
+
+.idea:empty {
+  display: none;
+}
+
+.idea p {
+  margin: 0 0 0.6rem;
+}
+
+.idea-ask {
+  font-size: 1.15rem;
+  line-height: 1.45;
+}
+
+.idea-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.idea-text {
+  padding: 0.9rem 1.1rem;
+  border-radius: 0.75rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.idea a {
+  color: var(--lodge);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   7. Phones: the cards shrink to fit the screen
+   ========================================================================== */
+
+@media (max-width: 699px) {
+  :root {
+    --card-size: min(15px, (100vw - 2.5rem) / 20);
+  }
+
+  .pair {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .plus {
+    align-self: center;
+  }
+}
+
+/* ==========================================================================
+   8. Print sheet: letter paper, nine cards to a page, playing-card size
+   ========================================================================== */
+
+@media print {
+  @page {
+    size: letter;
+    margin: 0.25in 0.5in;
+  }
+
+  :root {
+    --card-size: 12px;   /* 20em = 2.5in, 28em = 3.5in */
+  }
+
+  body > *:not(.sheet) {
+    display: none;
+  }
+
+  .sheet {
+    display: block;
+  }
+
+  .sheet-page {
+    display: grid;
+    grid-template-columns: repeat(3, 2.5in);
+    grid-auto-rows: 3.5in;
+    width: 7.5in;
+    break-after: page;
+  }
+
+  .sheet-page:last-child {
+    break-after: auto;
+  }
+
+  /* Square corners and thin gray lines to cut along. */
+  .sheet .card {
+    border: 0.5pt solid #9AA5B1;
+    border-radius: 0;
+    box-shadow: none;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
