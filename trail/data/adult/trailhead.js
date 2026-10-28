@@ -8,20 +8,20 @@ const IMLS = { title: "IMLS: Mass Audubon's Accessible Trails Project", url: "ht
 export default {
   title: "Climate Color Trail",
   lede: "Find your way into the climate movement!",
-  intro: "The Climate Color Trail is a self-guided learning experience that helps you find your place in the climate movement. Pick your trail, learn your way of caring, visit the Climate Pavilion, bring it close to home, and leave with a Field Guide to climate action!",
+  intro: "The Climate Color Trail is a self-guided learning experience that helps you find your way into the climate movement. Pick your trail, learn about your way of caring, visit the Climate Pavilion, and leave with a Field Guide to climate action!",
 
   /* The Visitor Center's board, with the trail picker at the bottom. The key
      shows the places on the map (drawn from shared.js) and the two kinds
      of stop. */
   board: {
-    open: "Learn about the trail: where you'll go, what you'll find, and how to save your progress. The trail is a loop. It leaves from the Trailhead, just outside, and brings you back here to the Visitor Center at the end. The trail takes about 20 minutes, and you can save your spot and come back anytime.",
+    open: "The trail is a loop; just scroll down to get started! Navigating the trail can take anywhere from 20-30 minutes, but if you need to rest, you can save your spot and come back anytime.",
     storyLabel: "Read a story about outdoor accessibility",
     blocks: [
       { map: true },
       { route: true }
     ],
     /* A few words on accessibility, just above the story link. */
-    storyIntro: "An accessible trail is one that people of all abilities can use. That can mean a smooth, wide path, benches for resting, or maps in Braille and audio. The Trail is open to everyone, and committed to reaching or exceeding Web Content Accessibility Guidelines wherever possible.",
+    storyIntro: "An accessible trail is one that people of all abilities can use. Outdoors, that can mean a smooth, wide path, benches for resting, or maps in Braille and with audio. This Trail is open to everyone, Its builders are committed to reaching or exceeding web content accessibility guidelines wherever possible. If we missed something, please let us know.",
     story: [
       { p: "Mass Audubon, a conservation group in Massachusetts, builds All Persons Trails so visitors of all abilities can enjoy nature. Its trails offer features like audio tours, Braille and tactile maps, rope guides, wider boardwalks, and benches. The trail at Brewster's Woods, opened in May 2024, has a wide, stable surface of crushed stone." },
       { quote: { text: "Nature provides a host of physical, mental, and emotional benefits that should be available to everyone.", who: "Renata Pomponi, Mass Audubon", src: MASS_AUDUBON } },
@@ -97,5 +97,5 @@ export default {
     Indigo: "sorting out what matters most, adjusting when things change, and helping people find their way"
   },
 
-  footnote: "Climate change is global. This trail focuses on the United States, where its sources and resources come from."
+  footnote: "Climate change is global. For now, this trail's resources and activity suggestions are primarily based in the United States."
 };
