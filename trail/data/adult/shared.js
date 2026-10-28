@@ -39,13 +39,13 @@ export default {
   },
 
 
-  /* "Climate Change: Reality": at the Climate Pavilion door, before the
+  /* "Climate Realities": at the Climate Pavilion door, before the
      exhibits. What's causing climate change, who's hit first, who knew,
      and how it gets fixed. Honest about policy and power; no parties,
      candidates, bills, or voting advice. */
   reality: {
     exhibit: "sign",
-    title: "Climate Change: Reality",
+    title: "Climate Realities",
     line: "What's causing it, who's hit first, and how we fix it.",
     blocks: [
       { p: "The short version, from the nation's own climate assessment." },
@@ -270,7 +270,7 @@ export default {
       title: "Bulletin Board",
       /* The first note: the reader's trail and the exhibits they visited,
          as a swatch and icons, with names in plain text. */
-      recap: { title: "Remember your trail" },
+      recap: { title: "Remember your journey" },
       /* "Plan your first step": a short walk-through, one small question at
          a time. Every answer is optional, stays on this device, and goes in
          the Field Guide as "Your plan." */
@@ -291,7 +291,7 @@ export default {
       },
       /* One note for each exhibit visited: every place to find help close
          to home for that topic. Directories come first; events last. */
-      near: { title: "Find ways to help close to home", coming: "Coming up" },
+      near: { title: "Find ways to help", coming: "Coming up" },
       leaders: { title: "Reach your local leaders" },
       other: { title: "Try another trail", text: "Keep your exhibits and take a different way of helping." },
       /* The Field Guide, on its own below the board. */
