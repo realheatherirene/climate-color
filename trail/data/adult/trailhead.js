@@ -30,7 +30,57 @@ export default {
   },
 
   pick: {
-    hint: "Each trail name suggests a unique and special way people show care. Choose the trail that seems the most like you. Not sure? Pick the one that's closest. You can switch at the end."
+    hint: "Each trail name suggests a unique and special way people show care. Choose the trail that seems the most like you. Not sure? Try the three quick questions just below, or pick the one that's closest. You can switch at the end.",
+
+    /* "Find your trail": an optional helper above the six trails. It's a
+       way to recognize what you already do well, not a test, so nothing
+       is scored out loud and every answer is a good one. Every moment is
+       a happy one, and concrete enough to answer without much thought.
+       Answers stay free of details a reader might take literally and rule
+       themselves out over: a day of the week, a food, a phone, a bus. Each answer is
+       one color's everyday care, matched to one of its three words in
+       core/climate-color.js. The six answers come in a different order for
+       each question, so no color always sits in the same place.
+       {list} becomes the action words of the colors checked most:
+       "Connecting and Communicating." */
+    finder: {
+      open: "Not sure which trail fits? Try three quick questions.",
+      intro: "This isn't a test, and there are no wrong answers. Check anything that's like you, or that you'd enjoy doing. Check as many as you like.",
+      moments: [
+        { ask: "When people plan a get-together, you might be the one who...", options: [
+          ["Green", "invites everyone, including someone new"],
+          ["Red", "picks a date and makes sure it really happens"],
+          ["Blue", "makes sure everyone knows the plan"],
+          ["Orange", "dreams up a fun theme or a new place to try"],
+          ["Indigo", "figures out the best spot, and how everyone will get there"],
+          ["Yellow", "gets everyone excited to come"]
+        ] },
+        { ask: "When a new neighbor moves in, you might be the one who...", options: [
+          ["Yellow", "gives them a warm welcome and tells them what's great about the neighborhood"],
+          ["Indigo", "helps them find their way around"],
+          ["Red", "makes sure they know who to call if they ever need anything"],
+          ["Green", "introduces them to the other neighbors"],
+          ["Orange", "thinks up a fun way to welcome them"],
+          ["Blue", "fills them in on what's going on around the neighborhood"]
+        ] },
+        { ask: "When a friend shares a big dream, like opening a bakery, you might be the one who...", options: [
+          ["Orange", "tosses out fun ideas to make it even better"],
+          ["Blue", "helps them describe it in a way that gets people interested"],
+          ["Yellow", "cheers them on and tells them they can do it"],
+          ["Indigo", "helps them sort out what matters most and what to do first"],
+          ["Green", "puts them in touch with someone who could help"],
+          ["Red", "promises to help, and keeps that promise"]
+        ] }
+      ],
+      /* Shown once anything is checked, and updated as the reader goes. */
+      lead: "Every box you checked shows how much you already care.",
+      result: "Your answers lean toward {list}.",
+      praise: "Communities run on care like that.",
+      /* Always shown, whether one trail comes up or all six. */
+      start: "Start wherever feels right today.",
+      go: "Start this trail",
+      after: "Most people do a little of all six. You can switch trails at the end."
+    }
   },
 
   /* What each way of helping means, in plain words. Shown on the picker,
