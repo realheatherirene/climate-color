@@ -1435,8 +1435,10 @@ details:not([open]) .close-label {
     margin: 0 0 0.6rem;
 }
 
+/* Smaller than the Trailhead's map: a look back at the closed loop. */
 .trip-map {
-    margin: 0 0 1rem;
+    max-width: 520px;
+    margin: 0 auto 1rem;
 }
 
 .trip-steps {
@@ -1558,6 +1560,41 @@ details:not([open]) .close-label {
 .pin-save,
 .pin-feedback {
     grid-column: 1 / -1;
+}
+
+/* Your first step, under your way of helping. */
+.board-step-h {
+    margin: 0.9rem 0 0.4rem;
+}
+
+/* "Before you go": one print button, then short openers. */
+.before-print {
+    margin: 0 0 0.4rem;
+}
+
+.before-item {
+    border-top: 1px solid var(--border-color);
+    margin: 0;
+    padding: 0.35rem 0;
+}
+
+.before-item > summary {
+    min-height: 44px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.before-body {
+    padding: 0.2rem 0 0.6rem;
+}
+
+.before-body .save {
+    margin: 0;
+}
+
+/* The way back to the start, at the very end. */
+.home-row {
+    margin: 1.4rem 0 0.4rem;
 }
 
 /* "Help make the trail better": short questions, side by side where
@@ -1710,6 +1747,11 @@ details:not([open]) .close-label {
 
 .first-list li:has(.first-pick) {
     display: block;
+}
+
+/* A topic left out of the Field Guide hides its first step too. */
+.first-list li[hidden] {
+    display: none;
 }
 
 .first-list li.is-start {

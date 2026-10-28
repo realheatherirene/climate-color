@@ -13,7 +13,7 @@ export default {
      shows the places on the map (drawn from shared.js) and the two kinds
      of stop. */
   board: {
-    open: "Learn about the trail: where you'll go, what you'll find, and how to save your progress. The trail takes about 20 minutes, and you can save your spot and come back anytime.",
+    open: "Learn about the trail: where you'll go, what you'll find, and how to save your progress. The trail is a loop, so it ends at the Bulletin Board, right beside where you start. The trail takes about 20 minutes, and you can save your spot and come back anytime.",
     storyLabel: "Read a story about outdoor accessibility",
     blocks: [
       { map: true },

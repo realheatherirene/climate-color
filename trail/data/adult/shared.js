@@ -23,9 +23,9 @@ export default {
       title: "The Climate Lodge", sub: "Learn about the effects of climate change on nine environmental topics." },
     /* The booklet that gathers what you learned: after the Climate Lodge,
        before the Bulletin Board sends you off. */
-    guide: { name: "Field Guide", icon: "i-guide", route: "Print for future use.",
+    guide: { name: "Field Guide", icon: "i-guide", route: "Choose a first step, then print.",
       title: "Your Field Guide", offTrail: true },
-    bulletin: { name: "Bulletin Board", icon: "i-board", route: "Choose what's next.",
+    bulletin: { name: "Bulletin Board", icon: "i-board", route: "End back at the start.",
       title: "Bulletin Board" }
   },
 
@@ -206,6 +206,17 @@ export default {
     forTopic: "For {exhibit}",
     print: "Print your Field Guide",
     back: { label: "Back to the Climate Lodge", hint: "Visit more exhibits. Each one you visit adds its pages here." },
+    /* The end of the Field Guide: the first step from each topic kept,
+       gathered in one place. With more than one, the reader picks one to
+       start with; it moves to the top, the Bulletin Board shows it, and
+       it's kept on this device only. */
+    steps: {
+      title: "Your first steps",
+      titleOne: "Your first step",
+      pickOne: "Pick one to start with. It moves to the top.",
+      startHere: "Start here",
+      start: "Your start"
+    },
     printHelp: "Prints this guide only, with your notes. If the button doesn't work here, use your browser's Print command."
   },
 
@@ -220,8 +231,8 @@ export default {
     trail: { label: "Try another trail", hint: "Keep your exhibits and pick a different way of helping." },
     /* The board itself: the trip, place by place, then pinned notes. */
     board: {
-      lede: "Here's where you went, and where you can go next.",
-      trip: "Your trip",
+      lede: "You're back where you started, right beside the Trailhead. Here's the loop you just finished.",
+      trip: "Your loop",
       trailhead: "You picked the {trail} Trail.",
       trailOpened: "You opened {n} of {total} stops.",
       trailAll: "{total} stops on your way of helping.",
@@ -231,13 +242,18 @@ export default {
       here: "You're here.",
       way: "Your way of helping",
       you: "You're {a} {archetype}.",
-      firsts: "Your first steps",
-      /* With more than one first step: the reader picks one to start with,
-         and it moves to the top. Kept on this device only. */
-      pickOne: "Pick one to start with. It moves to the top.",
-      startHere: "Start here",
-      start: "Your start",
+      /* The first step picked in the Field Guide, shown again here. With
+         several and none picked yet, all of them, and a note. */
+      step: "Your first step:",
+      stepMany: "Your first steps:",
+      stepPick: "Pick one to start with at the end of your Field Guide.",
       words: "Words to take with you",
+      /* Everything else to do before leaving, in one short list. Each
+         opens only when chosen. */
+      before: { title: "Before you go", save: "Save your spot", pass: "Pass it on", other: "Try another trail" },
+      /* The last thing on the page: the way back to the start. */
+      home: "Back to the Trailhead",
+      homeHint: "Where you started. Take another trail anytime.",
       pass: {
         title: "Pass it on",
         text: "Know someone who wants to help but isn't sure where to start? Send them the trail.",

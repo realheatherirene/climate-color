@@ -113,47 +113,50 @@ $("lede").textContent = trailhead.lede;
 
 /* ---------- The park map and its key: getting your bearings ---------- */
 /* A small park-style map at the Trailhead, drawn the way a state park
-   map is: woods, a lake, a north arrow, and one trail from the Trailhead
-   past the four stops to the Lodge and the Bulletin Board, with the
-   Field Guide beside the trail's end. The places are made up: it shows
-   the journey, not real ground. It is a picture only (screen readers
-   skip it); the route strip under it is its key and says the same in
-   words. Two drawings: wide for computers, tall for phones (trail.css
-   shows one). Each lays out the places in shared.places by key and the
-   four stops in TRAIL_ORDER, so names, icons, and order come from the
-   data. */
+   map is: woods, a lake, a north arrow, and one loop trail. It starts at
+   the Trailhead, passes the four stops to the Lodge and the Field Guide,
+   and comes back around to the Bulletin Board, right beside the
+   Trailhead, so the trail always ends where it began. The places are
+   made up: it shows the journey, not real ground. It is a picture only
+   (screen readers skip it); the route strip under it is its key and
+   says the same in words. Two drawings: wide for computers, tall for
+   phones (trail.css shows one). Each lays out the places in
+   shared.places by key and the four stops in TRAIL_ORDER, so names,
+   icons, and order come from the data. */
 const MAPS = {
   wide: {
     w: 760, h: 380,
-    at: { trailhead: [60, 320], lodge: [400, 110], guide: [560, 175], bulletin: [690, 255] },
-    stops: [[150, 270], [250, 300], [330, 220], [250, 150]],
+    at: { trailhead: [329, 307], lodge: [617, 144], guide: [577, 278], bulletin: [407, 311] },
+    stops: [[162, 262], [123, 127], [285, 72], [458, 80]],
     /* where each place's name sits: [dx, dy, text-anchor] */
-    label: { trailhead: [0, 38, "middle"], lodge: [0, 38, "middle"], bulletin: [0, 36, "middle"], guide: [0, 38, "middle"] },
+    label: { trailhead: [-6, 38, "end"], lodge: [-28, 5, "end"], guide: [28, 5, "start"], bulletin: [6, 38, "start"] },
     path: {
-      start: "M60,320 C95,300 120,290 150,270",
-      trail: "M150,270 C190,245 215,305 250,300 C290,295 300,250 330,220 C355,195 300,160 250,150 C290,140 340,95 400,110",
-      after: "M400,110 C460,112 525,140 560,175 C595,210 640,250 690,255"
+      start: "M329,307 C319,306 309,304 299,303 C290,301 280,300 270,298 C261,296 251,294 242,291 C232,289 223,286 214,283 C205,280 196,277 187,274 C178,270 170,266 162,262",
+      trail: "M162,262 C154,258 147,254 140,249 C133,244 127,239 121,234 C116,229 111,223 107,217 C103,212 100,206 98,200 C95,194 94,187 94,181 C94,175 95,169 98,162 C100,156 103,150 107,144 C111,138 117,133 123,127 C128,122 135,117 142,113 C150,108 158,104 166,100 C175,96 184,93 194,90 C203,87 213,84 223,82 C233,79 243,77 253,76 C264,74 274,73 285,72 C295,71 305,70 315,70 C325,69 335,69 345,69 C355,69 364,70 374,70 C384,71 393,72 403,73 C412,73 421,75 431,76 C440,77 449,79 458,80 C468,82 478,84 488,86 C498,89 508,91 518,94 C527,97 537,100 546,104 C555,107 564,111 573,115 C581,119 589,124 597,129 C604,134 611,139 617,144",
+      after: "M617,144 C623,150 628,155 632,161 C636,166 639,172 642,178 C644,184 645,190 646,196 C646,202 645,209 643,215 C642,221 639,227 635,233 C631,238 626,244 621,249 C615,255 608,260 601,265 C594,270 586,274 577,278 C568,283 557,287 546,290 C536,294 524,297 513,299 C502,302 490,304 478,306 C466,307 454,309 443,309 C431,310 419,311 407,311",
+      /* The last few steps: from the Bulletin Board back to the Trailhead. */
+      home: "M407,311 C399,311 390,311 381,310 C372,310 364,310 355,309 C346,308 338,308 330,307"
     },
-    lake: "M520,40 C560,18 662,24 692,54 C716,80 682,112 630,106 C588,101 540,96 524,76 C514,63 511,48 520,40 Z", lakeAt: [606, 70],
-    trees: [[78, 96], [100, 110], [58, 122], [88, 140], [122, 88], [380, 250], [404, 268], [428, 246], [452, 276], [410, 300],
-      [300, 40], [324, 54], [276, 58], [560, 300], [584, 318], [536, 320]],
+    lake: "M330,165 C350,143 420,141 442,165 C460,185 446,221 402,225 C364,229 336,217 328,199 C322,187 322,175 330,165 Z", lakeAt: [386, 190],
+    trees: [[215, 165], [239, 181], [195, 195], [260, 228], [480, 215], [502, 231], [20, 330], [44, 346], [700, 40], [724, 56], [640, 330], [664, 344], [690, 200]],
     north: [40, 48],
-    /* Trimmed off the top of the drawing, so the map starts close to its
-       highest point. */
     top: 10
   },
   tall: {
     w: 340, h: 532,
-    at: { trailhead: [60, 70], lodge: [170, 360], guide: [255, 410], bulletin: [125, 470] },
-    stops: [[150, 135], [250, 180], [200, 250], [90, 290]],
-    label: { trailhead: [26, 5, "start"], lodge: [26, -6, "start"], bulletin: [0, 38, "middle"], guide: [-26, 5, "end"] },
+    at: { trailhead: [151, 105], lodge: [266, 370], guide: [260, 242], bulletin: [202, 129] },
+    stops: [[72, 196], [64, 323], [105, 444], [212, 483]],
+    /* where each place's name sits: [dx, dy, text-anchor] */
+    label: { trailhead: [-26, 5, "end"], lodge: [-26, 5, "end"], guide: [-26, 5, "end"], bulletin: [26, 5, "start"] },
     path: {
-      start: "M60,70 C95,100 120,125 150,135",
-      trail: "M150,135 C190,148 240,155 250,180 C262,210 225,230 200,250 C170,273 110,265 90,290 C75,315 120,350 170,360",
-      after: "M170,360 C215,366 250,385 255,410 C260,445 190,470 125,470"
+      start: "M151,105 C147,105 142,106 138,107 C134,108 129,110 125,112 C121,115 116,118 112,122 C108,125 104,130 100,135 C96,140 92,146 89,152 C86,158 82,165 79,172 C77,180 74,187 72,196",
+      trail: "M72,196 C69,203 68,212 66,220 C65,228 63,237 63,245 C62,254 61,263 61,272 C61,280 61,289 61,298 C62,306 63,315 64,323 C65,332 66,340 68,348 C69,356 71,363 73,371 C75,378 77,385 80,392 C82,399 85,405 87,411 C90,417 93,423 96,428 C99,434 102,439 105,444 C108,448 112,453 115,457 C119,461 122,465 126,469 C129,472 133,476 137,479 C141,482 144,484 148,486 C152,488 156,490 160,492 C165,493 169,494 173,494 C177,495 182,495 186,494 C190,494 195,492 199,491 C203,489 208,486 212,483 C216,480 220,477 224,472 C228,468 232,463 235,458 C239,452 242,446 245,440 C248,433 251,426 254,419 C257,411 259,403 261,395 C263,387 264,378 266,370",
+      after: "M266,370 C267,361 268,352 268,344 C269,335 269,326 269,317 C269,308 269,300 268,291 C267,282 266,274 265,266 C264,258 262,250 260,242 C259,235 257,227 254,220 C252,214 250,207 247,201 C245,194 242,188 240,183 C237,177 234,172 231,167 C228,162 225,157 222,153 C219,148 216,144 212,140 C209,136 206,133 202,129",
+      /* The last few steps: from the Bulletin Board back to the Trailhead. */
+      home: "M202,129 C198,126 194,122 190,119 C186,116 182,114 178,112 C174,110 169,108 165,107 C160,106 156,105 151,105"
     },
-    lake: "M22,392 C40,370 98,374 116,396 C132,416 120,452 86,458 C56,463 26,450 20,428 C16,414 14,402 22,392 Z", lakeAt: [68, 424],
-    trees: [[240, 74], [262, 90], [226, 98], [20, 190], [42, 208], [18, 230], [290, 258], [312, 276], [284, 296], [290, 500], [314, 516]],
+    lake: "M125,275 C140,251 200,251 215,277 C227,299 215,337 177,341 C145,345 125,327 121,307 C119,293 119,283 125,275 Z", lakeAt: [169, 301],
+    trees: [[110, 170], [134, 186], [175, 380], [199, 396], [140, 420], [300, 500], [10, 500], [300, 300]],
     north: [312, 64],
     top: 34
   }
@@ -166,9 +169,10 @@ function drawMap(M) {
   const W = shared.map, picked = !!st.trail;
   const kindOf = key => key === "care" ? shared.care : (trails[st.trail] || Object.values(trails)[0])[key];
   const line = (d, color, dashed) => `<path d="${d}" fill="none" style="stroke:${color}" stroke-width="${dashed ? 5 : 6}" stroke-linecap="round"${dashed ? ' stroke-dasharray="2 11"' : ""}/>`;
+  const rest = d => d.replace(/^M[\d.,]+/, "");
   const trail = picked
-    ? line(M.path.start, "var(--park)") + line(M.path.trail, "var(--trail)") + line(M.path.after, "var(--board)", true)
-    : line(`${M.path.start} ${M.path.trail.replace(/^M[\d.,]+/, "")} ${M.path.after.replace(/^M[\d.,]+/, "")}`, "#64748B", true);
+    ? line(M.path.home, "var(--park)", true) + line(M.path.start, "var(--park)") + line(M.path.trail, "var(--trail)") + line(M.path.after, "var(--board)", true)
+    : line(`${M.path.start} ${rest(M.path.trail)} ${rest(M.path.after)} ${rest(M.path.home)}`, "#64748B", true);
   const stops = TRAIL_ORDER.map((key, i) => {
     const [x, y] = M.stops[i];
     const stroke = picked ? "var(--trail)" : "#64748B", textC = picked ? "var(--trail-text)" : "#475569";
@@ -366,10 +370,6 @@ function renderTrail() {
 
 /* ---------- The Lodge, the Field Guide, and the Bulletin Board ---------- */
 
-/* The Bulletin Board: the end of the trail, as rich as its start. A recap
-   of the whole trip, place by place; then notes pinned to the board: the
-   reader's way of helping, their first steps, a way to pass the trail on,
-   the other trails, Save for later, and the trail's closing words. */
 /* "You opened 3 of 4 stops": kept current as stops are opened. */
 function tripTrailLine() {
   const B = shared.bulletin.board, opened = TRAIL_ORDER.filter(k => seen.has(k)).length;
@@ -396,6 +396,44 @@ function feedbackChanged(el) {
   const a = $("fbSend"); if (a) a.href = feedbackMail();
 }
 
+/* The first step from each topic visited: gathered at the end of the
+   Field Guide, where the reader picks one to start with (when there's
+   more than one), and shown again on the Bulletin Board. Topics left out
+   of the Field Guide are hidden, never removed, so nothing redraws. */
+function stepsSection(c, built) {
+  const S = shared.guide.steps, picking = built.length > 1;
+  const chosen = picking ? store.get(startKey()) : "";
+  const order = chosen ? [...built].sort((a, b) => (b === chosen) - (a === chosen)) : built;
+  const item = k => {
+    const text = `<span class="first-icon" aria-hidden="true">${icon(topicOf(k).icon)}</span><span><b>${fmt(topicOf(k).name)}:</b> ${fmt(exhibits[k].work[c.key].first)}<span class="start-tag">${fmt(S.start)}</span></span>`;
+    return `<li data-topic="${k}"${k === chosen ? ' class="is-start"' : ""}${st.dropped.has(k) ? " hidden" : ""}>${picking
+      ? `<label class="first-pick"><input type="radio" name="firstStart" value="${k}"${k === chosen ? " checked" : ""}><span class="vh">${fmt(S.startHere)}: </span>${text}</label>`
+      : text}</li>`;
+  };
+  return `<section class="guide-topic guide-steps" aria-labelledby="stepsTitle">
+    <h3 class="guide-h" id="stepsTitle">${fmt(picking ? S.title : S.titleOne)}</h3>
+    ${picking ? `<p class="first-hint">${fmt(S.pickOne)}</p>` : ""}
+    <ul class="first-list" id="firstList"${picking ? ` role="radiogroup" aria-label="${fmt(S.title)}"` : ""}>${order.map(item).join("")}</ul></section>`;
+}
+
+/* The Bulletin Board's echo of that choice: the one picked, or every
+   first step with a note when none is picked yet. */
+function boardStep(c) {
+  const B = shared.bulletin.board, ks = kept();
+  if (!ks.length) return "";
+  const chosen = ks.length > 1 ? store.get(startKey()) : "";
+  const show = chosen && ks.includes(chosen) ? [chosen] : ks;
+  return `<p class="board-step-h"><b>${fmt(show.length > 1 ? B.stepMany : B.step)}</b></p>
+    <ul class="first-list">${show.map(k => `<li><span class="first-icon" aria-hidden="true">${icon(topicOf(k).icon)}</span><span><b>${fmt(topicOf(k).name)}:</b> ${fmt(exhibits[k].work[c.key].first)}</span></li>`).join("")}</ul>
+    ${show.length > 1 ? `<p class="first-hint">${fmt(B.stepPick)}</p>` : ""}`;
+}
+const refreshBoardStep = () => { const el = $("boardStep"); if (el && st.trail) el.innerHTML = boardStep(getColor(st.trail)); };
+
+/* The Bulletin Board: a short goodbye, back beside the Trailhead. The
+   loop just finished; your way of helping and your first step; one short
+   list of things to do before you go; a way to tell us how it went; the
+   trail's closing words; and the way back to the start. Choosing happens
+   in the Field Guide, so nothing new is asked here. */
 function boardBody(c, built, farewell) {
   const J = shared.bulletin, B = J.board, kept = built.filter(k => !st.dropped.has(k));
   const names = list => list.length === 1 ? exhibitName(topicOf(list[0])) : `${listOf(list.map(k => topicOf(k).name))} Exhibits`;
@@ -407,39 +445,33 @@ function boardBody(c, built, farewell) {
     bulletin: B.here
   };
   /* The same park map as the Trailhead, now in the reader's trail color:
-     the trip they just took, start to finish. */
+     the whole loop, closed, ending back at the start. */
   const trip = `<section class="trip" aria-labelledby="tripTitle"><h3 class="board-h" id="tripTitle">${fmt(B.trip)}</h3>
     <div class="park-map trip-map" aria-hidden="true">${drawMap(MAPS.wide) + drawMap(MAPS.tall)}</div>
     <ol class="trip-steps">${PLACES_IN_ORDER.map(key => `<li class="trip-${key}${key === "bulletin" ? " is-here" : ""}">
       <span class="trip-icon" aria-hidden="true">${icon(P[key].icon)}</span>
       <span><b>${fmt(P[key].name)}</b><span class="trip-did">${fmt(did[key])}</span></span>
       ${key === "bulletin" ? "" : `<span class="trip-check" aria-hidden="true">${icon("i-check")}</span>`}</li>`).join("")}</ol></section>`;
-  const meaning = trailhead.ways[c.key];
   const way = `<article class="pin pin-way"><h3>${fmt(B.way)}</h3>
     <p class="way-you"><span class="blaze" style="background:var(--trail)" aria-hidden="true"></span>${fmt(B.you.replace("{a}", aAn(c.archetype)).replace("{archetype}", c.archetype))}</p>
-    <p>${fmt(cap(meaning))}.</p>
-    <ul class="way-words">${c.words.map(w => `<li>${fmt(w.word)}</li>`).join("")}</ul></article>`;
-  /* With more than one, the reader picks a first step to start with. It
-     moves to the top and is kept on this device (startKey). */
-  const firsts = kept.map(k => [k, exhibits[k].work[c.key]]);
-  const picking = firsts.length > 1, chosen = picking ? store.get(startKey()) : "";
-  if (chosen) firsts.sort(([a], [b]) => (b === chosen) - (a === chosen));
-  const firstItem = ([k, w]) => {
-    const text = `<span class="first-icon" aria-hidden="true">${icon(topicOf(k).icon)}</span><span><b>${fmt(topicOf(k).name)}:</b> ${fmt(w.first)}<span class="start-tag">${fmt(B.start)}</span></span>`;
-    return `<li data-topic="${k}"${k === chosen ? ' class="is-start"' : ""}>${picking
-      ? `<label class="first-pick"><input type="radio" name="firstStart" value="${k}"${k === chosen ? " checked" : ""}><span class="vh">${fmt(B.startHere)}: </span>${text}</label>`
-      : text}</li>`;
-  };
-  const first = firsts.length ? `<article class="pin pin-first"><h3>${fmt(B.firsts)}</h3>
-    ${picking ? `<p class="first-hint">${fmt(B.pickOne)}</p>` : ""}
-    <ul class="first-list" id="firstList"${picking ? ` role="radiogroup" aria-label="${fmt(B.firsts)}"` : ""}>${firsts.map(firstItem).join("")}</ul></article>` : "";
+    <p>${fmt(cap(trailhead.ways[c.key]))}.</p>
+    <div class="board-step" id="boardStep">${boardStep(c)}</div></article>`;
+  /* "Before you go": print, save, pass it on, or try another trail. Each
+     one opens only when chosen, so the list stays short. */
   const msg = fill(B.pass.message, c).replace("{url}", home);
   const canShare = typeof navigator.share === "function";
-  const pass = `<article class="pin pin-pass"><h3>${fmt(B.pass.title)}</h3><p>${fmt(B.pass.text)}</p>
-    <blockquote class="pass-msg">${fmt(msg)}</blockquote>
-    <div class="save-row">${canShare ? `<button type="button" class="save-btn" data-go="passShare">${fmt(shared.save.share)}</button>` : ""}
-      <a class="save-btn" href="mailto:?subject=${encodeURIComponent(B.pass.subject)}&body=${encodeURIComponent(msg)}">${fmt(B.pass.email)}</a>
-      <button type="button" class="save-btn" data-go="passCopy">${fmt(shared.save.copy)}</button></div></article>`;
+  const others = COLOR_KEYS.filter(k => k !== c.key).map(k => getColor(k));
+  const item = (label, body) => `<details class="mini before-item"><summary>${fmt(label)}</summary><div class="before-body">${body}</div></details>`;
+  const before = `<article class="pin pin-before"><h3>${fmt(B.before.title)}</h3>
+    <p class="before-print"><button type="button" class="save-btn" data-go="printGuide">${fmt(shared.guide.print)}</button></p>
+    ${item(B.before.save, savePanel("saveEnd"))}
+    ${item(B.before.pass, `<p>${fmt(B.pass.text)}</p><blockquote class="pass-msg">${fmt(msg)}</blockquote>
+      <div class="save-row">${canShare ? `<button type="button" class="save-btn" data-go="passShare">${fmt(shared.save.share)}</button>` : ""}
+        <a class="save-btn" href="mailto:?subject=${encodeURIComponent(B.pass.subject)}&body=${encodeURIComponent(msg)}">${fmt(B.pass.email)}</a>
+        <button type="button" class="save-btn" data-go="passCopy">${fmt(shared.save.copy)}</button></div>`)}
+    ${item(B.before.other, `<p>${fmt(J.trail.hint)}</p>
+      <div class="try-trails">${others.map(o => `<button type="button" class="try-trail" data-trail="${o.key}"><span class="blaze" style="background:var(--${o.key.toLowerCase()}-color)" aria-hidden="true"></span>${fmt(o.action)} <span class="tcolor">· ${o.key}</span></button>`).join("")}</div>`)}
+  </article>`;
   /* "Help make the trail better": the answers live in `fb`, so they
      survive the board being drawn again. */
   const FB = B.feedback;
@@ -453,13 +485,12 @@ function boardBody(c, built, farewell) {
     <div class="save-row"><a class="save-btn" id="fbSend" href="${feedbackMail()}">${fmt(FB.send)}</a>
       <button type="button" class="save-btn" data-go="fbCopy">${fmt(FB.copy)}</button></div>
     <p class="fb-privacy">${fmt(FB.privacy.replace("{to}", FB.to))}</p></article>` : "";
-  const others = COLOR_KEYS.filter(k => k !== c.key).map(k => getColor(k));
-  const tryOther = `<article class="pin pin-try"><h3>${fmt(J.trail.label)}</h3><p>${fmt(J.trail.hint)}</p>
-    <div class="try-trails">${others.map(o => `<button type="button" class="try-trail" data-trail="${o.key}"><span class="blaze" style="background:var(--${o.key.toLowerCase()}-color)" aria-hidden="true"></span>${fmt(o.action)} <span class="tcolor">· ${o.key}</span></button>`).join("")}</div></article>`;
+  /* The last thing on the page: back to where the loop began. */
+  const homeRow = `<p class="home-row"><button type="button" class="pill-btn pill-all next-btn" data-go="place-trailhead">${fmt(B.home)}</button> <span class="reach">${fmt(B.homeHint)}</span></p>`;
   return `<p class="board-lede">${fmt(B.lede)}</p>${trip}
-    <div class="pins">${way}${first}${pass}${tryOther}${feedback}
-      <article class="pin pin-save" id="keep">${savePanel("saveEnd")}</article>
-      <article class="pin pin-words"><h3>${fmt(B.words)}</h3>${farewell}</article></div>`;
+    <div class="pins">${way}${before}${feedback}
+      <article class="pin pin-words"><h3>${fmt(B.words)}</h3>${farewell}</article></div>
+    ${homeRow}`;
 }
 
 /* An exhibit's parts, then "Put your [action] to work": where the reader's
@@ -562,8 +593,8 @@ function renderLodge() {
   /* Print, then a way back to the Lodge for more topics: each exhibit
      visited adds its pages here. */
   const printRow = `<p class="print-row"><button type="button" class="pill-btn pill-all next-btn" data-go="printGuide">${fmt(G.print)}</button> <span class="reach">${fmt(G.printHelp)}</span></p>`;
-  /* The booklet you take with you: after the Bulletin Board, off the
-     trail line. Its cover names the trail and the topics kept, with one
+  /* The booklet you take with you: between the Lodge and the Bulletin
+     Board, beside the trail line. Its cover names the trail and the topics kept, with one
      line on how to use it and Print right there. */
   const guide = `<li class="stop is-guide" id="guide">
     <span class="marker" aria-hidden="true">${icon(PG.icon)}</span>
@@ -578,11 +609,11 @@ function renderLodge() {
           <h3 class="guide-h"><span class="guide-h-blaze" style="background:var(--${c.key.toLowerCase()}-color)" aria-hidden="true"></span>${fmt(fill(G.forTrail, c))}</h3>
           ${panel(partList(GUIDE_TRAIL, trailParts))}</section>
         ${topicPages}
+        ${stepsSection(c, built)}
         ${printRow}
       </div></div></li>`;
 
-  /* The Bulletin Board: outside the Lodge, the end of the trail and the
-     place to choose. */
+  /* The Bulletin Board: the end of the loop, back beside the Trailhead. */
   const farewell = [...t.farewell, ...shared.bulletin.close].map(p => `<p>${fmt(p.replace("{topic}", (names || tp.name).toLowerCase()))}</p>`).join("");
   const bulletin = place("bulletin", "is-board", boardBody(c, built, farewell));
 
@@ -712,12 +743,15 @@ document.addEventListener("change", e => {
     const list = $("firstList"), li = e.target.closest("li");
     list.querySelectorAll("li").forEach(x => x.classList.toggle("is-start", x === li));
     list.prepend(li); e.target.focus();
+    refreshBoardStep();
     return;
   }
   const k = e.target.dataset && e.target.dataset.keep;
   if (!k) return;
   if (e.target.checked) st.dropped.delete(k); else st.dropped.add(k);
   document.querySelectorAll(`.guide-topic[data-topic="${k}"]`).forEach(s => { s.hidden = !e.target.checked; });
+  document.querySelectorAll(`#firstList li[data-topic="${k}"]`).forEach(li => { li.hidden = !e.target.checked; });
+  refreshBoardStep();
   refreshGuideNames();
 });
 
