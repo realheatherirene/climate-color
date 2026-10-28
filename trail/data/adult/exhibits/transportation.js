@@ -140,12 +140,13 @@ export default {
         link: { name: "National Bike Month", url: "https://bikeleague.org/may-is-bike-month-2/", reach: "United States only" }
       } },
       { resources: [
-        { verb: "Find", name: "the Alternative Fueling Station Locator", url: "https://afdc.energy.gov/stations", reach: "United States and Canada", desc: "From the U.S. Department of Energy. Search by location, or along a driving route, for public electric vehicle charging and other cleaner fuels." }
+        { verb: "Find", name: "the Alternative Fueling Station Locator", url: "https://afdc.energy.gov/stations", reach: "United States and Canada", desc: "From the U.S. Department of Energy. Search by location, or along a driving route, for public electric vehicle charging and other cleaner fuels." },
+        { verb: "Find", name: "bike groups near you", url: "https://bikeleague.org/map/", reach: "United States only", desc: "From the League of American Bicyclists. Search by ZIP code, city, or state for bike clubs, advocacy groups, classes, and shops. It lists only groups that belong to the League, so search for others near you too." }
       ] },
       { say: [
         { where: "At the library desk", words: "Are there groups here working on buses, bikes, or safer streets?" },
         { where: "At a transit meeting", words: "How can riders share ideas for better service?" },
-        { where: "To a neighbor", words: "There's a community bike ride on Saturday. Want to come?" }
+        { where: "To a neighbor", words: "There's a community bike ride coming up. Want to come?" }
       ] },
       { more: [ { sub: "Then grow it", items: [
         { verb: "Pass", text: "one idea along to a neighbor.", reach: "Close to home" },

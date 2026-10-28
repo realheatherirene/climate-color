@@ -144,7 +144,8 @@ export default {
         link: { name: "NWS HeatRisk", url: "https://www.wpc.ncep.noaa.gov/heatrisk", reach: "United States only" }
       } },
       { resources: [
-        { verb: "Check", name: "AirNow", url: "https://www.airnow.gov/", reach: "United States only", desc: "From the EPA. Type in a U.S. location for the latest local air quality, including wildfire smoke on its Fire and Smoke Map." }
+        { verb: "Check", name: "AirNow", url: "https://www.airnow.gov/", reach: "United States only", desc: "From the EPA. Type in a U.S. location for the latest local air quality, including wildfire smoke on its Fire and Smoke Map." },
+        { verb: "Find", name: "the Eldercare Locator", url: "https://eldercare.acl.gov/", reach: "United States only", desc: "A public service of the U.S. Administration for Community Living. Type in a location, or call 1-800-677-1116, to find help for older adults in your community. Then ask how neighbors can help older adults on hot or smoky days." }
       ] },
       { say: [
         { where: "At the library desk", words: "Does anyone here help people find cooling centers or sign up for heat alerts?" },

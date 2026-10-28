@@ -141,7 +141,8 @@ export default {
         link: { name: "Low Income Home Energy Assistance Program", url: "https://acf.gov/ocs/programs/liheap", reach: "United States only" }
       } },
       { resources: [
-        { verb: "Explore", name: "the Weatherization Assistance Program", url: "https://www.energy.gov/scep/wap/how-apply-weatherization-assistance", reach: "United States only", desc: "It's run by state and local agencies. This page lists the steps: check if you qualify, find your local provider, and apply." }
+        { verb: "Explore", name: "the Weatherization Assistance Program", url: "https://www.energy.gov/scep/wap/how-apply-weatherization-assistance", reach: "United States only", desc: "It's run by state and local agencies. This page lists the steps: check if you qualify, find your local provider, and apply." },
+        { verb: "Find", name: "your local community action agency", url: "https://communityactionpartnership.com/find-a-cap/", reach: "United States only", desc: "From the Community Action Partnership. Search by ZIP code, county, or state for the agencies near you, each with a phone number and website. Then ask what energy programs they run, and how neighbors can help." }
       ] },
       { say: [
         { where: "At the library desk", words: "Are there any energy-saving workshops or programs around here?" },
