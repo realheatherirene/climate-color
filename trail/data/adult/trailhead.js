@@ -14,7 +14,7 @@ export default {
      shows the places on the map (drawn from shared.js) and the two kinds
      of stop. */
   board: {
-    open: "The trail is a loop; just scroll down to get started! Navigating the trail can take anywhere from 20-30 minutes, but if you need to rest, you can save your spot and come back anytime.",
+    open: "Navigating the trail can take anywhere from 20-30 minutes, but if you need to rest, you can save your spot and come back anytime. Scroll down to get started!",
     storyLabel: "Read a story about outdoor accessibility",
     blocks: [
       { map: true },
