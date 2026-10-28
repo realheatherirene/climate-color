@@ -174,7 +174,7 @@ export default {
   /* The Pavilion: one for every trail, with an exhibit for each topic. */
   lodge: {
     /* One line under "Pick an exhibit": all a reader needs to start. */
-    pickHint: "Visit as many as you like. Each one you visit adds its pages to your Field Guide.",
+    pickHint: "Visit as many as you like. Each exhibit you visit adds its pages to your Field Guide.",
     /* How every topic is named, everywhere: "Water Exhibit." */
     exhibitName: "{exhibit} Exhibit",
     /* Each exhibit card says so once you've opened it, and the progress
@@ -249,7 +249,7 @@ export default {
     /* After each trail's own closing words, on every trail. The first
        circles back to the guess on the Care stop. */
     close: [
-      "Remember your guess on the trail? Between 6 and 8 out of 10 Americans support major climate policies. That's a lot of company, and plenty of it lives close to you.",
+      "Remember, the vast majority of Americans support major climate policies: between 6 and 8 out of 10. That's a lot of company, and plenty of it lives close to you.",
       "You may never get proof that the whole planet changed. Wins close to home are real, though: a cleaner creek, a neighbor's new heat pump, a rule your town passed. Count those wins, rest when you need to, and keep showing up."
     ],
     trail: { label: "Try another trail", hint: "Keep your exhibits and pick a different way of helping." },
@@ -277,11 +277,11 @@ export default {
       plan: {
         title: "Plan your first step",
         steps: [
-          { q: "Choose it.", hint: "Pick one from the exhibits you visited, or write your own." },
-          { key: "small", q: "Make it small.", hint: "What's the very first thing you'll do? Keep it small enough to finish in 10 minutes, like finding a phone number or sending one text." },
+          { q: "Pick a topic.", hint: "Choose from the exhibits you visited, or write your own. Any topic is good." },
+          { key: "small", q: "Keep it simple.", hint: "What's one small thing you'll do? Keep it short enough to finish in 10 minutes, like finding a phone number or sending one text." },
           { key: "day", q: "Pick a day.", hint: "When will you do it? Choose a day this week or next." },
           { key: "who", q: "Bring someone along.", hint: "Who could join you, or who could you tell? One name is enough." },
-          { key: "sign", q: "Know it's working.", hint: "What small change would tell you it's helping?" }
+          { key: "sign", q: "Confirm it's working.", hint: "What small change would tell you it's helping? A change in you is enough!" }
         ],
         startHere: "Start here",
         start: "Your start",
@@ -293,7 +293,7 @@ export default {
          to home for that topic. Directories come first; events last. */
       near: { title: "Find ways to help", coming: "Coming up" },
       leaders: { title: "Reach your local leaders" },
-      other: { title: "Try another trail", text: "Keep your exhibits and take a different way of helping." },
+      other: { title: "Take another trail", text: "Try a different way of helping. Your exhibits will stay in your Field Guide." },
       /* The Field Guide, on its own below the board. */
       take: {
         title: "Take your Field Guide home",
@@ -314,16 +314,16 @@ export default {
       },
       feedback: {
         title: "Help make the trail better",
-        text: "The trail is new, and your answers help decide what comes next. Answer any that you like.",
+        text: "The trail is new and still a little bumpy. Your feedback helps decide what fixes come next! Answer any questions you like.",
         to: "trailmap@kinfeather.com",
         subject: "Climate Color Trail feedback",
         questions: [
           { key: "fit", ask: "Did you find a way of helping that fits you?", options: ["Yes", "Partly", "Not yet"] },
           { key: "step", ask: "Do you plan to try a first step?", options: ["Yes, soon", "Maybe later", "Not sure yet"] },
-          { key: "length", ask: "How did the length feel?", options: ["Too short", "About right", "Too long"] }
+          { key: "length", ask: "How did the length of the trail feel?", options: ["Too short", "About right", "Too long"] }
         ],
         comment: "Anything you loved, or anything that got in the way?",
-        includes: "Your email will also name your trail and the exhibits you visited. Your notes stay private.",
+        includes: "NOTE: In addition to your own email address, this feedback email will also name the trail you took and the exhibits you visited. Your personal notes, however, stay private.",
         send: "Write the email",
         copy: "Copy it",
         privacy: "**Nothing is sent until you send it.** The button opens your own email app. If it doesn't, copy your answers and email them to {to}.",
