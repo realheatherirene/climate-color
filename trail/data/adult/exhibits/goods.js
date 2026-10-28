@@ -73,7 +73,7 @@ export default {
           "Who in my community could use the things others throw away?"
         ] }
       ],
-      ahead: "The Bulletin Board, where you choose what comes next."
+      ahead: "How your way of helping fits this topic."
     }
   },
 

@@ -18,9 +18,11 @@ Privacy, and Accessibility pages live on kinfeather.com.
 ## The site
 
 This repository is the whole site at **https://climatecolor.com**: the
-**Climate Color Trail**, a learning trail where readers pick a way of
-helping, follow four stops, visit the Climate Lodge, take a Field Guide,
-and end at the Bulletin Board. GitHub Pages serves it from the main
+**Climate Color Trail**, a learning trail laid out as a loop in a park.
+Readers start at the Visitor Center and pick a way of helping, follow
+stops 1 to 4, visit the Climate Pavilion (stop 5), bring it close to home
+at stops 6 to 8, and come back to the Visitor Center to choose a first
+step and take home a Field Guide. GitHub Pages serves it from the main
 branch, at the top level; `CNAME` holds the address and `.nojekyll` tells
 GitHub to serve every file as it is.
 

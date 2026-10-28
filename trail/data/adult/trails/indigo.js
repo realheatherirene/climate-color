@@ -41,7 +41,7 @@ export default {
       ] },
       { p: "**If Navigating fits you, keep going.** If it doesn't, pick another way of helping:" },
       { trails: true },
-      { p: "Or finish this trail first. You can switch trails at the Bulletin Board, at the end." }
+      { p: "Or finish this trail first. You can switch trails back at the Visitor Center, at the end." }
     ],
     ahead: "What Navigators bring to a whole community, beyond the people you know."
   },
@@ -58,7 +58,7 @@ export default {
       { sub: "Where Navigators show up" },
       { p: "Emergency planning teams and warning systems. Help desks and hotlines. Mentors and peer guides. People who help others through forms and systems. Anywhere people need to find their way." }
     ],
-    ahead: "The Climate Lodge, where you pick an exhibit on a topic you care about."
+    ahead: "Stop 5, the Climate Pavilion, where you pick an exhibit on a topic you care about."
   },
 
   /* For the Field Guide: a true story of someone on this trail. Every
@@ -90,7 +90,7 @@ export default {
     ]
   },
 
-  /* Words to carry home from the Bulletin Board. {topic} becomes the
+  /* Words to carry home from the Visitor Center. {topic} becomes the
      exhibit's name. */
   farewell: [
     "You're not alone in your desire to help care for the people and places you love. As a Navigator, you don't need to know the whole route by yourself.",

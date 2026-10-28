@@ -66,7 +66,7 @@ export default {
           "Who in my community has a hard time getting around?"
         ] }
       ],
-      ahead: "The Bulletin Board, where you choose what comes next."
+      ahead: "How your way of helping fits this topic."
     }
   },
 

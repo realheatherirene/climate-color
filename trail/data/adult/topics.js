@@ -1,4 +1,4 @@
-/* The nine topics, one exhibit each, in the order the Lodge shows them.
+/* The nine topics, one exhibit each, in the order the Pavilion shows them.
    The exhibit picker shows each name and its four everyday examples; the
    teaser and its source open the exhibit. Examples are lowercase words,
    shown with dots between them. Teasers teach about the topic; they never

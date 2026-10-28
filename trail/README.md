@@ -1,9 +1,23 @@
 # The Climate Color Trail
 
 A learning trail into the climate movement, from Climate Color, a project
-of Kinfeather. Readers pick a way of helping (a trail), follow four stops,
-pick a topic in the Lodge, choose what's next at the Bulletin Board, and
-take home a Field Guide.
+of Kinfeather, laid out as a loop in a park:
+
+1. **Visitor Center (arriving):** get your bearings and pick a way of
+   helping (a trail).
+2. **Stops 1 to 4:** meet your way of helping.
+3. **Stop 5, the Climate Pavilion:** pick a topic and visit its exhibit.
+4. **Stops 6 to 8, the way back:** a story, your own place, and the
+   other helpers. The same for every topic.
+5. **Back at the Visitor Center:** choose a first step, find what's
+   happening near you on the Bulletin Board, and take home a Field Guide
+   (print, save as PDF, download, or keep a link).
+
+The Field Guide is a keepsake, not a place: it gathers what the reader
+did, notes included, and asks nothing new. Inside the code, some old
+names stay as keys so saved links keep working: `trailhead` is the
+Visitor Center on arrival, `lodge` is the Pavilion, and `finish` is the
+return.
 
 Live at **https://climatecolor.com/trail/**. climatecolor.com,
 stewardshiptrail.com and trailmap.climatecolor.com forward here.

@@ -57,7 +57,7 @@ function actionCard(a, tag = "p") {
 function topicCard(t, tag = "p") {
   const icon = size => `<svg class="${size}" aria-hidden="true"><use href="#${t.icon}"/></svg>`;
   return `<div class="card topic">
-  <div class="card-head"><p>Climate Lodge · Topic</p>${icon("head-icon")}</div>
+  <div class="card-head"><p>Climate Pavilion · Topic</p>${icon("head-icon")}</div>
   <div class="card-body">
     ${icon("topic-icon")}
     <${tag} class="card-name">${esc(t.name)}</${tag}>

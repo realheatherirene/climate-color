@@ -41,7 +41,7 @@ export default {
       ] },
       { p: "**If Creating fits you, keep going.** If it doesn't, pick another way of helping:" },
       { trails: true },
-      { p: "Or finish this trail first. You can switch trails at the Bulletin Board, at the end." }
+      { p: "Or finish this trail first. You can switch trails back at the Visitor Center, at the end." }
     ],
     ahead: "What Creators bring to a whole community, beyond the people you know."
   },
@@ -58,7 +58,7 @@ export default {
       { sub: "Where Creators show up" },
       { p: "Community art and murals. Repair cafés and tool libraries. Planning meetings and design workshops. Gardens in unexpected places. Anywhere people need a new idea." }
     ],
-    ahead: "The Climate Lodge, where you pick an exhibit on a topic you care about."
+    ahead: "Stop 5, the Climate Pavilion, where you pick an exhibit on a topic you care about."
   },
 
   /* For the Field Guide: a true story of someone on this trail. Every
@@ -91,7 +91,7 @@ export default {
     ]
   },
 
-  /* Words to carry home from the Bulletin Board. {topic} becomes the
+  /* Words to carry home from the Visitor Center. {topic} becomes the
      exhibit's name. */
   farewell: [
     "You're not alone in your desire to help care for the people and places you love. As a Creator, you don't need to have every idea by yourself.",

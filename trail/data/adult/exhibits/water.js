@@ -71,7 +71,7 @@ export default {
           "Who helped, and who needed help?"
         ] }
       ],
-      ahead: "The Bulletin Board, where you choose what comes next."
+      ahead: "How your way of helping fits this topic."
     }
   },
 

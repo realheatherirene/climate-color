@@ -424,6 +424,89 @@ html.loading .site-foot {
     top: 3rem;
 }
 
+/* A place that is also a numbered stop (the Pavilion is stop 5): its
+   number, small, above its name. */
+.place-eyebrow {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--place);
+}
+
+/* Back at the Visitor Center: the loop arrives on the park's green. */
+.place.is-finish {
+    --place: var(--park);
+}
+
+/* The return's three parts: the planning desk, the Bulletin Board, and
+   the Field Guide. Each is a white card on the Visitor Center's board. */
+.finish-part {
+    margin: 1.4rem 0 0;
+    padding: 1.1rem 1.1rem 1rem;
+    border-radius: 10px;
+    background: var(--bg-primary);
+    box-shadow: 0 1px 3px rgba(74, 52, 34, 0.15);
+}
+
+.finish-part .board-h {
+    margin-top: 0;
+}
+
+.near-head {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.near-head .board-h {
+    margin: 0;
+}
+
+.near-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 9px;
+    background: var(--board);
+    color: #fff;
+}
+
+.near-icon svg {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.take-icon {
+    background: var(--note);
+}
+
+.near-line {
+    margin: 0;
+    font-weight: 700;
+    color: var(--board);
+}
+
+.near-local {
+    margin-top: 1rem;
+}
+
+.own-label {
+    display: block;
+    margin-top: 1rem;
+}
+
+.take-ways p {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.8rem;
+    margin: 0 0 0.6rem;
+}
+
 /* The top of the trail: the trail's own marker and name. */
 .place.is-trail {
     --place: var(--trail);
@@ -689,17 +772,25 @@ details:not([open]) .close-label {
     paint-order: stroke;
 }
 
+/* The Climate Pavilion's name: the main destination, so a little bigger. */
+.map-name-big { font-size: 16px; }
+.map-name-small { font-size: 12.5px; }
+.map-sub { font: 700 11.5px 'Varela Round', sans-serif; fill: var(--park); stroke: #F3F8EE; stroke-width: 4px; paint-order: stroke; }
+.map-badge { font: 700 13px 'Varela Round', sans-serif; fill: var(--lodge); }
+/* The Visitor Center's yard: a light clearing where the loop begins and ends. */
+.map-yard { fill: #EAE3D2; stroke: #D3C7A9; stroke-width: 1.5px; }
 .map-num { font: 700 14px 'Varela Round', sans-serif; }
 .map-n { font: 700 13px 'Varela Round', sans-serif; fill: var(--text-secondary); }
 .map-lake { fill: #CFE7F0; stroke: #8FC1D4; stroke-width: 1.5px; }
 .map-lake-name { font: italic 13px 'Varela Round', sans-serif; fill: #3D6F82; }
 .map-north { fill: #fff; stroke: var(--text-secondary); stroke-width: 1.5px; }
 
-/* The map's key: the five places, each icon in its place's color, the
-   name on its own line and a few words below. */
+/* The map's key: the Visitor Center, the Trailhead, the trail stops, and
+   the Pavilion, each icon in its place's color, the name on its own line
+   and a few words below. */
 .route {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.8rem;
     margin: 1rem 0 1.2rem;
     padding: 0;
@@ -746,6 +837,7 @@ details:not([open]) .close-label {
 }
 
 .route-trailhead { --route: var(--park); }
+.route-start     { --route: var(--park); }
 .route-lodge     { --route: var(--lodge); }
 .route-bulletin  { --route: var(--board); }
 
@@ -1407,7 +1499,8 @@ details:not([open]) .close-label {
    notes pinned to it.
    ========================================================================== */
 
-.place.is-board .place-board {
+.place.is-board .place-board,
+.place.is-finish .place-board {
     margin-top: 0.6rem;
     padding: 1.1rem 1.1rem 1.3rem;
     border: 2px solid #D9C9B4;
@@ -1435,7 +1528,7 @@ details:not([open]) .close-label {
     margin: 0 0 0.6rem;
 }
 
-/* Smaller than the Trailhead's map: a look back at the closed loop. */
+/* Smaller than the Visitor Center's map: a look back at the whole loop. */
 .trip-map {
     max-width: 520px;
     margin: 0 auto 1rem;
@@ -1486,8 +1579,8 @@ details:not([open]) .close-label {
 .trip-trailhead { --trip: var(--park); }
 .trip-trail     { --trip: var(--trail); }
 .trip-lodge     { --trip: var(--lodge); }
-.trip-guide     { --trip: var(--note); }
-.trip-bulletin  { --trip: var(--board); }
+.trip-back      { --trip: var(--trail); }
+.trip-finish    { --trip: var(--park); }
 
 .trip-trail .trip-icon {
     color: var(--trail-on);
@@ -1558,6 +1651,7 @@ details:not([open]) .close-label {
 
 .pin-words,
 .pin-save,
+.pin-before,
 .pin-feedback {
     grid-column: 1 / -1;
 }
@@ -2242,8 +2336,8 @@ ul.plain li {
 .prog-trailhead { --prog: var(--park); }
 .prog-trail     { --prog: var(--trail); }
 .prog-lodge     { --prog: var(--lodge); }
-.prog-bulletin  { --prog: var(--board); }
-.prog-guide     { --prog: var(--note); }
+.prog-back      { --prog: var(--trail); }
+.prog-finish    { --prog: var(--park); }
 
 /* The place you're in: its icon filled, its name in bold. */
 .prog-btn[aria-current="location"] {
@@ -2354,7 +2448,8 @@ ul.plain li {
         margin: 0.1rem 0;
     }
 
-    .place.is-board .place-board {
+    .place.is-board .place-board,
+    .place.is-finish .place-board {
         padding: 0.9rem 0.7rem 1rem;
     }
 
@@ -2515,26 +2610,87 @@ ul.plain li {
         border: 1px solid #999;
     }
 
-    /* "Print your Field Guide" prints the guide alone. */
+    /* "Print it" prints the Field Guide keepsake alone. */
     .print-guide .page-header,
-    .print-guide #start,
-    .print-guide #trailStops,
-    .print-guide #lodge,
-    .print-guide #bulletin,
-    .print-guide .footnote,
-    .print-guide .print-row,
-    .print-guide .back-row,
-    .print-guide .note-help {
+    .print-guide main > :not(.keepsake),
+    .print-guide .progress,
+    .print-guide .site-foot {
         display: none;
     }
 
-    .print-guide .is-guide {
-        padding-left: 0;
+    .print-guide .keepsake {
+        display: block;
     }
 
-    .print-guide .is-guide::before,
-    .print-guide .is-guide::after,
-    .print-guide .is-guide > .marker {
-        display: none;
+    .keepsake h2 {
+        break-after: avoid;
     }
+
+    .keepsake .ks-note,
+    .keepsake .stretch,
+    .keepsake .check {
+        break-inside: avoid;
+    }
+}
+
+/* ==========================================================================
+   The Field Guide keepsake: built only for printing (the downloaded file
+   carries its own copy of these looks). Hidden on screen.
+   ========================================================================== */
+
+.keepsake {
+    max-width: 44rem;
+    margin: 0 auto;
+    color: var(--text-primary);
+}
+
+.keepsake h1 {
+    margin: 0.2rem 0 0.4rem;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 2rem;
+}
+
+.keepsake h2 {
+    margin: 1.8rem 0 0.5rem;
+    padding-top: 0.9rem;
+    border-top: 2px solid var(--border-color);
+    font-size: 1.3rem;
+}
+
+.keepsake h3 {
+    margin: 1.1rem 0 0.3rem;
+    font-size: 1.05rem;
+}
+
+.ks-of {
+    margin: 0;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.ks-safety {
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    background: var(--note-tint);
+}
+
+.ks-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 0.4rem;
+    vertical-align: -0.15rem;
+}
+
+.ks-note {
+    margin: 0 0 0.6rem;
+    padding: 0.5rem 0.7rem;
+    border-left: 4px solid var(--note);
+    background: var(--note-tint);
+    white-space: pre-wrap;
+}
+
+.ks-foot {
+    margin-top: 2.4rem;
+    color: var(--text-secondary);
 }

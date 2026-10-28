@@ -41,7 +41,7 @@ export default {
       ] },
       { p: "**If Communicating fits you, keep going.** If it doesn't, pick another way of helping:" },
       { trails: true },
-      { p: "Or finish this trail first. You can switch trails at the Bulletin Board, at the end." }
+      { p: "Or finish this trail first. You can switch trails back at the Visitor Center, at the end." }
     ],
     ahead: "What Communicators bring to a whole community, beyond the people you know."
   },
@@ -58,7 +58,7 @@ export default {
       { sub: "Where Communicators show up" },
       { p: "Newsletters and group chats. Community radio and local news. School and faith bulletins. Translating at a meeting. Anywhere people need to understand each other." }
     ],
-    ahead: "The Climate Lodge, where you pick an exhibit on a topic you care about."
+    ahead: "Stop 5, the Climate Pavilion, where you pick an exhibit on a topic you care about."
   },
 
   /* For the Field Guide: a true story of someone on this trail. Every
@@ -91,7 +91,7 @@ export default {
     ]
   },
 
-  /* Words to carry home from the Bulletin Board. {topic} becomes the
+  /* Words to carry home from the Visitor Center. {topic} becomes the
      exhibit's name. */
   farewell: [
     "You're not alone in your desire to help care for the people and places you love. As a Communicator, you don't need to find the perfect words or every answer by yourself.",

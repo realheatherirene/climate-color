@@ -69,7 +69,7 @@ export default {
           "Who near me lives in housing that's hard to keep cool or dry?"
         ] }
       ],
-      ahead: "The Bulletin Board, where you choose what comes next."
+      ahead: "How your way of helping fits this topic."
     }
   },
 

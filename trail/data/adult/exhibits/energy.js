@@ -67,7 +67,7 @@ export default {
           "Who near me would have a hard time in a long outage?"
         ] }
       ],
-      ahead: "The Bulletin Board, where you choose what comes next."
+      ahead: "How your way of helping fits this topic."
     }
   },
 

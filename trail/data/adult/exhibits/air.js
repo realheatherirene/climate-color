@@ -70,7 +70,7 @@ export default {
           "Where can people in my community go when it's dangerously hot, cold, or smoky outside?"
         ] }
       ],
-      ahead: "The Bulletin Board, where you choose what comes next."
+      ahead: "How your way of helping fits this topic."
     }
   },
 

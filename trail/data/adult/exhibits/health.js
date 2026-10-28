@@ -69,7 +69,7 @@ export default {
           "Who near me would have a hard time getting care after a storm or flood?"
         ] }
       ],
-      ahead: "The Bulletin Board, where you choose what comes next."
+      ahead: "How your way of helping fits this topic."
     }
   },
 

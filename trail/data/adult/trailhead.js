@@ -1,4 +1,5 @@
-/* The Trailhead: what the map is, how it works, and the six trails.
+/* The Visitor Center, on arrival: what the map is, how it works, and
+   the six trails.
    Adult pack: grade 9 reading level or lower. */
 
 const MASS_AUDUBON = { title: "Mass Audubon, May 2024", url: "https://www.massaudubon.org/news/press-room/2024/mass-audubon-opens-all-persons-trail-at-brewster-s-woods-built-by-the-appalachian-mountain-club", archive: "https://web.archive.org/web/2026/https://www.massaudubon.org/news/press-room/2024/mass-audubon-opens-all-persons-trail-at-brewster-s-woods-built-by-the-appalachian-mountain-club" };
@@ -7,13 +8,13 @@ const IMLS = { title: "IMLS: Mass Audubon's Accessible Trails Project", url: "ht
 export default {
   title: "Climate Color Trail",
   lede: "Find your way into the climate movement!",
-  intro: "The Climate Color Trail is a self-guided learning experience that helps you find your place in the climate movement. Pick your trail, learn your way of caring, visit the Climate Lodge, choose your next steps, and leave with a Field Guide to climate action!",
+  intro: "The Climate Color Trail is a self-guided learning experience that helps you find your place in the climate movement. Pick your trail, learn your way of caring, visit the Climate Pavilion, bring it close to home, and leave with a Field Guide to climate action!",
 
-  /* The Trailhead's board, with the trail picker at the bottom. The key
+  /* The Visitor Center's board, with the trail picker at the bottom. The key
      shows the places on the map (drawn from shared.js) and the two kinds
      of stop. */
   board: {
-    open: "Learn about the trail: where you'll go, what you'll find, and how to save your progress. The trail is a loop, so it ends at the Bulletin Board, right beside where you start. The trail takes about 20 minutes, and you can save your spot and come back anytime.",
+    open: "Learn about the trail: where you'll go, what you'll find, and how to save your progress. The trail is a loop. It leaves from the Trailhead, just outside, and brings you back here to the Visitor Center at the end. The trail takes about 20 minutes, and you can save your spot and come back anytime.",
     storyLabel: "Read a story about outdoor accessibility",
     blocks: [
       { map: true },

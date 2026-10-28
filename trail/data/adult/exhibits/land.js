@@ -68,7 +68,7 @@ export default {
           "Who near me depends on forests or land for their work or way of life?"
         ] }
       ],
-      ahead: "The Bulletin Board, where you choose what comes next."
+      ahead: "How your way of helping fits this topic."
     }
   },
 

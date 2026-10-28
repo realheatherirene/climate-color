@@ -11,7 +11,7 @@
    ========================================================================== */
 
 export const TITLES = {
-  /* The Trailhead */
+  /* The Visitor Center, on arrival */
   how:         "Get your bearings",
   pickTrail:   "Pick your trail",
 
@@ -21,7 +21,7 @@ export const TITLES = {
   fit:         "Rest and reflect",
   community:   "Discover what you bring",
 
-  /* The Lodge and its exhibits */
+  /* The Climate Pavilion (stop 5) and its exhibits */
   pickExhibit: "Pick an exhibit",
   why:         "Discover why it matters",
   changing:    "Find out what's changing",
@@ -30,8 +30,12 @@ export const TITLES = {
   /* {action} is the reader's trail: "Put your Connecting to work." */
   work:        "Put your {action} to work",
 
-  /* The Field Guide */
+  /* The way back: stops 6 to 8 */
   story:       "Meet someone like you",
+  place:       "Think about your own place",
+  helpers:     "Find the helpers",
+
+  /* The Field Guide */
   think:       "Think it through",
   tryIt:       "Try it now",
   others:      "Learn other ways to help",
@@ -42,6 +46,8 @@ export const TITLES = {
 /* The order things appear in. */
 export const TRAIL_ORDER = ["know", "care", "fit", "community"];
 export const EXHIBIT_ORDER = ["why", "changing", "who", "life"];
+/* The way back, numbered 6 to 8 (the Pavilion is stop 5). */
+export const BACK_ORDER = ["story", "place", "helpers"];
 /* The Field Guide: the trail's pages once, then a set for each topic the
    reader keeps. */
 export const GUIDE_TRAIL = ["story", "tryIt", "others"];
