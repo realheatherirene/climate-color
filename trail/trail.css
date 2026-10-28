@@ -425,8 +425,9 @@ html.loading .site-foot {
 }
 
 /* A place that is also a numbered stop (the Pavilion is stop 5): its
-   number, small, above its name. */
+   number, small, under its name. */
 .place-eyebrow {
+    margin-top: 2px;
     font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -772,9 +773,6 @@ details:not([open]) .close-label {
     paint-order: stroke;
 }
 
-/* The Climate Pavilion's name: the main destination, so a little bigger. */
-.map-name-big { font-size: 16px; }
-.map-name-small { font-size: 12.5px; }
 .map-sub { font: 700 11.5px 'Varela Round', sans-serif; fill: var(--park); stroke: #F3F8EE; stroke-width: 4px; paint-order: stroke; }
 .map-badge { font: 700 13px 'Varela Round', sans-serif; fill: var(--lodge); }
 /* The Visitor Center's yard: a light clearing where the loop begins and ends. */
@@ -1047,8 +1045,8 @@ details:not([open]) .close-label {
 }
 
 .finder-after {
-    font-size: 0.92rem;
-    color: var(--text-secondary);
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 /* "Your trail": a tag on the picked row, with a check. */
@@ -1499,8 +1497,7 @@ details:not([open]) .close-label {
    notes pinned to it.
    ========================================================================== */
 
-.place.is-board .place-board,
-.place.is-finish .place-board {
+.place.is-board .place-board {
     margin-top: 0.6rem;
     padding: 1.1rem 1.1rem 1.3rem;
     border: 2px solid #D9C9B4;
@@ -1582,7 +1579,8 @@ details:not([open]) .close-label {
 .trip-back      { --trip: var(--trail); }
 .trip-finish    { --trip: var(--park); }
 
-.trip-trail .trip-icon {
+.trip-trail .trip-icon,
+.trip-back .trip-icon {
     color: var(--trail-on);
 }
 
@@ -2449,7 +2447,7 @@ ul.plain li {
     }
 
     .place.is-board .place-board,
-    .place.is-finish .place-board {
+    .board {
         padding: 0.9rem 0.7rem 1rem;
     }
 
@@ -2631,3 +2629,169 @@ ul.plain li {
     }
 }
 
+
+/* ==========================================================================
+   Back at the Visitor Center: the Bulletin Board, the Field Guide, and the
+   end of the line
+   ========================================================================== */
+
+/* The Bulletin Board: a cork board with a wooden sign, holding every note
+   for the road home. All notes look alike. */
+.board {
+    margin: 1.4rem 0 0;
+    padding: 1.1rem 1.1rem 1.3rem;
+    border: 2px solid #D9C9B4;
+    border-radius: 12px;
+    background: var(--board-tint);
+}
+
+.board-sign {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.35rem 0.9rem 0.35rem 0.4rem;
+    border-radius: 9px;
+    background: var(--board);
+    color: #fff;
+}
+
+.board-sign h3 {
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.board-sign-icon {
+    display: grid;
+    place-items: center;
+}
+
+.board-sign-icon svg {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+/* Wide notes: the plan and the closing words. */
+.pin-plan {
+    grid-column: 1 / -1;
+}
+
+.pin-note {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+}
+
+/* "Plan your first step": numbered, one small question at a time. */
+.plan-steps {
+    margin: 0.6rem 0 0.4rem;
+    padding-left: 1.4rem;
+}
+
+.plan-step {
+    margin: 0 0 1rem;
+    padding-left: 0.2rem;
+}
+
+.plan-step::marker {
+    font-weight: 700;
+    color: var(--board);
+}
+
+.plan-q {
+    margin: 0 0 0.4rem;
+    max-width: var(--read);
+}
+
+.plan-own {
+    margin: 0.6rem 0 0.3rem;
+    font-weight: 700;
+}
+
+.plan-field {
+    max-width: var(--read);
+    min-height: 0;
+}
+
+/* "Near you": the topic's places to find help, plainly listed. */
+.pin-near .check {
+    margin-bottom: 0.5rem;
+}
+
+/* The Field Guide: its own card under the board, the same look as a
+   note, with every way to keep it in one row. */
+.pin.take {
+    margin-top: 1.4rem;
+}
+
+.pin.take::before {
+    display: none;
+}
+
+.pin.take h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.take-icon {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 7px;
+    background: var(--note);
+    color: #fff;
+}
+
+.take-icon svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.take-row {
+    margin: 0.8rem 0 0.6rem;
+}
+
+/* The end of the line: the Trailhead sign, where the trail began. The
+   line runs down to it and stops there. */
+.place.is-end {
+    --place: var(--park);
+    padding-bottom: 1rem;
+}
+
+.place.is-end::before {
+    bottom: auto;
+    height: 1.4rem;
+}
+
+.end-sign {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1rem;
+    min-height: 2.6rem;
+    padding-top: 0.5rem;
+}
+
+.end-name {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 1.4rem;
+    color: var(--park);
+}
+
+/* Feedback: below the trail, on its own, plainly styled. */
+.feedback-zone {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 1.6rem 1.2rem 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.feedback-zone:empty {
+    display: none;
+}
+
+.fb-title {
+    margin: 0 0 0.4rem;
+    font-size: 1.3rem;
+}

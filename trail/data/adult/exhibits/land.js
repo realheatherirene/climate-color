@@ -146,7 +146,7 @@ export default {
       { resources: [
         { verb: "Find", name: "a land trust near you", url: "https://landtrustalliance.org/land-trusts/explore", reach: "United States only", desc: "From the Land Trust Alliance. Browse by state, or narrow the list to land trusts with trails, public access, or volunteer opportunities." },
         { verb: "Volunteer", name: "with the National Park Service", url: "https://nps.gov/volunteer", reach: "United States only", desc: "Its volunteer page links to Volunteer.gov, with openings at national parks and other public lands." },
-        { verb: "Join", name: "the Great Backyard Bird Count", url: "https://www.birdcount.org/", reach: "open worldwide", desc: "Each February, people count birds for as little as 15 minutes and share what they find. It's run by the Cornell Lab of Ornithology, the National Audubon Society, and Birds Canada." }
+        { verb: "Join", name: "the Great Backyard Bird Count", when: "event", url: "https://www.birdcount.org/", reach: "open worldwide", desc: "Each February, people count birds for as little as 15 minutes and share what they find. It's run by the Cornell Lab of Ornithology, the National Audubon Society, and Birds Canada." }
       ] },
       { say: [
         { where: "At a nature center", words: "Do you need volunteers for plantings, cleanups, or bird counts?" },

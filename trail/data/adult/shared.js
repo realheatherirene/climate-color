@@ -30,12 +30,12 @@ export default {
     trail: { name: "Stops 1–4", legendName: "Trail Stops", short: "Stops 1–4", icon: "i-trail", route: "Numbered 1 to 8. Open each one." },
     /* Stop 5: the far point of the loop, where the exhibits are. */
     lodge: { name: "Climate Pavilion", short: "Pavilion", stop: "Stop 5", icon: "i-pavilion", route: "Stop 5. Pick a topic exhibit.",
-      title: "The Climate Pavilion", sub: "Learn about the effects of climate change on nine environmental topics." },
+      title: "Climate Pavilion", sub: "Learn about the effects of climate change on nine environmental topics." },
     /* Stops 6 to 8: the way back, bringing it all close to home. */
     back: { name: "Stops 6–8", short: "Stops 6–8", icon: "i-trail",
-      title: "The Way Back", sub: "Three stops to bring what you learned close to home." },
+      title: "Head Back", sub: "Three stops to bring what you learned close to home." },
     finish: { name: "Visitor Center", icon: "i-center",
-      title: "Back at the Visitor Center", sub: "You've come full circle. Choose a first step, find what's happening near you, and take your Field Guide home." }
+      title: "Visitor Center", sub: "You've come full circle. Choose a first step, find what's happening near you, and take your Field Guide home." }
   },
 
 
@@ -204,6 +204,7 @@ export default {
     step: "Your first step",
     steps: "Your first steps",
     own: "Your own first step",
+    plan: "Your plan",
     tryIt: "Try it now",
     story: "Meet someone like you",
     notes: "Your notes",
@@ -241,9 +242,9 @@ export default {
   },
 
   /* Back at the Visitor Center: the end of the loop. The trip just
-     taken, then the planning desk (a first step), the Bulletin Board
-     (what's happening near you), the Field Guide to take home, and a
-     way to say how it went. Then the trail's closing words. */
+     taken, then the Bulletin Board (a plan for a first step, help near
+     you, and the trail's closing words), then the Field Guide to take
+     home. Feedback sits below the trail, on its own. */
   bulletin: {
     /* After each trail's own closing words, on every trail. The first
        circles back to the guess on the Care stop. */
@@ -253,7 +254,6 @@ export default {
     ],
     trail: { label: "Try another trail", hint: "Keep your exhibits and pick a different way of helping." },
     board: {
-      lede: "You've come full circle, back where you started.",
       trip: "Your loop",
       trailhead: "You started here and picked the {trail} Trail.",
       trailOpened: "You opened {n} of {total} stops.",
@@ -265,40 +265,44 @@ export default {
       /* Before any exhibit is visited: the way to the Pavilion. */
       empty: "Visit at least one exhibit at the Climate Pavilion first. Each one adds a first step and its pages to your Field Guide.",
       emptyGo: "Go to the Climate Pavilion",
-      /* The planning desk. */
+      /* The Bulletin Board: everything for the road home, as pinned
+         notes. Every note speaks to the reader; none describes the page. */
+      title: "Bulletin Board",
+      /* "Plan your first step": a short walk-through, one small question at
+         a time. Every answer is optional, stays on this device, and goes in
+         the Field Guide as "Your plan." */
       plan: {
-        title: "Choose your first step",
+        title: "Plan your first step",
         you: "You're {a} {archetype}.",
-        text: "Each exhibit you visited came with a first step. Pick one to start with, or write your own.",
-        pickOne: "Pick one to start with. It moves to the top.",
+        steps: [
+          { q: "Pick your first step.", hint: "Choose one from the exhibits you visited, or write your own." },
+          { key: "small", q: "Make it small.", hint: "What's the very first thing you'll do? Keep it small enough to finish in 10 minutes, like finding a phone number or sending one text." },
+          { key: "day", q: "Pick a day.", hint: "When will you do it? Choose a day this week or next." },
+          { key: "who", q: "Bring someone along.", hint: "Who could join you, or who could you tell? One name is enough." },
+          { key: "sign", q: "Know it's working.", hint: "What small change would tell you it's helping?" }
+        ],
         startHere: "Start here",
         start: "Your start",
-        own: "Or write your own first step:",
+        own: "Or write your own:",
         ownPlaceholder: "My first step is...",
-        think: "Before you choose, think it through:",
-        questions: [
-          "When and where would I start?",
-          "Who could come with me?",
-          "What small change close to home would tell me this is working?"
-        ]
+        saved: "Your answers stay on this device, and they go in your Field Guide."
       },
-      /* The Bulletin Board: what's happening near you. */
-      near: {
-        title: "Bulletin Board",
-        line: "What's happening near you",
-        text: "Real visitor centers post what's going on nearby. Here's how to find ways to help close to home, for each topic you visited."
-      },
-      /* Taking the Field Guide home. */
+      /* One note for each exhibit visited: every place to find help close
+         to home for that topic. Directories come first; events last. */
+      near: { title: "Near you: {exhibit}", coming: "Coming up" },
+      leaders: { title: "Your local leaders" },
+      other: { title: "Try another trail", text: "Keep your exhibits and take a different way of helping." },
+      /* The Field Guide, on its own below the board. */
       take: {
-        title: "Take your Field Guide home",
-        text: "Your Field Guide gathers your trail: your way of helping, your first step, your notes, and ways to help close to home for each topic. Pick the topics to include, then take it home however you like.",
-        door: "Which topics go in your Field Guide?",
+        title: "Your Field Guide",
+        text: "Everything from your trail, ready to keep: your way of helping, your first step and plan, your notes, and ways to help near you.",
+        door: "Which topics go in it?",
         print: "Print it",
-        printHelp: "To save a PDF, pick Save as PDF in the print window.",
         download: "Download it",
-        downloadHelp: "Saves one file to this device, with your notes. It opens in any web browser."
+        email: "Email me a link",
+        copy: "Copy link",
+        note: "Printing also lets you save it as a PDF. Downloading saves one file, with your notes, that opens in any web browser."
       },
-      before: { title: "Before you go", pass: "Pass it on", other: "Try another trail" },
       pass: {
         title: "Pass it on",
         text: "Know someone who wants to help but isn't sure where to start? Send them the trail.",
@@ -325,9 +329,8 @@ export default {
         mail: { intro: "Climate Color Trail feedback", trail: "Trail", exhibits: "Exhibits", comment: "Comments" }
       },
       words: "Words to take with you",
-      /* The last thing on the page: the way to the start. */
-      home: "Go to the start",
-      homeHint: "The top of the Visitor Center, where you picked your trail."
+      /* The end of the line: the Trailhead sign, where the trail began. */
+      end: { sign: "Trailhead", home: "Back to the start" }
     }
   },
 

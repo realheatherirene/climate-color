@@ -85,7 +85,7 @@ const listOf = n => n.length < 3 ? n.join(" and ") : `${n.slice(0, -1).join(", "
 const P = shared.places;
 
 /* A place's heading: a title, and a short line if it has one. */
-const sign = pl => `<div class="place-sign"><div class="text">${pl.stop ? `<p class="place-eyebrow">${fmt(pl.stop)}</p>` : ""}<h2 class="place-title">${fmt(pl.title)}</h2>
+const sign = pl => `<div class="place-sign"><div class="text"><h2 class="place-title">${fmt(pl.title)}</h2>${pl.stop ? `<p class="place-eyebrow">${fmt(pl.stop)}</p>` : ""}
     ${pl.sub ? `<p class="place-sub">${fmt(pl.sub)}</p>` : ""}</div></div>`;
 
 /* A place on the trail: its sign over a light board. */
@@ -99,13 +99,14 @@ const place = (key, cls, board) => `<li class="stop place ${cls}" id="${key}">
 /* The "a Kinfeather project" tag and the footer tie the Trail to its
    owner. The footer is the one every page shares (core/site-foot.js).
    "Preview": while readers test the Trail, a tag beside the by-line links
-   to a feedback line above the footer. Remove `preview` from the content
-   pack to take both away. */
+   to the feedback section above the footer. Remove `preview` from the
+   content pack to take the tag away. */
 const SB = shared.site, PV = SB.preview;
 const byLine = fmt(SB.by).replace("{owner}", `<a href="${SB.owner.url}">${fmt(SB.owner.name)}</a>`);
 $("by").innerHTML = `${byLine}${PV ? ` <a class="preview-tag" href="#feedback">${fmt(PV.tag)}</a>` : ""}`;
-renderSiteFoot($("siteFoot"),
-  PV ? `<p class="feedback" id="feedback">${fmt(PV.line)} <a href="mailto:${PV.email}?subject=${encodeURIComponent(PV.subject)}">${fmt(PV.email)}</a></p>` : "");
+/* The feedback section sits between the trail and the footer (see
+   renderFeedback); the "Preview" tag jumps to it. */
+renderSiteFoot($("siteFoot"));
 
 document.title = trailhead.title;
 $("title").textContent = trailhead.title;
@@ -130,7 +131,7 @@ const MAPS = {
     /* Stops 1 to 8, evenly spaced; the fifth is the Climate Pavilion. */
     stops: [[149, 258], [117, 136], [250, 75], [398, 67], [544, 95], [660, 180], [581, 289], [437, 318]],
     /* where each name sits: [dx, dy, text-anchor] */
-    label: { center: [8, 46, "start"], start: [-6, 34, "end"], lodge: [34, 5, "start"] },
+    label: { center: [-18, 54, "middle"], start: [-20, 5, "end"], lodge: [0, 48, "middle"] },
     path: {
       /* Out of the yard, past the Trailhead sign, to stop 1. */
       start: "M288,307 C278,305 268,303 257,301 C247,299 237,296 228,293 C218,290 209,287 199,283 C190,280 181,276 173,272 C164,268 156,263 149,258",
@@ -153,7 +154,7 @@ const MAPS = {
     /* Stops 1 to 8, evenly spaced; the fifth is the Climate Pavilion. */
     stops: [[79, 169], [62, 276], [77, 383], [130, 476], [225, 470], [264, 370], [265, 262], [233, 159]],
     /* where each name sits: [dx, dy, text-anchor] */
-    label: { center: [0, -30, "middle"], start: [-20, 5, "end"], lodge: [0, 46, "middle"] },
+    label: { center: [-12, -42, "middle"], start: [-20, 5, "end"], lodge: [0, 48, "middle"] },
     path: {
       /* Out of the yard, past the Trailhead sign, to stop 1. */
       start: "M151,96 C147,96 142,97 138,98 C133,100 129,102 124,105 C120,107 116,111 112,115 C107,119 103,124 100,129 C96,135 92,141 89,147 C85,154 82,161 79,169",
@@ -188,13 +189,10 @@ function drawMap(M) {
   const trail = picked
     ? line(M.path.start, "var(--park)") + line(M.path.trail, "var(--trail)") + line(M.path.home, "var(--park)")
     : line(`${M.path.start} ${rest(M.path.trail)} ${rest(M.path.home)}`, "#64748B", true);
-  /* Arrows: an arrowhead on each stretch, in the path's own color, with a
-     light edge so it stands out from the line. */
-  const arrows = M.arrows.map(([x, y, a], i) => {
-    const onTrail = i > 0 && i < 8;
-    const color = !picked ? "#475569" : onTrail ? "var(--trail)" : "var(--park)";
-    return `<path d="M-7,-8 L8,0 L-7,8 L-3,0 Z" transform="translate(${x} ${y}) rotate(${a})" style="fill:${color};stroke:#F3F8EE" stroke-width="1.5" stroke-linejoin="round"/>`;
-  }).join("");
+  /* One arrowhead, just past the Trailhead sign: the way to set out.
+     The numbered stops show the order from there. */
+  const [ax, ay, aa] = M.arrows[0];
+  const arrows = `<path d="M-7,-8 L8,0 L-7,8 L-3,0 Z" transform="translate(${ax} ${ay}) rotate(${aa}) scale(1.35)" style="fill:#1F2937;stroke:#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
   const stroke = picked ? "var(--trail)" : "#64748B", textC = picked ? "var(--trail-text)" : "#475569";
   const stops = M.stops.map(([x, y], i) => {
     if (i === 4) return "";
@@ -211,7 +209,7 @@ function drawMap(M) {
     <use href="#${P.lodge.icon}" x="${px - 16}" y="${py - 16}" width="32" height="32" style="color:#fff"/>
     <circle cx="${px + 23}" cy="${py - 23}" r="11" style="fill:#fff;stroke:var(--map-lodge)" stroke-width="2.5"/>
     <text x="${px + 23}" y="${py - 18.5}" class="map-badge" text-anchor="middle">5</text>
-    ${name(M.stops[4], M.label.lodge, P.lodge.name, "map-name map-name-big")}`;
+    ${name(M.stops[4], M.label.lodge, P.lodge.name)}`;
   /* The Visitor Center in its yard, and the Trailhead sign at the yard's
      edge, where the trail sets out. */
   const [cx, cy] = M.center, [sx, sy] = M.start;
@@ -222,8 +220,8 @@ function drawMap(M) {
   const [sdx, sdy, sa] = M.label.start;
   const sign = `<rect x="${sx - 12}" y="${sy - 12}" width="24" height="24" rx="5" style="fill:var(--map-trailhead)"/>
     <use href="#${P.start.icon}" x="${sx - 8}" y="${sy - 8}" width="16" height="16" style="color:#fff"/>
-    ${name(M.start, M.label.start, P.start.name, "map-name map-name-small")}
-    <text x="${sx + sdx}" y="${sy + sdy + 15}" class="map-sub" text-anchor="${sa}">${fmt(W.startHere)}</text>`;
+    ${name(M.start, M.label.start, P.start.name)}
+    <text x="${sx + sdx}" y="${sy + sdy + 16}" class="map-sub" text-anchor="${sa}">${fmt(W.startHere)}</text>`;
   /* The map is a picture for getting your bearings, not a tracker: the
      progress bar at the top of the screen shows where you are. */
   const [nx, ny] = M.north;
@@ -342,13 +340,13 @@ function renderFinder() {
   if (!most) { out.innerHTML = ""; return; }
   const top = COLOR_KEYS.filter(k => counts[k] === most);
   out.innerHTML = `<p class="finder-result">${fmt(F.lead)}</p>
-    <p>${fmt(F.result.replace("{list}", joinAnd(top.map(k => getColor(k).action))))} ${fmt(F.praise)} ${fmt(F.start)}</p>
+    <p>${fmt(F.result.replace("{list}", joinAnd(top.map(k => getColor(k).action))))} ${fmt(F.praise)}</p>
     <ul class="finder-go-list">${top.map(key => { const c = getColor(key);
       return `<li><button type="button" class="finder-go" data-trail="${key}">
         <span class="blaze" style="background:var(${cssVar(key)})" aria-hidden="true"></span>
         <span><span class="oname">${c.action} <span class="tcolor">· ${key}</span></span>
         <span class="finder-go-label">${fmt(F.go)} &rarr;</span></span></button></li>`; }).join("")}</ul>
-    <p class="finder-after">${fmt(F.after)}</p>`;
+    <p class="finder-after">${fmt(top.length > 1 ? F.afterMany : F.after)}</p>`;
 }
 $("pickHelp").addEventListener("change", e => { if (e.target.matches("[data-finder]")) renderFinder(); });
 
@@ -509,11 +507,19 @@ const ownKey = () => `${st.trail}:own`.toLowerCase();
 /* The first steps to choose from: one from each exhibit visited. */
 const firstOf = (c, k) => exhibits[k].work[c.key].first;
 
-/* The planning desk: choose your first step. With more than one exhibit
-   visited, the reader picks one; it moves to the top and is kept on this
-   device. They can also write their own. */
-function planSection(c, built) {
-  const B = shared.bulletin.board, Pl = B.plan, picking = built.length > 1;
+/* The plan's answers, kept with the reader's notes on this device. */
+const planKey = key => `${st.trail}:plan:${key}`.toLowerCase();
+const noteText = v => v ? v.replace(/&/g, "&amp;").replace(/</g, "&lt;") : "";
+
+/* A pinned note on the Bulletin Board: every one the same, a title and
+   what's under it. */
+const pin = (cls, title, body) => `<article class="pin ${cls}"><h3>${fmt(title)}</h3>${body}</article>`;
+
+/* "Plan your first step": a walk-through, one small question at a time.
+   Step 1 picks the step (from the exhibits visited, or the reader's own);
+   the rest make it real. Every answer is optional. */
+function planPin(c, built) {
+  const Pl = shared.bulletin.board.plan, picking = built.length > 1;
   const chosen = picking ? store.get(startKey()) : "";
   const order = chosen ? [...built].sort((a, b) => (b === chosen) - (a === chosen)) : built;
   const item = k => {
@@ -522,59 +528,57 @@ function planSection(c, built) {
       ? `<label class="first-pick"><input type="radio" name="firstStart" value="${k}"${k === chosen ? " checked" : ""}><span class="vh">${fmt(Pl.startHere)}: </span>${text}</label>`
       : text}</li>`;
   };
-  const own = store.get(ownKey());
-  return `<section class="finish-part plan" aria-labelledby="planTitle">
-    <h3 class="board-h" id="planTitle">${fmt(Pl.title)}</h3>
-    <p class="way-you"><span class="blaze" style="background:var(--trail)" aria-hidden="true"></span>${fmt(Pl.you.replace("{a}", aAn(c.archetype)).replace("{archetype}", c.archetype))}</p>
-    <p class="step-hint">${fmt(Pl.text)}</p>
-    <div class="reflect"><p class="sub">${fmt(Pl.think)}</p><ul>${Pl.questions.map(q => `<li>${fmt(q)}</li>`).join("")}</ul></div>
-    ${picking ? `<p class="first-hint">${fmt(Pl.pickOne)}</p>` : ""}
-    <ul class="first-list" id="firstList"${picking ? ` role="radiogroup" aria-label="${fmt(Pl.title)}"` : ""}>${order.map(item).join("")}</ul>
-    <label class="sub own-label" for="ownStep">${fmt(Pl.own)}</label>
-    <textarea id="ownStep" class="note own-step" data-note="${ownKey()}" rows="2" placeholder="${fmt(Pl.ownPlaceholder)}">${own ? own.replace(/&/g, "&amp;").replace(/</g, "&lt;") : ""}</textarea>
-  </section>`;
+  const field = (id, key, label, ph = "") => `<label class="vh" for="${id}">${fmt(label)}</label>
+    <textarea id="${id}" class="note plan-field" data-note="${key}" rows="2"${ph ? ` placeholder="${fmt(ph)}"` : ""}>${noteText(store.get(key))}</textarea>`;
+  const steps = Pl.steps.map((step, i) => `<li class="plan-step"><p class="plan-q"><b>${fmt(step.q)}</b> ${fmt(step.hint)}</p>
+    ${i === 0
+      ? `<ul class="first-list" id="firstList"${picking ? ` role="radiogroup" aria-label="${fmt(step.q)}"` : ""}>${order.map(item).join("")}</ul>
+         <p class="plan-own">${fmt(Pl.own)}</p>${field("ownStep", ownKey(), Pl.own, Pl.ownPlaceholder)}`
+      : field(`plan-${step.key}`, planKey(step.key), step.q)}</li>`).join("");
+  return pin("pin-plan", Pl.title, `<p class="way-you"><span class="blaze" style="background:var(--trail)" aria-hidden="true"></span>${fmt(Pl.you.replace("{a}", aAn(c.archetype)).replace("{archetype}", c.archetype))}</p>
+    <ol class="plan-steps">${steps}</ol>
+    <p class="pin-note">${fmt(Pl.saved)}</p>`);
 }
 
-/* The Bulletin Board: what's happening near you. Ways to help close to
-   home for each topic visited, then the local-meeting help, once. */
-function nearSection(c, built) {
-  const N = shared.bulletin.board.near, G = shared.guide;
-  const parts = built.map(k => { const x = topicOf(k), X = exhibits[k];
-    return [`near-${k}`, { ...X.finder, title: x.name, ahead: null }]; });
-  return `<section class="finish-part near" aria-labelledby="nearTitle">
-    <div class="near-head"><span class="near-icon" aria-hidden="true">${icon("i-board")}</span>
-      <div><h3 class="board-h" id="nearTitle">${fmt(N.title)}</h3><p class="near-line">${fmt(N.line)}</p></div></div>
-    <p class="step-hint">${fmt(N.text)}</p>
-    ${panel(parts)}
-    <div class="near-local"><p class="sub">${fmt(G.localTitle)}</p>${renderBlocks(G.local, ctx)}</div>
-  </section>`;
+/* "Near you": one note per exhibit visited, with every place to find help
+   close to home for that topic. Directories first, then events. On the
+   board there's no guessing: each one is simply listed. */
+function nearPin(k) {
+  const N = shared.bulletin.board.near, x = topicOf(k), blocks = exhibits[k].finder.blocks;
+  const finds = blocks.filter(b => b.find && b.find.link).map(b => ({ verb: "Use", name: b.find.link.name, url: b.find.link.url, reach: b.find.link.reach, desc: b.find.reveal, when: b.find.link.when }));
+  const all = [...blocks.filter(b => b.resources).flatMap(b => b.resources), ...finds];
+  const now = all.filter(r => r.when !== "event"), later = all.filter(r => r.when === "event");
+  const list = rs => renderBlocks([{ resources: rs }], ctx);
+  return pin("pin-near", N.title.replace("{exhibit}", x.name), `<p>${fmt(blocks[0].p)}</p>${list(now)}${later.length ? `<p class="sub">${fmt(N.coming)}</p>${list(later)}` : ""}`);
 }
 
-/* Taking the Field Guide home: which topics go in, then every way to
-   keep it. */
+/* The Field Guide, on its own under the board: which topics go in, and
+   every way to keep it, in one row. */
 function takeSection(built) {
-  const T = shared.bulletin.board.take, G = shared.guide;
-  return `<section class="finish-part take" aria-labelledby="takeTitle">
-    <div class="near-head"><span class="near-icon take-icon" aria-hidden="true">${icon("i-guide")}</span>
-      <div><h3 class="board-h" id="takeTitle">${fmt(T.title)}</h3></div></div>
-    <p class="step-hint">${fmt(T.text)}</p>
+  const T = shared.bulletin.board.take, S = shared.save, G = shared.guide;
+  const canShare = typeof navigator.share === "function";
+  return `<section class="pin take" aria-labelledby="takeTitle">
+    <h3 id="takeTitle"><span class="take-icon" aria-hidden="true">${icon("i-guide")}</span>${fmt(T.title)}</h3>
+    <p>${fmt(T.text)}</p>
     <p class="door-q">${fmt(T.door)}</p>
     <ul class="door-list">${built.map(k => { const x = topicOf(k);
       return `<li><label class="door-pick"><input type="checkbox" data-keep="${k}"${st.dropped.has(k) ? "" : " checked"}>${icon(x.icon)}<span>${fmt(x.name)}</span></label></li>`; }).join("")}</ul>
-    <div class="take-ways">
-      <p><button type="button" class="save-btn" data-go="printGuide">${fmt(T.print)}</button> <span class="reach">${fmt(T.printHelp)}</span></p>
-      <p><button type="button" class="save-btn" data-go="downloadGuide">${fmt(T.download)}</button> <span class="reach">${fmt(T.downloadHelp)}</span></p>
-    </div>
-    ${savePanel("saveEnd")}
+    <div class="save-row take-row">
+      <button type="button" class="save-btn" data-go="printGuide">${fmt(T.print)}</button>
+      <button type="button" class="save-btn" data-go="downloadGuide">${fmt(T.download)}</button>
+      <a class="save-btn save-email" href="#">${fmt(T.email)}</a>
+      <button type="button" class="save-btn" data-go="copyLink">${fmt(T.copy)}</button>
+      ${canShare ? `<button type="button" class="save-btn" data-go="share">${fmt(S.share)}</button>` : ""}</div>
+    <p class="pin-note">${fmt(T.note)}</p>
+    <p class="pin-note">${fmt(S.privacy)}</p>
     <p class="back-row"><button type="button" class="linkish" data-go="place-lodge">${fmt(G.back.label)}</button> <span class="reach">${fmt(G.back.hint)}</span></p>
   </section>`;
 }
 
-/* The return: the loop just finished, the planning desk, the Bulletin
-   Board, the Field Guide, then pass it on, feedback, and the closing
-   words. Before any exhibit, it points the way to the Pavilion. */
+/* The return: the loop just finished, then the Bulletin Board, then the
+   Field Guide. Before any exhibit, it points the way to the Pavilion. */
 function finishBody(c, built) {
-  const J = shared.bulletin, B = J.board, t = trails[st.trail];
+  const J = shared.bulletin, B = J.board, t = trails[st.trail], G = shared.guide;
   if (!built.length) return `<p class="board-lede">${fmt(B.empty)}</p>
     <p><button type="button" class="pill-btn pill-all next-btn" data-go="place-lodge">${fmt(B.emptyGo)}</button></p>`;
   const names = built.length === 1 ? exhibitName(topicOf(built[0])) : `${listOf(built.map(k => topicOf(k).name))} Exhibits`;
@@ -586,54 +590,65 @@ function finishBody(c, built) {
     finish: B.here
   };
   /* The same park map as the start, now in the reader's trail color: the
-     whole loop, back where it began. */
-  const trip = `<section class="trip" aria-labelledby="tripTitle"><h3 class="board-h" id="tripTitle">${fmt(B.trip)}</h3>
+     whole loop, back where it began, every place checked. */
+  const trip = `<section class="trip" aria-labelledby="tripTitle"><h3 class="vh" id="tripTitle">${fmt(B.trip)}</h3>
     <div class="park-map trip-map" aria-hidden="true">${drawMap(MAPS.wide) + drawMap(MAPS.tall)}</div>
     <ol class="trip-steps">${PLACES_IN_ORDER.map(key => `<li class="trip-${key}${key === "finish" ? " is-here" : ""}">
       <span class="trip-icon" aria-hidden="true">${icon(P[key].icon)}</span>
       <span><b>${fmt(P[key].name)}</b><span class="trip-did">${fmt(did[key])}</span></span>
-      ${key === "finish" ? "" : `<span class="trip-check" aria-hidden="true">${icon("i-check")}</span>`}</li>`).join("")}</ol></section>`;
-  /* Pass it on, or try another trail. Each opens only when chosen. */
+      <span class="trip-check" aria-hidden="true">${icon("i-check")}</span></li>`).join("")}</ol></section>`;
+  /* Pass it on. */
   const msg = fill(B.pass.message, c).replace("{url}", home);
   const canShare = typeof navigator.share === "function";
+  const pass = pin("pin-pass", B.pass.title, `<p>${fmt(B.pass.text)}</p><blockquote class="pass-msg">${fmt(msg)}</blockquote>
+    <div class="save-row">${canShare ? `<button type="button" class="save-btn" data-go="passShare">${fmt(shared.save.share)}</button>` : ""}
+      <a class="save-btn" href="mailto:?subject=${encodeURIComponent(B.pass.subject)}&body=${encodeURIComponent(msg)}">${fmt(B.pass.email)}</a>
+      <button type="button" class="save-btn" data-go="passCopy">${fmt(shared.save.copy)}</button></div>`);
+  /* Try another trail. */
   const others = COLOR_KEYS.filter(k => k !== c.key).map(k => getColor(k));
-  const item = (label, body) => `<details class="mini before-item"><summary>${fmt(label)}</summary><div class="before-body">${body}</div></details>`;
-  const before = `<article class="pin pin-before"><h3>${fmt(B.before.title)}</h3>
-    ${item(B.before.pass, `<p>${fmt(B.pass.text)}</p><blockquote class="pass-msg">${fmt(msg)}</blockquote>
-      <div class="save-row">${canShare ? `<button type="button" class="save-btn" data-go="passShare">${fmt(shared.save.share)}</button>` : ""}
-        <a class="save-btn" href="mailto:?subject=${encodeURIComponent(B.pass.subject)}&body=${encodeURIComponent(msg)}">${fmt(B.pass.email)}</a>
-        <button type="button" class="save-btn" data-go="passCopy">${fmt(shared.save.copy)}</button></div>`)}
-    ${item(B.before.other, `<p>${fmt(J.trail.hint)}</p>
-      <div class="try-trails">${others.map(o => `<button type="button" class="try-trail" data-trail="${o.key}"><span class="blaze" style="background:var(--${o.key.toLowerCase()}-color)" aria-hidden="true"></span>${fmt(o.action)} <span class="tcolor">· ${o.key}</span></button>`).join("")}</div>`)}
-  </article>`;
-  /* "Help make the trail better": the answers live in `fb`, so they
-     survive the page being drawn again. */
-  const FB = B.feedback;
-  const feedback = FB ? `<article class="pin pin-feedback"><h3>${fmt(FB.title)}</h3><p>${fmt(FB.text)}</p>
-    ${FB.questions.map(q => `<fieldset class="fb-q"><legend>${fmt(q.ask)}</legend><div class="fb-opts">
-      ${q.options.map(o => `<label class="fb-opt"><input type="radio" name="fb-${q.key}" value="${fmt(o)}" data-fb="${q.key}"${fb[q.key] === o ? " checked" : ""}><span>${fmt(o)}</span></label>`).join("")}
-    </div></fieldset>`).join("")}
-    <label class="fb-label" for="fbComment">${fmt(FB.comment)}</label>
-    <textarea id="fbComment" class="fb-comment" data-fb="comment" rows="3" maxlength="1200">${(fb.comment || "").replace(/&/g, "&amp;").replace(/</g, "&lt;")}</textarea>
-    <p class="fb-includes">${fmt(FB.includes)}</p>
-    <div class="save-row"><a class="save-btn" id="fbSend" href="${feedbackMail()}">${fmt(FB.send)}</a>
-      <button type="button" class="save-btn" data-go="fbCopy">${fmt(FB.copy)}</button></div>
-    <p class="fb-privacy">${fmt(FB.privacy.replace("{to}", FB.to))}</p></article>` : "";
+  const other = pin("pin-other", B.other.title, `<p>${fmt(B.other.text)}</p>
+    <div class="try-trails">${others.map(o => `<button type="button" class="try-trail" data-trail="${o.key}"><span class="blaze" style="background:var(--${o.key.toLowerCase()}-color)" aria-hidden="true"></span>${fmt(o.action)} <span class="tcolor">· ${o.key}</span></button>`).join("")}</div>`);
+  /* Your local leaders: the same for every topic. */
+  const leaders = pin("pin-leaders", B.leaders.title, renderBlocks(G.local, ctx));
+  /* The hopeful note, pinned last. */
   const farewell = [...t.farewell, ...J.close].map(p => `<p>${fmt(p)}</p>`).join("");
-  const homeRow = `<p class="home-row"><button type="button" class="pill-btn pill-all next-btn" data-go="place-trailhead">${fmt(B.home)}</button> <span class="reach">${fmt(B.homeHint)}</span></p>`;
-  return `<p class="board-lede">${fmt(B.lede)}</p>${trip}
-    ${planSection(c, built)}
-    ${nearSection(c, built)}
-    ${takeSection(built)}
-    <div class="pins">${before}${feedback}
-      <article class="pin pin-words"><h3>${fmt(B.words)}</h3>${farewell}</article></div>
-    ${homeRow}`;
+  const board = `<section class="board" aria-labelledby="boardTitle">
+    <div class="board-sign"><span class="board-sign-icon" aria-hidden="true">${icon("i-board")}</span><h3 id="boardTitle">${fmt(B.title)}</h3></div>
+    <div class="pins">${planPin(c, built)}${built.map(nearPin).join("")}${leaders}${pass}${other}${pin("pin-words", B.words, farewell)}</div>
+  </section>`;
+  return `${trip}${board}${takeSection(built)}`;
 }
 
 function renderFinish() {
   const line = $("finishLine");
   if (!st.trail) { line.innerHTML = ""; return; }
-  line.innerHTML = place("finish", "is-finish", finishBody(getColor(st.trail), st.visited));
+  const E = shared.bulletin.board.end;
+  /* The end of the line: the Trailhead sign, where the trail began, and
+     the way back to the start. */
+  const end = `<li class="stop place is-end" id="lineEnd">
+    <span class="marker" aria-hidden="true">${icon(P.start.icon)}</span>
+    <div class="end-sign"><p class="end-name">${fmt(E.sign)}</p>
+      <button type="button" class="pill-btn pill-all next-btn" data-go="place-trailhead">${fmt(E.home)}</button></div></li>`;
+  line.innerHTML = place("finish", "is-finish", finishBody(getColor(st.trail), st.visited)) + end;
+}
+
+/* ---------- Feedback: below the trail, on its own ---------- */
+
+/* "Help make the trail better": near the trail but not part of it, so
+   anyone can use it, finished or not. The answers live in `fb`, so they
+   survive the page being drawn again. */
+function renderFeedback() {
+  const FB = shared.bulletin.board.feedback;
+  $("feedback").innerHTML = `<h2 class="fb-title">${fmt(FB.title)}</h2><p>${fmt(FB.text)}</p>
+    ${FB.questions.map(q => `<fieldset class="fb-q"><legend>${fmt(q.ask)}</legend><div class="fb-opts">
+      ${q.options.map(o => `<label class="fb-opt"><input type="radio" name="fb-${q.key}" value="${fmt(o)}" data-fb="${q.key}"${fb[q.key] === o ? " checked" : ""}><span>${fmt(o)}</span></label>`).join("")}
+    </div></fieldset>`).join("")}
+    <label class="fb-label" for="fbComment">${fmt(FB.comment)}</label>
+    <textarea id="fbComment" class="fb-comment" data-fb="comment" rows="3" maxlength="1200">${noteText(fb.comment || "")}</textarea>
+    <p class="fb-includes">${fmt(FB.includes)}</p>
+    <div class="save-row"><a class="save-btn" id="fbSend" href="${feedbackMail()}">${fmt(FB.send)}</a>
+      <button type="button" class="save-btn" data-go="fbCopy">${fmt(FB.copy)}</button></div>
+    <p class="fb-privacy">${fmt(FB.privacy.replace("{to}", FB.to))}</p>`;
 }
 
 /* ---------- The Field Guide: the keepsake ---------- */
@@ -646,6 +661,7 @@ function keepsakeHTML() {
   const chosen = ks.length > 1 ? store.get(startKey()) : "";
   const steps = chosen && ks.includes(chosen) ? [chosen] : ks;
   const own = store.get(ownKey());
+  const plan = shared.bulletin.board.plan.steps.filter(x => x.key).map(x => [x.q, store.get(planKey(x.key))]).filter(([, v]) => v);
   const noteOf = key => store.get(`${st.trail}:${key}`.toLowerCase());
   const notes = [["fit", G.noteFrom.fit], ["place", G.noteFrom.place],
     ...ks.map(k => [`${k}:life`, G.noteFrom.life.replace("{exhibit}", topicOf(k).name)])]
@@ -670,7 +686,8 @@ function keepsakeHTML() {
     <section><h2>${fmt(G.way)}</h2><p class="ks-you"><b>${fmt(G.you.replace("{a}", aAn(c.archetype)).replace("{archetype}", c.archetype))}</b> ${fmt(cap(trailhead.ways[c.key]))}.</p>${renderBlocks(actions, ctx)}</section>
     <section><h2>${fmt(steps.length > 1 ? G.steps : G.step)}</h2>
       <ul class="plain ks-steps">${steps.map(k => `<li><b>${fmt(topicOf(k).name)}:</b> ${fmt(firstOf(c, k))}</li>`).join("")}</ul>
-      ${own ? `<p class="ks-own"><b>${fmt(G.own)}:</b> ${esc(own)}</p>` : ""}</section>
+      ${own ? `<p class="ks-own"><b>${fmt(G.own)}:</b> ${esc(own)}</p>` : ""}
+      ${plan.length ? `<h3>${fmt(G.plan)}</h3><ul class="plain ks-plan">${plan.map(([q, v]) => `<li><b>${fmt(q)}</b> ${esc(v)}</li>`).join("")}</ul>` : ""}</section>
     <section><h2>${fmt(G.tryIt)}</h2>${renderBlocks(stretch, ctx)}</section>
     <section><h2>${fmt(G.notes)}</h2>${notes.length ? notes.map(([label, v]) => `<p class="sub">${fmt(label)}</p><p class="ks-note">${esc(v)}</p>`).join("") : `<p>${fmt(G.noNotes)}</p>`}
       <p class="sub">${fmt(G.moreNotes)}</p><div class="ks-lines" aria-hidden="true"></div></section>
@@ -713,6 +730,7 @@ function render(trailChanged = true) {
   if (trailChanged) { renderTrail(); renderBack(); }
   renderLodge();
   renderFinish();
+  renderFeedback();
   drawBearings();
   watchPlaces();
   drawProgress();
@@ -866,6 +884,7 @@ document.addEventListener("click", e => {
   if (to === "passCopy") { copyText(fill(shared.bulletin.board.pass.message, getColor(st.trail)).replace("{url}", home), b, shared.save.copy); return; }
   if (to === "share") navigator.share({ title: document.title, url: spotUrl() }).catch(() => { /* closed without sharing */ });
   if (to === "copy") { $(b.dataset.for).select(); copyText(spotUrl(), b, shared.save.copy); }
+  if (to === "copyLink") copyText(spotUrl(), b, shared.bulletin.board.take.copy);
   if (to === "fbCopy") { const FB = shared.bulletin.board.feedback; copyText(`${FB.to}\n\n${feedbackText()}`, b, FB.copy); }
 });
 

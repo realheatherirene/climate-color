@@ -147,8 +147,8 @@ export default {
       } },
       /* The cleanup is open worldwide, not U.S. only: approved as an exception. */
       { resources: [
-        { verb: "Join", name: "Fix a Leak Week", url: "https://www.epa.gov/watersense/fix-leak-week", reach: "United States only", desc: "A yearly week each March to find and fix water leaks at home. Free tips explain a toilet dye test and a water meter test, with a printable checklist." },
-        { verb: "Join", name: "the International Coastal Cleanup", url: "https://oceanconservancy.org/work/plastics/cleanups-icc/", reach: "open worldwide", desc: "From Ocean Conservancy: volunteers clean up beaches and waterways near them. Its map lists cleanups in your area, or you can start your own. Each cleanup is run by a local host; check their page for details." }
+        { verb: "Join", name: "Fix a Leak Week", when: "event", url: "https://www.epa.gov/watersense/fix-leak-week", reach: "United States only", desc: "A yearly week each March to find and fix water leaks at home. Free tips explain a toilet dye test and a water meter test, with a printable checklist." },
+        { verb: "Join", name: "the International Coastal Cleanup", when: "event", url: "https://oceanconservancy.org/work/plastics/cleanups-icc/", reach: "open worldwide", desc: "From Ocean Conservancy: volunteers clean up beaches and waterways near them. Its map lists cleanups in your area, or you can start your own. Each cleanup is run by a local host; check their page for details." }
       ] },
       { say: [
         { where: "At the library desk", words: "Do any groups meet here about creeks, rivers, or water?" },

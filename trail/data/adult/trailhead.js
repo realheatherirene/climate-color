@@ -77,10 +77,11 @@ export default {
       lead: "Every box you checked shows how much you already care.",
       result: "Your answers lean toward {list}.",
       praise: "Communities run on care like that.",
-      /* Always shown, whether one trail comes up or all six. */
-      start: "Start wherever feels right today.",
       go: "Start this trail",
-      after: "Most people do a little of all six. You can switch trails at the end."
+      /* Under the suggested trail: the way on, to it or to the full list.
+         The second is for when more than one trail comes up. */
+      after: "Take this trail, or choose any of the six trails below.",
+      afterMany: "Take one of these trails, or choose any of the six trails below."
     }
   },
 
