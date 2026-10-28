@@ -375,6 +375,27 @@ function tripTrailLine() {
   const B = shared.bulletin.board, opened = TRAIL_ORDER.filter(k => seen.has(k)).length;
   return (opened ? B.trailOpened : B.trailAll).replace("{n}", opened).replace("{total}", TRAIL_ORDER.length);
 }
+/* The feedback email: the reader's answers, their trail, and the
+   exhibits they visited, as plain text. Empty answers are left out. */
+const fb = {};
+function feedbackText() {
+  const FB = shared.bulletin.board.feedback, M = FB.mail, c = st.trail && getColor(st.trail);
+  const lines = [M.intro, ""];
+  if (c) lines.push(`${M.trail}: ${c.key} (${c.action})`);
+  if (st.visited.length) lines.push(`${M.exhibits}: ${st.visited.map(k => topicOf(k).name).join(", ")}`);
+  FB.questions.forEach(q => { if (fb[q.key]) lines.push(`${q.ask} ${fb[q.key]}`); });
+  if (fb.comment && fb.comment.trim()) lines.push("", `${M.comment}:`, fb.comment.trim());
+  return lines.join("\n");
+}
+const feedbackMail = () => {
+  const FB = shared.bulletin.board.feedback;
+  return `mailto:${FB.to}?subject=${encodeURIComponent(FB.subject)}&body=${encodeURIComponent(feedbackText())}`;
+};
+function feedbackChanged(el) {
+  fb[el.dataset.fb] = el.value;
+  const a = $("fbSend"); if (a) a.href = feedbackMail();
+}
+
 function boardBody(c, built, farewell) {
   const J = shared.bulletin, B = J.board, kept = built.filter(k => !st.dropped.has(k));
   const names = list => list.length === 1 ? exhibitName(topicOf(list[0])) : `${listOf(list.map(k => topicOf(k).name))} Exhibits`;
@@ -419,11 +440,24 @@ function boardBody(c, built, farewell) {
     <div class="save-row">${canShare ? `<button type="button" class="save-btn" data-go="passShare">${fmt(shared.save.share)}</button>` : ""}
       <a class="save-btn" href="mailto:?subject=${encodeURIComponent(B.pass.subject)}&body=${encodeURIComponent(msg)}">${fmt(B.pass.email)}</a>
       <button type="button" class="save-btn" data-go="passCopy">${fmt(shared.save.copy)}</button></div></article>`;
+  /* "Help make the trail better": the answers live in `fb`, so they
+     survive the board being drawn again. */
+  const FB = B.feedback;
+  const feedback = FB ? `<article class="pin pin-feedback"><h3>${fmt(FB.title)}</h3><p>${fmt(FB.text)}</p>
+    ${FB.questions.map(q => `<fieldset class="fb-q"><legend>${fmt(q.ask)}</legend><div class="fb-opts">
+      ${q.options.map(o => `<label class="fb-opt"><input type="radio" name="fb-${q.key}" value="${fmt(o)}" data-fb="${q.key}"${fb[q.key] === o ? " checked" : ""}><span>${fmt(o)}</span></label>`).join("")}
+    </div></fieldset>`).join("")}
+    <label class="fb-label" for="fbComment">${fmt(FB.comment)}</label>
+    <textarea id="fbComment" class="fb-comment" data-fb="comment" rows="3" maxlength="1200">${(fb.comment || "").replace(/&/g, "&amp;").replace(/</g, "&lt;")}</textarea>
+    <p class="fb-includes">${fmt(FB.includes)}</p>
+    <div class="save-row"><a class="save-btn" id="fbSend" href="${feedbackMail()}">${fmt(FB.send)}</a>
+      <button type="button" class="save-btn" data-go="fbCopy">${fmt(FB.copy)}</button></div>
+    <p class="fb-privacy">${fmt(FB.privacy.replace("{to}", FB.to))}</p></article>` : "";
   const others = COLOR_KEYS.filter(k => k !== c.key).map(k => getColor(k));
   const tryOther = `<article class="pin pin-try"><h3>${fmt(J.trail.label)}</h3><p>${fmt(J.trail.hint)}</p>
     <div class="try-trails">${others.map(o => `<button type="button" class="try-trail" data-trail="${o.key}"><span class="blaze" style="background:var(--${o.key.toLowerCase()}-color)" aria-hidden="true"></span>${fmt(o.action)} <span class="tcolor">· ${o.key}</span></button>`).join("")}</div></article>`;
   return `<p class="board-lede">${fmt(B.lede)}</p>${trip}
-    <div class="pins">${way}${first}${pass}${tryOther}
+    <div class="pins">${way}${first}${pass}${tryOther}${feedback}
       <article class="pin pin-save" id="keep">${savePanel("saveEnd")}</article>
       <article class="pin pin-words"><h3>${fmt(B.words)}</h3>${farewell}</article></div>`;
 }
@@ -666,10 +700,12 @@ document.addEventListener("click", e => {
   if (to === "passCopy") { copyText(fill(shared.bulletin.board.pass.message, getColor(st.trail)).replace("{url}", home), b, shared.save.copy); return; }
   if (to === "share") navigator.share({ title: document.title, url: spotUrl() }).catch(() => { /* closed without sharing */ });
   if (to === "copy") { $(b.dataset.for).select(); copyText(spotUrl(), b, shared.save.copy); }
+  if (to === "fbCopy") { const FB = shared.bulletin.board.feedback; copyText(`${FB.to}\n\n${feedbackText()}`, b, FB.copy); }
 });
 
 /* The Lodge door: a topic left unchecked stays out of the Field Guide. */
 document.addEventListener("change", e => {
+  if (e.target.dataset && e.target.dataset.fb) { feedbackChanged(e.target); return; }
   /* "Your first steps": the one picked moves to the top. */
   if (e.target.name === "firstStart") {
     store.set(startKey(), e.target.value);
@@ -688,6 +724,7 @@ document.addEventListener("change", e => {
 /* Notes save as you type, on this device only. */
 document.addEventListener("input", e => {
   if (e.target.matches("textarea.note")) store.set(e.target.dataset.note, e.target.value);
+  if (e.target.matches("textarea.fb-comment")) feedbackChanged(e.target);
 });
 
 /* A stop's marker fills in only while it's open. Opening a trail stop

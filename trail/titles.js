@@ -18,7 +18,7 @@ export const TITLES = {
   /* Stops along the trail, numbered 1 to 4 */
   know:        "Meet your way of helping",
   care:        "Find out why your care matters",
-  fit:         "Rest and Reflect",
+  fit:         "Rest and reflect",
   community:   "Discover what you bring",
 
   /* The Lodge and its exhibits */
