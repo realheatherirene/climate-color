@@ -268,14 +268,16 @@ export default {
       /* The Bulletin Board: everything for the road home, as pinned
          notes. Every note speaks to the reader; none describes the page. */
       title: "Bulletin Board",
+      /* The first note: the reader's trail and the exhibits they visited,
+         as a swatch and icons, with names in plain text. */
+      recap: { title: "Remember your trail" },
       /* "Plan your first step": a short walk-through, one small question at
          a time. Every answer is optional, stays on this device, and goes in
          the Field Guide as "Your plan." */
       plan: {
         title: "Plan your first step",
-        you: "You're {a} {archetype}.",
         steps: [
-          { q: "Pick your first step.", hint: "Choose one from the exhibits you visited, or write your own." },
+          { q: "Choose it.", hint: "Pick one from the exhibits you visited, or write your own." },
           { key: "small", q: "Make it small.", hint: "What's the very first thing you'll do? Keep it small enough to finish in 10 minutes, like finding a phone number or sending one text." },
           { key: "day", q: "Pick a day.", hint: "When will you do it? Choose a day this week or next." },
           { key: "who", q: "Bring someone along.", hint: "Who could join you, or who could you tell? One name is enough." },
@@ -289,12 +291,12 @@ export default {
       },
       /* One note for each exhibit visited: every place to find help close
          to home for that topic. Directories come first; events last. */
-      near: { title: "Near you: {exhibit}", coming: "Coming up" },
-      leaders: { title: "Your local leaders" },
+      near: { title: "Find ways to help close to home", coming: "Coming up" },
+      leaders: { title: "Reach your local leaders" },
       other: { title: "Try another trail", text: "Keep your exhibits and take a different way of helping." },
       /* The Field Guide, on its own below the board. */
       take: {
-        title: "Your Field Guide",
+        title: "Take your Field Guide home",
         text: "Everything from your trail, ready to keep: your way of helping, your first step and plan, your notes, and ways to help near you.",
         door: "Which topics go in it?",
         print: "Print it",
@@ -328,7 +330,7 @@ export default {
         /* The email itself. Lines with no answer are left out. */
         mail: { intro: "Climate Color Trail feedback", trail: "Trail", exhibits: "Exhibits", comment: "Comments" }
       },
-      words: "Words to take with you",
+      words: "Carry these words home",
       /* The end of the line: the Trailhead sign, where the trail began. */
       end: { sign: "Trailhead", home: "Back to the start" }
     }

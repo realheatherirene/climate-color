@@ -25,7 +25,7 @@ export default {
     { key: "energy", name: "Energy", icon: "i-energy", about: ["power", "fuel", "heating", "cooling"],
       teaser: "Climate change puts the ways we make and deliver energy at risk, and it's changing how much energy people need. Communities across the country are working to make power more reliable.",
       src: { title: "Fifth National Climate Assessment, Ch. 5: Energy Supply, Delivery, and Demand", url: "https://toolkit.climate.gov/NCA5_Ch5_Energy", web: "https://nca5.climate.us/chapter/5", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch5_Energy" } },
-    { key: "transportation", name: "Transport", icon: "i-transportation", about: ["roads", "rails", "buses", "bikes"],
+    { key: "transportation", name: "Transportation", icon: "i-transportation", about: ["roads", "rails", "buses", "bikes"],
       teaser: "Getting around is the largest source of heat-trapping gases in the United States. Cleaner ways to travel can also mean better health for the people nearby.",
       src: { title: "Fifth National Climate Assessment, Ch. 13: Transportation", url: "https://toolkit.climate.gov/NCA5_Ch13_Transportation", web: "https://nca5.climate.us/chapter/13", archive: "https://web.archive.org/web/2026/https://toolkit.climate.gov/NCA5_Ch13_Transportation" } },
     { key: "housing", name: "Housing", icon: "i-housing", about: ["homes", "neighborhoods", "shelter", "rent"],

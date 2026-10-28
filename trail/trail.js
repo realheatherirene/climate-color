@@ -513,7 +513,7 @@ const noteText = v => v ? v.replace(/&/g, "&amp;").replace(/</g, "&lt;") : "";
 
 /* A pinned note on the Bulletin Board: every one the same, a title and
    what's under it. */
-const pin = (cls, title, body) => `<article class="pin ${cls}"><h3>${fmt(title)}</h3>${body}</article>`;
+const pin = (cls, title, body, line = "") => `<article class="pin ${cls}"><h3>${fmt(title)}</h3>${line ? `<p class="pin-line">${line}</p>` : ""}${body}</article>`;
 
 /* "Plan your first step": a walk-through, one small question at a time.
    Step 1 picks the step (from the exhibits visited, or the reader's own);
@@ -535,8 +535,7 @@ function planPin(c, built) {
       ? `<ul class="first-list" id="firstList"${picking ? ` role="radiogroup" aria-label="${fmt(step.q)}"` : ""}>${order.map(item).join("")}</ul>
          <p class="plan-own">${fmt(Pl.own)}</p>${field("ownStep", ownKey(), Pl.own, Pl.ownPlaceholder)}`
       : field(`plan-${step.key}`, planKey(step.key), step.q)}</li>`).join("");
-  return pin("pin-plan", Pl.title, `<p class="way-you"><span class="blaze" style="background:var(--trail)" aria-hidden="true"></span>${fmt(Pl.you.replace("{a}", aAn(c.archetype)).replace("{archetype}", c.archetype))}</p>
-    <ol class="plan-steps">${steps}</ol>
+  return pin("pin-plan", Pl.title, `<ol class="plan-steps">${steps}</ol>
     <p class="pin-note">${fmt(Pl.saved)}</p>`);
 }
 
@@ -549,7 +548,8 @@ function nearPin(k) {
   const all = [...blocks.filter(b => b.resources).flatMap(b => b.resources), ...finds];
   const now = all.filter(r => r.when !== "event"), later = all.filter(r => r.when === "event");
   const list = rs => renderBlocks([{ resources: rs }], ctx);
-  return pin("pin-near", N.title.replace("{exhibit}", x.name), `<p>${fmt(blocks[0].p)}</p>${list(now)}${later.length ? `<p class="sub">${fmt(N.coming)}</p>${list(later)}` : ""}`);
+  return pin("pin-near", N.title, `<p>${fmt(blocks[0].p)}</p>${list(now)}${later.length ? `<p class="sub">${fmt(N.coming)}</p>${list(later)}` : ""}`,
+    `${icon(x.icon)}${fmt(x.name)}`);
 }
 
 /* The Field Guide, on its own under the board: which topics go in, and
@@ -595,7 +595,7 @@ function finishBody(c, built) {
     <div class="park-map trip-map" aria-hidden="true">${drawMap(MAPS.wide) + drawMap(MAPS.tall)}</div>
     <ol class="trip-steps">${PLACES_IN_ORDER.map(key => `<li class="trip-${key}${key === "finish" ? " is-here" : ""}">
       <span class="trip-icon" aria-hidden="true">${icon(P[key].icon)}</span>
-      <span><b>${fmt(P[key].name)}</b><span class="trip-did">${fmt(did[key])}</span></span>
+      <span><b>${fmt(P[key].name)}</b><span class="vh">: ${fmt(did[key])}</span></span>
       <span class="trip-check" aria-hidden="true">${icon("i-check")}</span></li>`).join("")}</ol></section>`;
   /* Pass it on. */
   const msg = fill(B.pass.message, c).replace("{url}", home);
@@ -608,13 +608,18 @@ function finishBody(c, built) {
   const others = COLOR_KEYS.filter(k => k !== c.key).map(k => getColor(k));
   const other = pin("pin-other", B.other.title, `<p>${fmt(B.other.text)}</p>
     <div class="try-trails">${others.map(o => `<button type="button" class="try-trail" data-trail="${o.key}"><span class="blaze" style="background:var(--${o.key.toLowerCase()}-color)" aria-hidden="true"></span>${fmt(o.action)} <span class="tcolor">· ${o.key}</span></button>`).join("")}</div>`);
+  /* "Remember your trail": the trail's swatch and name, then an icon for
+     each exhibit visited. Names in plain text, never colored. */
+  const recap = pin("pin-recap", B.recap.title, `<ul class="recap">
+    <li><span class="blaze" style="background:var(--trail)" aria-hidden="true"></span>${c.key} · ${fmt(c.archetype)}</li>
+    ${built.map(k => `<li><span class="recap-icon" aria-hidden="true">${icon(topicOf(k).icon)}</span>${fmt(topicOf(k).name)}</li>`).join("")}</ul>`);
   /* Your local leaders: the same for every topic. */
   const leaders = pin("pin-leaders", B.leaders.title, renderBlocks(G.local, ctx));
   /* The hopeful note, pinned last. */
   const farewell = [...t.farewell, ...J.close].map(p => `<p>${fmt(p)}</p>`).join("");
   const board = `<section class="board" aria-labelledby="boardTitle">
     <div class="board-sign"><span class="board-sign-icon" aria-hidden="true">${icon("i-board")}</span><h3 id="boardTitle">${fmt(B.title)}</h3></div>
-    <div class="pins">${planPin(c, built)}${built.map(nearPin).join("")}${leaders}${pass}${other}${pin("pin-words", B.words, farewell)}</div>
+    <div class="pins">${recap}${planPin(c, built)}${built.map(nearPin).join("")}${leaders}${pass}${other}${pin("pin-words", B.words, farewell)}</div>
   </section>`;
   return `${trip}${board}${takeSection(built)}`;
 }
@@ -746,7 +751,7 @@ function render(trailChanged = true) {
    "You opened 3 of 4 stops." */
 function stopOpened() {
   drawProgress();
-  const out = document.querySelector(".trip-trail .trip-did"), back = document.querySelector(".trip-back .trip-did");
+  const out = document.querySelector(".trip-trail .vh"), back = document.querySelector(".trip-back .vh");
   if (out) out.textContent = tripTrailLine();
   if (back) back.textContent = tripBackLine();
 }
