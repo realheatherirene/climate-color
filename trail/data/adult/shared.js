@@ -193,8 +193,10 @@ export default {
      topics. */
   guide: {
     title: "Your Field Guide",
-    /* Under the title: "Climate Color Trail · Green Trail" */
-    of: "Climate Color Trail · {trail} Trail",
+    /* The cover: the brand, the title, and the reader's trail. */
+    brand: "Climate Color Trail",
+    by: "a Kinfeather project",
+    trailLine: "{trail} Trail · {action}",
     safety: "Put your own safety first. In an emergency, follow official alerts and call 911.",
     yours: "Your trail",
     way: "Your way of helping",
@@ -206,6 +208,8 @@ export default {
     story: "Meet someone like you",
     notes: "Your notes",
     noNotes: "No notes yet. Add some at the rest stops, and they'll show up here.",
+    /* Blank lines to write on, after the notes. */
+    moreNotes: "More notes",
     /* Each note, named by where it was written. */
     noteFrom: { fit: "Stop 3: Rest and reflect", place: "Stop 7: Think about your own place", life: "{exhibit}: Find it in your own life" },
     forTopic: "For {exhibit}",
@@ -215,8 +219,11 @@ export default {
     localTitle: "Close to home, for every topic",
     helpers: "All six ways of helping",
     back: { label: "Back to the Climate Pavilion", hint: "Visit more exhibits. Each one you visit adds its pages to your Field Guide." },
-    /* The last line of the Field Guide. */
+    /* The last lines of the Field Guide. */
     comeBack: "Come back to your trail anytime:",
+    footBrand: "Climate Color is a project of Kinfeather. Free and open to everyone.",
+    /* At the foot of every printed page. */
+    pageFoot: "Your Field Guide · Climate Color Trail",
     /* The downloaded file's name. */
     file: "climate-color-field-guide.html",
     /* In every "Find ways to help close to home" part, after its first

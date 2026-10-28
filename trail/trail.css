@@ -2618,79 +2618,16 @@ ul.plain li {
         display: none;
     }
 
+    /* The keepsake's own look comes with it (trail.js writes it in when
+       printing), so it prints the same as the downloaded file. */
     .print-guide .keepsake {
         display: block;
     }
 
-    .keepsake h2 {
-        break-after: avoid;
-    }
-
-    .keepsake .ks-note,
-    .keepsake .stretch,
-    .keepsake .check {
-        break-inside: avoid;
+    .print-guide main {
+        margin: 0;
+        padding: 0;
+        max-width: none;
     }
 }
 
-/* ==========================================================================
-   The Field Guide keepsake: built only for printing (the downloaded file
-   carries its own copy of these looks). Hidden on screen.
-   ========================================================================== */
-
-.keepsake {
-    max-width: 44rem;
-    margin: 0 auto;
-    color: var(--text-primary);
-}
-
-.keepsake h1 {
-    margin: 0.2rem 0 0.4rem;
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: 2rem;
-}
-
-.keepsake h2 {
-    margin: 1.8rem 0 0.5rem;
-    padding-top: 0.9rem;
-    border-top: 2px solid var(--border-color);
-    font-size: 1.3rem;
-}
-
-.keepsake h3 {
-    margin: 1.1rem 0 0.3rem;
-    font-size: 1.05rem;
-}
-
-.ks-of {
-    margin: 0;
-    font-weight: 700;
-    color: var(--text-secondary);
-}
-
-.ks-safety {
-    padding: 0.6rem 0.8rem;
-    border-radius: 8px;
-    background: var(--note-tint);
-}
-
-.ks-icon {
-    width: 1.2rem;
-    height: 1.2rem;
-    margin-right: 0.4rem;
-    vertical-align: -0.15rem;
-}
-
-.ks-note {
-    margin: 0 0 0.6rem;
-    padding: 0.5rem 0.7rem;
-    border-left: 4px solid var(--note);
-    background: var(--note-tint);
-    white-space: pre-wrap;
-}
-
-.ks-foot {
-    margin-top: 2.4rem;
-    color: var(--text-secondary);
-}

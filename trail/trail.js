@@ -12,7 +12,7 @@
    exhibits visited can be linked directly: ?spot=green-water,food.
    ========================================================================== */
 
-import { COLOR_KEYS, getColor, cssVar } from "climate-color/climate-color.js";
+import { COLOR_KEYS, getColor, cssVar, colorValue } from "climate-color/climate-color.js";
 import { renderSiteFoot } from "climate-color/site-foot.js";
 import { TITLES, TRAIL_ORDER, EXHIBIT_ORDER, BACK_ORDER } from "./titles.js";
 import { renderStop, renderBlocks, fmt, icon, setLabels } from "./exhibits.js";
@@ -660,19 +660,32 @@ function keepsakeHTML() {
       <ul class="plain">${c.words.map(w => `<li><b>${fmt(w.word)}:</b> ${fmt(Wk[w.word])}</li>`).join("")}</ul>
       <h3>${fmt(G.nearby)}</h3>${renderBlocks(X.finder.blocks, ctx)}</section>`;
   };
-  return `<header class="ks-head"><p class="ks-of">${fmt(fill(G.of, c))}</p><h1>${fmt(G.title)}</h1>
+  const band = COLOR_KEYS.map(k => `<i style="background:var(--${k.toLowerCase()}-color)"></i>`).join("");
+  const html = `<header class="ks-cover">
+      <div class="ks-band" aria-hidden="true">${band}</div>
+      <p class="ks-brand"><span class="ks-wordmark">${fmt(G.brand)}</span> <span class="ks-by">${fmt(G.by)}</span></p>
+      <h1>${fmt(G.title)}</h1>
+      <p class="ks-trail"><span class="ks-blaze" aria-hidden="true"></span>${fmt(fill(G.trailLine, c))}</p>
       <p class="ks-safety">${fmt(G.safety)}</p></header>
     <section><h2>${fmt(G.way)}</h2><p class="ks-you"><b>${fmt(G.you.replace("{a}", aAn(c.archetype)).replace("{archetype}", c.archetype))}</b> ${fmt(cap(trailhead.ways[c.key]))}.</p>${renderBlocks(actions, ctx)}</section>
     <section><h2>${fmt(steps.length > 1 ? G.steps : G.step)}</h2>
-      <ul class="plain">${steps.map(k => `<li><b>${fmt(topicOf(k).name)}:</b> ${fmt(firstOf(c, k))}</li>`).join("")}</ul>
-      ${own ? `<p><b>${fmt(G.own)}:</b> ${esc(own)}</p>` : ""}</section>
+      <ul class="plain ks-steps">${steps.map(k => `<li><b>${fmt(topicOf(k).name)}:</b> ${fmt(firstOf(c, k))}</li>`).join("")}</ul>
+      ${own ? `<p class="ks-own"><b>${fmt(G.own)}:</b> ${esc(own)}</p>` : ""}</section>
     <section><h2>${fmt(G.tryIt)}</h2>${renderBlocks(stretch, ctx)}</section>
-    <section><h2>${fmt(G.notes)}</h2>${notes.length ? notes.map(([label, v]) => `<p class="sub">${fmt(label)}</p><p class="ks-note">${esc(v)}</p>`).join("") : `<p>${fmt(G.noNotes)}</p>`}</section>
+    <section><h2>${fmt(G.notes)}</h2>${notes.length ? notes.map(([label, v]) => `<p class="sub">${fmt(label)}</p><p class="ks-note">${esc(v)}</p>`).join("") : `<p>${fmt(G.noNotes)}</p>`}
+      <p class="sub">${fmt(G.moreNotes)}</p><div class="ks-lines" aria-hidden="true"></div></section>
     ${ks.map(topicPage).join("")}
-    <section><h2>${fmt(G.localTitle)}</h2>${renderBlocks(G.local, ctx)}</section>
+    <section class="ks-topic"><h2>${fmt(G.localTitle)}</h2>${renderBlocks(G.local, ctx)}</section>
     <section><h2>${fmt(G.story)}</h2>${renderBlocks(t.story.blocks, ctx)}</section>
     <section><h2>${fmt(G.helpers)}</h2>${renderBlocks([{ ways: true }], ctx)}</section>
-    <footer class="ks-foot"><p>${fmt(G.comeBack)} <a href="${spotUrl()}">${spotUrl()}</a></p></footer>`;
+    <footer class="ks-foot"><div class="ks-band" aria-hidden="true">${band}</div>
+      <p>${fmt(G.comeBack)} <a href="${spotUrl()}">${spotUrl()}</a></p><p>${fmt(G.footBrand)} climatecolor.com</p></footer>`;
+  /* On paper, a link can't be followed: each one prints its address, and
+     the "opens a new site" notes go away. */
+  const short = u => u.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+  return html
+    .replace(/<a class="ext" href="([^"]+)"([^>]*)>([\s\S]*?)<\/a>/g, (m, url, rest, inner) => `<a class="ext" href="${url}"${rest}>${inner}</a><span class="ks-url"> ${short(url)}</span>`)
+    .replace(/\(opens a new site · /g, "(");
 }
 
 /* The trail line, markers, and "your trail" touches take the picked
@@ -745,30 +758,76 @@ function copyText(text, btn, label) {
 function printGuide() {
   const k = $("keepsake");
   k.innerHTML = keepsakeHTML(); k.hidden = false;
+  let style = $("keepsakeStyle");
+  if (!style) { style = document.createElement("style"); style.id = "keepsakeStyle"; document.head.appendChild(style); }
+  style.textContent = `@media print{${KEEPSAKE_STYLE}${keepsakeColors()}}${keepsakePage().replace(/^/, "@media print{").replace(/$/, "}")}`;
   document.body.classList.add("print-guide");
   try { window.print(); } catch (err) { /* blocked in some previews */ }
   setTimeout(() => { document.body.classList.remove("print-guide"); k.hidden = true; }, 500);
 }
 
+/* The Field Guide's look: one set of styles for printing and for the
+   downloaded file, so both come out the same. Colors are the core's own,
+   read live from core/atlas.css and written in, so the downloaded file
+   keeps them with no connection. */
+const KEEPSAKE_STYLE = `
+.keepsake{color:#212121;font:11pt/1.5 'Varela Round',system-ui,sans-serif;max-width:7in;margin:0 auto}
+.keepsake *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.keepsake p{margin:0 0 .55em}
+.ks-band{display:flex;gap:4px;height:9px;margin:0 0 20px}.ks-band i{flex:1;border-radius:3px}
+.ks-brand{margin:0;font-size:11pt;color:#475569}
+.ks-wordmark{font-family:'ADLaM Display','Varela Round',sans-serif;font-size:15pt;color:#0F7393;margin-right:.3em}
+.ks-by{font-weight:700}
+.keepsake h1{font-family:'ADLaM Display','Varela Round',sans-serif;font-weight:400;font-size:32pt;line-height:1.05;margin:.2em 0 .25em}
+.ks-trail{display:flex;align-items:center;gap:.5em;margin:0 0 1em;font-size:14pt;font-weight:700}
+.ks-blaze{display:inline-block;width:13px;height:22px;border-radius:3px;background:var(--ks-trail)}
+.ks-safety{padding:.6em .9em;border-radius:8px;background:#F6EFE1;font-weight:700}
+.keepsake h2{font-family:'ADLaM Display','Varela Round',sans-serif;font-weight:400;font-size:18pt;line-height:1.2;margin:1.4em 0 .45em;padding-top:.45em;border-top:3px solid var(--ks-trail);break-after:avoid}
+.keepsake h3{font-size:12.5pt;margin:1.1em 0 .35em;break-after:avoid}
+.ks-topic{break-before:page}
+.ks-icon{width:20px;height:20px;margin-right:.4em;vertical-align:-3px;color:#0F7393}
+.keepsake .sub{font-weight:700;margin:.9em 0 .25em}
+.keepsake ul{margin:.3em 0 .8em;padding-left:1.2em}.keepsake li{margin:.25em 0}
+.ks-steps{font-size:12pt}.ks-own{font-size:12pt}
+.ks-note{white-space:pre-wrap;padding:.5em .8em;border-left:4px solid #7A5C22;background:#FBF7EE;break-inside:avoid}
+.ks-lines{height:2.4in;background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(.4in - 1px),#CBD5E1 calc(.4in - 1px),#CBD5E1 .4in)}
+dl.actions{margin:.6em 0}dl.actions dt{font-weight:700;margin-top:.55em;color:var(--ks-text)}dl.actions dd{margin:0 0 0 1.2em}
+.eg,.rdesc{display:block;color:#475569}
+.reach,.stretch-note,.cite{color:#475569;font-size:9.5pt}
+.ks-url{color:#475569;font-size:9.5pt;word-break:break-all}
+.keepsake .archived{display:none}
+.keepsake a{color:#0F7393}.keepsake a svg{display:none}
+.check{display:flex;gap:.55em;align-items:flex-start;margin:.45em 0;break-inside:avoid}.check input{margin:.25em 0 0;width:14px;height:14px;flex:none}
+.stretch{padding:.7em 1em;border:2px dashed #C9B48A;border-radius:10px;break-inside:avoid}.stretch ol{margin:.3em 0 .5em;padding-left:1.4em}
+.find{padding:.6em .9em;border-left:4px solid #CBD5E1;margin:.8em 0;break-inside:avoid}.find-prompt{font-weight:700}.find-btn{display:none}.find-reveal{display:block!important}
+.say{list-style:none;padding:0}.say li{margin:.35em 0}
+.quote{margin:1em 0;padding-left:1em;border-left:4px solid #CBD5E1}.quote blockquote{margin:0 0 .3em;font-size:12.5pt}.quote figcaption{color:#475569;font-size:9.5pt}
+.ways-list{list-style:none;padding:0}.ways-list li{display:flex;gap:.6em;align-items:flex-start;margin:.55em 0;break-inside:avoid}
+.ways-list .blaze{flex:none;width:12px;height:20px;border-radius:2px;margin-top:2px}.ways-list .odesc{display:block;color:#475569}
+.ways-list li.mine{padding:.3em .5em;border-radius:6px;background:#F3F4F6}
+.yours{font-size:8.5pt;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-left:.3em}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ks-foot{margin-top:2em;color:#475569;font-size:10pt}.ks-foot .ks-band{margin:0 0 1em}
+`;
+/* The page rules: letter paper, real margins, and a line at the foot of
+   every page. Printers that can't draw the foot line simply skip it. */
+const keepsakePage = () => `@page{size:letter;margin:.75in .8in .85in}
+@page{@bottom-center{content:"${shared.guide.pageFoot} · " counter(page);font:9pt 'Varela Round',sans-serif;color:#64748B}}`;
+/* The colors the Field Guide uses, from the core: the six colors and the
+   reader's trail. */
+const keepsakeColors = () => `.keepsake{${COLOR_KEYS.map(k => `--${k.toLowerCase()}-color:${colorValue(k)};`).join("")}--ks-trail:${colorValue(st.trail)};--ks-text:${colorValue(st.trail, "text")}}`;
+
 /* Download the Field Guide as one web page file, notes and all. It's made
    right here in the browser and saved to the reader's device; nothing is
    sent anywhere. Its look is written into the file, so it opens and
-   prints anywhere, with no connection. */
-const KEEPSAKE_STYLE = `body{margin:0;background:#fff;color:#212121;font:16px/1.55 "Varela Round",system-ui,sans-serif}
-.keepsake{max-width:44rem;margin:0 auto;padding:2rem 1.2rem 3rem}h1{font-size:2rem;margin:.2rem 0 .4rem}
-h2{font-size:1.3rem;margin:2rem 0 .5rem;padding-top:1rem;border-top:2px solid #E2E8F0}h3{font-size:1.05rem;margin:1.2rem 0 .3rem}
-.ks-of{margin:0;color:#475569;font-weight:700}.ks-safety{padding:.6rem .8rem;background:#F6EFE1;border-radius:8px}
-.sub{font-weight:700;margin:.8rem 0 .2rem}.ks-note{white-space:pre-wrap;margin:0 0 .6rem;padding:.5rem .7rem;border-left:4px solid #7A5C22;background:#FBF7EE}
-ul.plain,.say{padding-left:1.2rem}.check{display:flex;gap:.5rem;align-items:flex-start;margin:.4rem 0}.check input{margin-top:.35rem}
-.reach,.cite,.archived,.stretch-note{color:#475569;font-size:.92rem}.rdesc,.eg{display:block;color:#475569}
-dl.actions dt{font-weight:700;margin-top:.5rem}dl.actions dd{margin:0 0 0 1rem}.find-btn{display:none}.find-reveal{display:block!important}
-.quote{margin:1rem 0;padding-left:1rem;border-left:4px solid #CBD5E1}.quote blockquote{margin:0;font-size:1.1rem}
-.ways-list{list-style:none;padding:0}.ways-list li{margin:.5rem 0}.ways-list .odesc{display:block;color:#475569}.yours{font-size:.8rem;text-transform:uppercase;font-weight:700}
-.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}a{color:#0F7393}.ks-foot{margin-top:2.5rem;color:#475569}`;
+   prints anywhere. Fonts load from Google Fonts when there's a connection. */
 function downloadGuide() {
   const G = shared.guide;
   const body = keepsakeHTML().replace(/<svg[\s\S]*?<\/svg>/g, "");
-  const doc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${fmt(G.title)}</title><style>${KEEPSAKE_STYLE}</style></head><body><main class="keepsake">${body}</main></body></html>`;
+  const screen = `body{margin:0;background:#F4F1EA}@media screen{.keepsake{background:#fff;padding:.8in .8in 1in;margin:24px auto;box-shadow:0 1px 6px rgba(0,0,0,.12);border-radius:6px}}`;
+  const doc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${fmt(G.title)} · ${fmt(G.brand)}</title>
+<link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Varela+Round&display=swap" rel="stylesheet">
+<style>${KEEPSAKE_STYLE}${keepsakeColors()}${keepsakePage()}${screen}</style></head><body><main class="keepsake">${body}</main></body></html>`;
   const url = URL.createObjectURL(new Blob([doc], { type: "text/html" }));
   const a = document.createElement("a");
   a.href = url; a.download = G.file; document.body.appendChild(a); a.click(); a.remove();
