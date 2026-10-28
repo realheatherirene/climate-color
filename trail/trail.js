@@ -282,6 +282,36 @@ $("trailOpts").innerHTML = COLOR_KEYS.map(key => {
     <span class="odesc">${fmt(cap(trailhead.ways[key]))}.</span></span></button></li>`;
 }).join("");
 
+/* "Find your trail": three everyday questions that point to the trails a
+   reader already walks. Nothing is stored or sent. The answers live only
+   on the page, and the reader still picks the trail. */
+const F = trailhead.pick.finder;
+const joinAnd = xs => xs.length < 3 ? xs.join(" and ") : `${xs.slice(0, -1).join(", ")}, and ${xs[xs.length - 1]}`;
+$("pickHelp").innerHTML = `<details class="mini finder"><summary>${fmt(F.open)}</summary>
+  <div class="finder-body"><p class="finder-intro">${fmt(F.intro)}</p>
+  ${F.moments.map((m, i) => `<fieldset class="finder-q"><legend>${fmt(m.ask)}</legend>
+    ${m.options.map(([key, text], j) => `<label class="finder-a"><input type="checkbox" data-finder="${key}" id="finder-${i}-${j}"><span>${fmt(text)}</span></label>`).join("")}
+  </fieldset>`).join("")}
+  <div class="finder-out" id="finderOut" aria-live="polite"></div></div></details>`;
+
+function renderFinder() {
+  const counts = {};
+  document.querySelectorAll("[data-finder]:checked").forEach(b => { counts[b.dataset.finder] = (counts[b.dataset.finder] || 0) + 1; });
+  const most = Math.max(0, ...Object.values(counts));
+  const out = $("finderOut");
+  if (!most) { out.innerHTML = ""; return; }
+  const top = COLOR_KEYS.filter(k => counts[k] === most);
+  out.innerHTML = `<p class="finder-result">${fmt(F.lead)}</p>
+    <p>${fmt(F.result.replace("{list}", joinAnd(top.map(k => getColor(k).action))))} ${fmt(F.praise)} ${fmt(F.start)}</p>
+    <ul class="finder-go-list">${top.map(key => { const c = getColor(key);
+      return `<li><button type="button" class="finder-go" data-trail="${key}">
+        <span class="blaze" style="background:var(${cssVar(key)})" aria-hidden="true"></span>
+        <span><span class="oname">${c.action} <span class="tcolor">· ${key}</span></span>
+        <span class="finder-go-label">${fmt(F.go)} &rarr;</span></span></button></li>`; }).join("")}</ul>
+    <p class="finder-after">${fmt(F.after)}</p>`;
+}
+$("pickHelp").addEventListener("change", e => { if (e.target.matches("[data-finder]")) renderFinder(); });
+
 /* ---------- Pieces ---------- */
 
 /* "Save your spot." The link is the trail's own address with the trail
