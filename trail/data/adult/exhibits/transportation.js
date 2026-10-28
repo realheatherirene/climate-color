@@ -136,8 +136,8 @@ export default {
       { find: {
         prompt: "Every May, there's a month to celebrate biking, with events in many towns.",
         button: "Find out",
-        reveal: "It's National Bike Month, from the League of American Bicyclists. It includes National Ride a Bike Day and Bike to Work Day, and the League's Bike Map lists local events.",
-        link: { name: "National Bike Month", url: "https://bikeleague.org/may-is-bike-month-2/", reach: "United States only" }
+        reveal: "It's National Bike Month, from the League of American Bicyclists. It includes National Ride a Bike Day and Bike to Work Day, and the League's Bike Month page has a map of events near you.",
+        link: { name: "National Bike Month", url: "https://bikeleague.org/events/bike-month/", reach: "United States only" }
       } },
       { resources: [
         { verb: "Find", name: "the Alternative Fueling Station Locator", url: "https://afdc.energy.gov/stations", reach: "United States and Canada", desc: "From the U.S. Department of Energy. Search by location, or along a driving route, for public electric vehicle charging and other cleaner fuels." },
