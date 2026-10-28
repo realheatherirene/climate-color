@@ -95,5 +95,5 @@ export default {
     Indigo: "sorting out what matters most, adjusting when things change, and helping people find their way"
   },
 
-  footnote: "The Climate Color Trail is an open resource. No payment, login or download is needed. To the best of our knowledge, all external resources linked within are also free and open to access. Climate change is global. This trail focuses on the United States, where its sources and resources come from. Kinfeather is not affiliated with the organizations that host these resources and receives no financial or other incentive for sharing them."
+  footnote: "Climate change is global. This trail focuses on the United States, where its sources and resources come from."
 };

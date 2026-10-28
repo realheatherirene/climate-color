@@ -244,6 +244,29 @@ export default {
         message: "I took the {trail} Trail on Climate Color and found my way of helping with climate change. Find yours: {url}",
         subject: "Try the Climate Color Trail",
         email: "Email it"
+      },
+      /* "Help make the trail better": a few optional questions that turn
+         into an email the reader sends from their own email app, or
+         copies. Nothing goes anywhere unless they send it. The email
+         names their trail and exhibits, and says so; notes are never
+         included. Every question can be skipped. */
+      feedback: {
+        title: "Help make the trail better",
+        text: "The trail is new, and your answers help decide what comes next. Answer any that you like.",
+        to: "trailmap@kinfeather.com",
+        subject: "Climate Color Trail feedback",
+        questions: [
+          { key: "fit", ask: "Did you find a way of helping that fits you?", options: ["Yes", "Partly", "Not yet"] },
+          { key: "step", ask: "Do you plan to try a first step?", options: ["Yes, soon", "Maybe later", "Not sure yet"] },
+          { key: "length", ask: "How did the length feel?", options: ["Too short", "About right", "Too long"] }
+        ],
+        comment: "Anything you loved, or anything that got in the way?",
+        includes: "Your email will also name your trail and the exhibits you visited. Your notes stay private.",
+        send: "Write the email",
+        copy: "Copy it",
+        privacy: "**Nothing is sent until you send it.** The button opens your own email app. If it doesn't, copy your answers and email them to {to}.",
+        /* The email itself. Lines with no answer are left out. */
+        mail: { intro: "Climate Color Trail feedback", trail: "Trail", exhibits: "Exhibits", comment: "Comments" }
       }
     }
   },
