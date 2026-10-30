@@ -84,9 +84,10 @@ const listOf = n => n.length < 3 ? n.join(" and ") : `${n.slice(0, -1).join(", "
 
 const P = shared.places;
 
-/* A place's heading: a title, and a short line if it has one. */
+/* A place's heading: a title, a short line if it has one, and a hint
+   on its own line below that. */
 const sign = pl => `<div class="place-sign"><div class="text"><h2 class="place-title">${fmt(pl.title)}</h2>${pl.stop ? `<p class="place-eyebrow">${fmt(pl.stop)}</p>` : ""}
-    ${pl.sub ? `<p class="place-sub">${fmt(pl.sub)}</p>` : ""}</div></div>`;
+    ${pl.sub ? `<p class="place-sub">${fmt(pl.sub)}</p>` : ""}${pl.hint ? `<p class="step-hint place-hint">${fmt(pl.hint)}</p>` : ""}</div></div>`;
 
 /* A place on the trail: its sign over a light board. */
 const place = (key, cls, board) => `<li class="stop place ${cls}" id="${key}">
@@ -106,7 +107,7 @@ const byLine = fmt(SB.by).replace("{owner}", `<a href="${SB.owner.url}">${fmt(SB
 $("by").innerHTML = `${byLine}${PV ? ` <a class="preview-tag" href="#feedback">${fmt(PV.tag)}</a>` : ""}`;
 /* The feedback section sits between the trail and the footer (see
    renderFeedback); the "Preview" tag jumps to it. */
-renderSiteFoot($("siteFoot"));
+renderSiteFoot($("siteFoot"), "", { name: "The Climate Trailway", extra: trailhead.footnote });
 
 document.title = trailhead.title;
 $("title").textContent = trailhead.title;
@@ -321,7 +322,6 @@ const S0 = shared.save;
 $("note").innerHTML = `<p class="pace-q">${fmt(S0.pace)}
   <button type="button" class="pill-btn pill-all next-btn" data-go="saveOpen" aria-expanded="false" aria-controls="saveTop">${fmt(S0.paceButton)}</button></p>
   <div id="saveTop" hidden>${savePanel("saveLinkTop")}</div>`;
-$("footnote").textContent = trailhead.footnote;
 
 $("trailheadMarker").innerHTML = icon(P.trailhead.icon);
 $("trailheadSign").outerHTML = sign(P.trailhead);

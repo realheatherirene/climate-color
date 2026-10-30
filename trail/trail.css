@@ -389,6 +389,11 @@ html.loading .site-foot {
     color: var(--text-secondary);
 }
 
+/* A hint under the short line, on its own line, like the Pavilion's. */
+.place-sign .place-hint {
+    margin: 10px 0 0;
+}
+
 .place-board {
     padding: 0.4rem 0 0;
     margin-bottom: 2.2rem;
@@ -2418,15 +2423,6 @@ ul.plain li {
 /* ==========================================================================
    The foot of the page
    ========================================================================== */
-
-.footnote {
-    max-width: var(--read);
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--rule);
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-}
 
 /* The preview's feedback line, above the shared footer. */
 .site-foot .feedback {
