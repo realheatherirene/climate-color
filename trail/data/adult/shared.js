@@ -72,7 +72,7 @@ export default {
     ahead: "Pick an exhibit below to learn how climate change shows up in one part of life."
   },
 
-  /* The tag under the title and the footer. Climate Color is a project of
+  /* The tag under the title and the footer. The Climate Trailway is a project of
      Kinfeather (Kinfeather LLC), whose legal pages live on kinfeather.com.
      In `by`, {owner} becomes a link. */
   site: {
@@ -231,11 +231,11 @@ export default {
     back: { label: "Back to the Climate Pavilion", hint: "Visit more exhibits. Each one you visit adds its pages to your Field Guide." },
     /* The last lines of the Field Guide. */
     comeBack: "Come back to your trail anytime:",
-    footBrand: "Climate Color is a project of Kinfeather. Free and open to everyone.",
+    footBrand: "The Climate Trailway is a project of Kinfeather. Free and open to everyone.",
     /* At the foot of every printed page. */
     pageFoot: "Your Field Guide · Climate Trailway",
     /* The downloaded file's name. */
-    file: "climate-color-field-guide.html",
+    file: "climate-trailway-field-guide.html",
     /* In every "Find ways to help close to home" part, after its first
        line. In the Field Guide and on the Bulletin Board, it comes once,
        for every topic. */
@@ -271,8 +271,11 @@ export default {
       backAll: "{total} markers to bring it close to home.",
       lodge: "You visited the {exhibits}.",
       here: "You made it.",
-      /* Before any exhibit is visited: the way to the Pavilion. */
-      empty: "Visit at least one exhibit at the Climate Pavilion first. Each one adds a first step and its pages to your Field Guide.",
+      /* With no exhibit visited, the Visitor Center still opens in full.
+         The Pavilion shows on the loop without a check, and this line
+         offers the way back to it. */
+      lodgeNone: "You haven't visited an exhibit yet.",
+      empty: "Each exhibit at the Climate Pavilion adds a first step and its pages to your Field Guide. Visit one anytime.",
       emptyGo: "Go to the Climate Pavilion",
       /* The Bulletin Board: everything for the road home, as pinned
          notes. Every note speaks to the reader; none describes the page. */
@@ -286,7 +289,8 @@ export default {
       plan: {
         title: "Plan your first step",
         steps: [
-          { q: "Pick a topic.", hint: "Choose from the exhibits you visited, or write your own. Any topic is good." },
+          { q: "Pick a topic.", hint: "Choose from the exhibits you visited, or write your own. Any topic is good.",
+            hintNone: "Write your own, on any topic. Each exhibit you visit adds a first step here too." },
           { key: "small", q: "Keep it simple.", hint: "What's one small thing you'll do? Keep it short enough to finish in 10 minutes, like finding a phone number or sending one text." },
           { key: "day", q: "Pick a day.", hint: "When will you do it? Choose a day this week or next." },
           { key: "who", q: "Bring someone along.", hint: "Who could join you, or who could you tell? One name is enough." },
@@ -295,6 +299,7 @@ export default {
         startHere: "Start here",
         start: "Your start",
         own: "Or write your own:",
+        ownNone: "Write your own:",
         ownPlaceholder: "My first step is...",
         saved: "Your answers stay on this device, and they go in your Field Guide."
       },

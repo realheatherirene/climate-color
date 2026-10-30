@@ -39,7 +39,7 @@ export default {
        Answers stay free of details a reader might take literally and rule
        themselves out over: a day of the week, a food, a phone, a bus. Each answer is
        one color's everyday care, matched to one of its three words in
-       core/climate-color.js. The six answers come in a different order for
+       core/climate-trailway.js. The six answers come in a different order for
        each question, so no color always sits in the same place.
        {list} becomes the action words of the colors checked most:
        "Connecting and Communicating." */
