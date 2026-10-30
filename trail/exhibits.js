@@ -109,7 +109,7 @@ export function renderBlocks(blocks, ctx) {
 /* One stop: the title (and its short line, if any) while closed; the
    content and the "Next" line inside. Stops along the trail are numbered; parts
    of an exhibit, the Field Guide, and the Bulletin Board are not. */
-export function renderStop({ n, key, title, stop, line = "trail", ctx, aheadLabel = "Next stop" }) {
+export function renderStop({ n, key, title, stop, line = "trail", ctx, aheadLabel = "Next" }) {
   if (!STOP_TYPES.includes(stop.exhibit)) throw new Error("Not a stop type: " + stop.exhibit);
   const rest = stop.exhibit === "rest" ? " rest" : "";
   return `<li class="stop ${line}${rest}" data-stop="${key}">

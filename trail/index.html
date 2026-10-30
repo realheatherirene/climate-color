@@ -1,15 +1,15 @@
 <!doctype html>
 <!-- ==========================================================================
-     THE CLIMATE COLOR TRAIL
+     THE CLIMATE TRAILWAY
      ==========================================================================
-     A learning trail into climate action, laid out as a loop in a park.
-     Start at the Visitor Center and pick a way of helping (a trail),
-     follow stops 1 to 4, pick a topic at the Climate Pavilion (stop 5,
-     one of nine exhibits), bring it close to home at stops 6 to 8, and
-     come back to the Visitor Center to take home a Field Guide.
+     A learning trail into climate action, laid out like a state park.
+     Start at the Trailhead and pick a way of helping (one of six trails),
+     follow markers 1 to 4 to the Climate Pavilion (one of nine exhibits),
+     take the shared Return Trail (markers 5 to 7) to bring it close to
+     home, and end at the Visitor Center to take home a Field Guide.
      trail.js draws everything from data/ and the shared core files; this
      file holds only the page shell and the icon set.
-     Part of Climate Color, at climatecolor.com/trail/ (stewardshiptrail.com
+     Part of Climate Color, at climatetrailway.com/trail/ (stewardshiptrail.com
      forwards here). This folder, trail/, sits in the climate-color
      repository beside core/, the shared core (colors, ways of helping, the
      base stylesheet), served at /core/, so one change there reaches every
@@ -28,19 +28,19 @@
      script changes by even one character, its fingerprint must be
      recomputed, or the browser will block it and the page won't load. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-JBYPtgmL+lfb9+JveCuuhL+sbr09gYHQfEr/TtOhsJo=' 'sha256-sSIOhr4FBqA/5Y5NTZIIxFrusfaSpXmjFzS691E+qXY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
-<title>Climate Color Trail</title>
+<title>Climate Trailway</title>
 <!-- What shows when the link is shared: in texts, email, and social posts.
      The image is images/share.png (1200 x 630). -->
 <meta name="description" content="A free, self-guided learning experience that helps you find your place in the climate movement. Pick your trail, learn your way of caring, and leave with a Field Guide to climate action.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Climate Color">
-<meta property="og:title" content="Climate Color Trail">
+<meta property="og:title" content="Climate Trailway">
 <meta property="og:description" content="Find your way into the climate movement. Free, self-guided, no login needed.">
-<meta property="og:url" content="https://climatecolor.com/trail/">
-<meta property="og:image" content="https://climatecolor.com/trail/images/share.png">
+<meta property="og:url" content="https://climatetrailway.com/trail/">
+<meta property="og:image" content="https://climatetrailway.com/trail/images/share.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A park map of the Climate Color Trail: a loop from the Visitor Center past numbered stops to the Climate Pavilion and back.">
+<meta property="og:image:alt" content="A park map of the Climate Trailway: six colored trails from the Trailhead to the Climate Pavilion, and a Return Trail to the Visitor Center.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -113,7 +113,7 @@
     <symbol id="i-ahead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></symbol>
 </defs></svg>
 <header class="page-header">
-    <h1><span id="title">Climate Color Trail</span></h1>
+    <h1><span id="title">Climate Trailway</span></h1>
     <p class="by" id="by"></p>
     <p class="lede" id="lede">Find your way into the climate movement!</p>
     <!-- The six colors, as a quiet band under the lede. Decoration only,
@@ -128,8 +128,8 @@
     </ul>
     <!-- Shown only when the trail can't run: scripts are off, or the
          browser is too old for the import map (before about 2023). -->
-    <noscript><p class="no-run">The Climate Color Trail needs JavaScript to run. Please turn it on, update your browser, or try another device.</p></noscript>
-    <p class="no-run" id="noRun" hidden>The Climate Color Trail needs a newer browser. Please update your browser or try another device.</p>
+    <noscript><p class="no-run">The Climate Trailway needs JavaScript to run. Please turn it on, update your browser, or try another device.</p></noscript>
+    <p class="no-run" id="noRun" hidden>The Climate Trailway needs a newer browser. Please update your browser or try another device.</p>
     <script>if (!(window.HTMLScriptElement && HTMLScriptElement.supports && HTMLScriptElement.supports("importmap"))) document.getElementById("noRun").hidden = false;</script>
     <div class="todo" id="todo"></div>
     <div class="pace" id="note"></div>
@@ -139,11 +139,10 @@
 <nav class="progress" id="progress" aria-label="Your progress" hidden></nav>
 
 <main class="trail-page">
-    <!-- The Visitor Center's shell is written here, with the trail picker
-         on its board; its sign comes from the places in data/. trail.js
-         adds stops 1-4, the Climate Pavilion (stop 5), stops 6-8, and the
-         return to the Visitor Center. The id "trailhead" is kept so older
-         links and styles still find it. -->
+    <!-- The Trailhead's shell is written here, with the trail picker on
+         its board; its sign comes from the places in data/. trail.js adds
+         markers 1-4, the Climate Pavilion, the Return Trail (markers 5-7),
+         and the Visitor Center at the end. -->
     <ol class="line" id="start">
         <li class="stop place is-trailhead" id="trailhead">
             <span class="marker" aria-hidden="true" id="trailheadMarker"></span>

@@ -749,8 +749,8 @@ details:not([open]) .close-label {
    trail turns your trail's color. */
 .park-map {
     --map-trailhead: var(--park);
+    --map-center: var(--park);
     --map-lodge: var(--lodge);
-    --map-bulletin: var(--board);
     margin: 0.4rem 0 0.2rem;
 }
 
@@ -788,7 +788,7 @@ details:not([open]) .close-label {
    and a few words below. */
 .route {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.8rem;
     margin: 1rem 0 1.2rem;
     padding: 0;
@@ -835,9 +835,38 @@ details:not([open]) .close-label {
 }
 
 .route-trailhead { --route: var(--park); }
-.route-start     { --route: var(--park); }
+.route-center    { --route: var(--park); }
 .route-lodge     { --route: var(--lodge); }
-.route-bulletin  { --route: var(--board); }
+
+/* Trail Blazes: six short dashes, one in each trail's color. */
+.route-blazes {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center stretch !important;
+    align-content: center;
+    gap: 3px;
+    padding: 6px;
+    background: #F3F8EE !important;
+    border: 1px solid var(--green-tint-2);
+}
+
+.route-blazes i {
+    display: block;
+    justify-self: stretch;
+    width: 100%;
+    height: 5px;
+    border-radius: 3px;
+}
+
+/* The Return Trail: a dashed wood-brown line. */
+.route-back-line {
+    background: #F3F8EE !important;
+    border: 1px solid var(--green-tint-2);
+    background-image: linear-gradient(90deg, var(--board) 0 60%, transparent 60% 100%) !important;
+    background-size: 12px 5px !important;
+    background-repeat: repeat-x !important;
+    background-position: 0 50% !important;
+}
 
 /* "Trail Stops" is drawn like a stop on the map: a white box with a
    colored border and its number. */
@@ -1576,11 +1605,10 @@ details:not([open]) .close-label {
 .trip-trailhead { --trip: var(--park); }
 .trip-trail     { --trip: var(--trail); }
 .trip-lodge     { --trip: var(--lodge); }
-.trip-back      { --trip: var(--trail); }
+.trip-back      { --trip: var(--board); }
 .trip-finish    { --trip: var(--park); }
 
-.trip-trail .trip-icon,
-.trip-back .trip-icon {
+.trip-trail .trip-icon {
     color: var(--trail-on);
 }
 
@@ -2339,7 +2367,7 @@ ul.plain li {
 .prog-trailhead { --prog: var(--park); }
 .prog-trail     { --prog: var(--trail); }
 .prog-lodge     { --prog: var(--lodge); }
-.prog-back      { --prog: var(--trail); }
+.prog-back      { --prog: var(--board); }
 .prog-finish    { --prog: var(--park); }
 
 /* The place you're in: its icon filled, its name in bold. */
@@ -2891,3 +2919,19 @@ ul.plain li {
 .reality .stop.room > details {
     border-color: #B9DCE8;
 }
+
+/* The Return Trail: the same for everyone, so its line and markers are
+   the park's wood brown, never a trail color. */
+#backStops {
+    --trail: var(--board);
+    --trail-text: var(--board);
+    --trail-tint: var(--board-tint);
+    --trail-ink: var(--board);
+    --trail-on: #fff;
+}
+
+/* The map's own lines: soft contours and the park road. */
+.map-contour { fill: none; stroke: #DCE3D3; stroke-width: 1px; }
+.map-road { fill: none; stroke: #C9CCC4; stroke-width: 5px; }
+.map-parking { fill: #334155; }
+.map-p { font: 700 14px 'Varela Round', sans-serif; fill: #fff; }

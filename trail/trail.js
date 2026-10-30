@@ -113,134 +113,160 @@ $("title").textContent = trailhead.title;
 $("lede").textContent = trailhead.lede;
 
 /* ---------- The park map and its key: getting your bearings ---------- */
-/* A small park-style map in the Visitor Center, drawn the way a state
-   park map is: woods, a lake, a north arrow, and one loop trail. The loop
-   leaves the Visitor Center's yard at the Trailhead sign, passes stops 1
-   to 4, reaches the Climate Pavilion (stop 5) at its far end, and comes
-   back past stops 6 to 8 to the Visitor Center, where it began. Arrows
-   show the one way to go. The places are made up: it shows the journey,
-   not real ground. It is a picture only (screen readers skip it); the
-   key under it says the same in words. Two drawings: wide for computers,
-   tall for phones (trail.css shows one). Names and icons come from
-   shared.places, and stop shapes from the stops themselves. */
+/* A small park-style map at the Trailhead, drawn the way a state park map
+   is: woods, a lake, a north arrow, and trails marked by colored blazes.
+   Six trails, one for each way of helping, leave the Trailhead and wander
+   their own ways to the Climate Pavilion, crossing here and there. From
+   the Pavilion, one shared Return Trail (in the park's wood brown, never a
+   trail color) leads to the Visitor Center, near where it all began. Once
+   a trail is picked, it turns bold with its markers, and the other five
+   fade. The places are made up: it shows the journey, not real ground. It
+   is a picture only (screen readers skip it); the key under it says the
+   same in words. Two drawings: wide for computers, tall for phones
+   (trail.css shows one). Each trail is a path of curves, so markers can be
+   set evenly along it. */
 const MAPS = {
   wide: {
-    w: 760, h: 380,
-    /* The Visitor Center, and the Trailhead sign at the edge of its yard. */
-    center: [288, 307], start: [233, 295],
-    /* Stops 1 to 8, evenly spaced; the fifth is the Climate Pavilion. */
-    stops: [[149, 258], [117, 136], [250, 75], [398, 67], [544, 95], [660, 180], [581, 289], [437, 318]],
+    w: 760, h: 400, top: 6,
+    trailhead: [95, 330], center: [250, 352], lodge: [612, 92], parking: [172, 370],
     /* where each name sits: [dx, dy, text-anchor] */
-    label: { center: [-18, 54, "middle"], start: [-20, 5, "end"], lodge: [0, 48, "middle"] },
-    path: {
-      /* Out of the yard, past the Trailhead sign, to stop 1. */
-      start: "M288,307 C278,305 268,303 257,301 C247,299 237,296 228,293 C218,290 209,287 199,283 C190,280 181,276 173,272 C164,268 156,263 149,258",
-      /* Stops 1 to 8. */
-      trail: "M149,258 C142,254 135,249 129,244 C123,238 117,233 113,227 C108,222 105,216 102,210 C99,204 97,197 97,191 C96,185 96,178 97,172 C98,166 101,160 104,154 C107,148 111,142 117,136 C122,130 128,124 135,119 C142,114 150,109 159,105 C167,100 177,96 187,92 C196,88 207,85 217,82 C228,79 239,77 250,75 C262,72 275,71 287,69 C300,68 312,67 325,66 C337,66 349,66 362,66 C374,66 386,67 398,67 C408,68 418,69 429,70 C439,71 449,73 458,74 C468,76 478,78 488,80 C497,82 507,84 516,86 C526,89 535,92 544,95 C553,98 562,101 571,105 C579,108 588,112 595,116 C603,121 611,125 618,130 C625,135 631,140 636,145 C642,150 647,156 651,162 C655,168 658,174 660,180 C663,186 664,193 664,200 C664,207 663,214 661,220 C658,227 655,234 650,240 C645,246 640,252 633,258 C626,264 618,270 610,275 C601,280 591,284 581,289 C571,293 559,297 548,300 C536,304 524,307 512,309 C499,311 487,313 474,315 C462,316 449,317 437,318",
-      /* From stop 8 back into the yard. */
-      home: "M437,318 C424,318 411,318 398,318 C385,318 373,317 361,317 C348,316 336,314 324,313 C312,311 300,310 288,307"
+    label: { trailhead: [0, 36, "middle"], center: [0, 40, "middle"], lodge: [0, -36, "middle"] },
+    trails: {
+      Red: "M95,330 C60,250 70,160 140,115 C210,70 330,60 420,80 C500,98 560,70 612,92",
+      Indigo: "M95,330 C150,290 120,220 190,190 C270,155 300,210 380,170 C450,135 520,140 612,92",
+      Orange: "M95,330 C170,300 230,260 260,200 C290,140 350,120 420,130 C500,142 550,120 612,92",
+      Yellow: "M95,330 C190,320 280,300 330,250 C380,200 430,220 480,180 C530,140 570,120 612,92",
+      Green: "M95,330 C210,305 300,250 360,215 C420,180 450,255 515,215 C565,182 590,125 612,92",
+      Blue: "M95,330 C240,312 380,308 450,276 C520,244 470,185 545,158 C580,145 600,112 612,92"
     },
-    /* One arrow on each stretch, pointing the way to go: [x, y, angle]. */
-    arrows: [[190, 280, -157], [100, 204, -110], [179, 95, -23], [323, 66, -3], [472, 77, 10], [611, 126, 33], [643, 248, 132], [510, 309, 169], [362, 317, -176]],
-    lake: "M325,165 C345,143 415,141 437,165 C455,185 441,221 397,225 C359,229 331,217 323,199 C317,187 317,175 325,165 Z", lakeAt: [381, 190],
-    trees: [[225, 170], [249, 186], [205, 200], [480, 200], [502, 216], [20, 330], [44, 346], [700, 30], [724, 46], [690, 330], [714, 346]],
-    north: [40, 48],
-    top: 10
+    /* From the Pavilion, the Return Trail to the Visitor Center. */
+    back: "M612,92 C690,118 722,190 702,252 C682,312 600,345 500,355 C400,365 320,358 250,352",
+    road: "M0,388 C200,382 400,380 760,386",
+    lake: "M652,30 C670,14 728,14 744,34 C758,52 742,72 712,74 C684,76 658,70 650,54 C646,44 646,36 652,30 Z", lakeAt: [700, 48],
+    contours: [[300, 230, 70, 40], [300, 230, 120, 70], [300, 230, 170, 100], [560, 250, 50, 30], [560, 250, 90, 55]],
+    trees: [[20, 150], [40, 166], [18, 186], [470, 20], [494, 34], [330, 360], [356, 372], [720, 300], [700, 330], [640, 200]],
+    north: [40, 40]
   },
   tall: {
-    w: 340, h: 540,
-    /* The Visitor Center, and the Trailhead sign at the edge of its yard. */
-    center: [151, 96], start: [114, 112],
-    /* Stops 1 to 8, evenly spaced; the fifth is the Climate Pavilion. */
-    stops: [[79, 169], [62, 276], [77, 383], [130, 476], [225, 470], [264, 370], [265, 262], [233, 159]],
-    /* where each name sits: [dx, dy, text-anchor] */
-    label: { center: [-12, -42, "middle"], start: [-20, 5, "end"], lodge: [0, 48, "middle"] },
-    path: {
-      /* Out of the yard, past the Trailhead sign, to stop 1. */
-      start: "M151,96 C147,96 142,97 138,98 C133,100 129,102 124,105 C120,107 116,111 112,115 C107,119 103,124 100,129 C96,135 92,141 89,147 C85,154 82,161 79,169",
-      /* Stops 1 to 8. */
-      trail: "M79,169 C76,177 74,185 72,193 C69,202 68,211 66,220 C65,229 63,238 63,247 C62,257 62,266 62,276 C61,285 62,295 63,304 C63,314 64,323 66,332 C67,341 68,350 70,358 C72,367 74,375 77,383 C79,390 81,397 84,403 C86,409 89,416 92,421 C94,427 97,433 100,438 C103,443 107,448 110,452 C113,457 116,461 120,465 C123,469 127,472 130,476 C134,479 137,482 141,484 C145,487 149,489 153,491 C156,492 160,494 164,495 C168,496 172,496 176,496 C181,496 185,496 189,495 C193,494 197,492 201,490 C205,488 209,485 213,482 C217,478 221,475 225,470 C229,465 234,458 238,451 C242,444 246,436 249,428 C252,420 255,410 258,401 C260,391 263,381 264,370 C266,362 267,353 267,343 C268,334 268,325 268,316 C268,307 268,298 268,289 C267,280 266,271 265,262 C264,254 262,246 261,238 C259,231 257,223 255,216 C253,209 251,202 249,195 C246,189 244,182 241,176 C238,170 235,165 233,159",
-      /* From stop 8 back into the yard. */
-      home: "M233,159 C229,154 226,148 223,143 C219,138 216,134 212,129 C209,125 205,121 201,118 C197,114 193,111 189,108 C185,105 181,103 177,101 C173,99 169,98 164,97 C160,96 156,96 151,96"
+    w: 340, h: 600, top: 20,
+    trailhead: [60, 75], center: [192, 72], lodge: [215, 522], parking: [125, 48],
+    label: { trailhead: [0, -26, "middle"], center: [0, -30, "middle"], lodge: [0, 46, "middle"] },
+    trails: {
+      Red: "M60,75 C25,150 25,260 45,340 C65,420 120,470 215,522",
+      Indigo: "M60,75 C90,140 60,200 90,250 C120,300 80,360 120,410 C150,450 180,490 215,522",
+      Orange: "M60,75 C110,120 130,170 110,230 C90,290 140,330 160,380 C175,420 200,470 215,522",
+      Yellow: "M60,75 C130,110 170,150 150,210 C130,270 100,320 140,370 C170,410 210,460 215,522",
+      Green: "M60,75 C150,90 200,140 190,200 C180,260 130,300 170,350 C200,390 230,450 215,522",
+      Blue: "M60,75 C170,85 230,120 220,180 C210,240 240,290 220,350 C205,400 240,460 215,522"
     },
-    /* One arrow on each stretch, pointing the way to go: [x, y, angle]. */
-    arrows: [[93, 139, 121], [66, 222, 99], [65, 330, 82], [97, 433, 61], [179, 496, -3], [251, 423, -70], [268, 316, -90], [253, 209, -107], [200, 116, -138]],
-    lake: "M117,262 C132,238 192,238 207,264 C219,286 207,324 169,328 C137,332 117,314 113,294 C111,280 111,270 117,262 Z", lakeAt: [161, 288],
-    trees: [[110, 190], [134, 206], [150, 370], [174, 386], [300, 520], [10, 505], [300, 300]],
-    north: [312, 64],
-    top: 34
+    back: "M215,522 C285,500 312,440 306,370 C300,280 312,200 292,140 C272,96 236,76 192,72",
+    road: "M0,20 C120,24 220,24 340,22",
+    lake: "M22,490 C36,470 82,472 96,494 C106,512 92,540 62,544 C36,546 20,532 18,514 C17,504 17,497 22,490 Z", lakeAt: [58, 512],
+    contours: [[140, 300, 50, 80], [140, 300, 85, 135]],
+    trees: [[270, 560], [294, 572], [10, 420], [250, 250], [262, 300]],
+    north: [312, 60]
   }
 };
 
-/* The trail stops the reader has opened, on the way out and the way back. */
-const seen = new Set();
-
-/* A stop's shape on the map: round for a rest stop, square for the rest. */
-function stopKind(i) {
-  if (i < 4) { const key = TRAIL_ORDER[i]; return key === "care" ? shared.care.exhibit : (trails[st.trail] || Object.values(trails)[0])[key].exhibit; }
-  const key = BACK_ORDER[i - 5];
-  return key === "story" ? "sign" : shared.back[key].exhibit;
+/* Points along a trail: a path written as curves ("M x,y C ..."), measured
+   so that markers can sit at even distances along it. */
+const measured = new Map();
+function measure(d) {
+  if (measured.has(d)) return measured.get(d);
+  const n = d.match(/-?[\d.]+/g).map(Number), pts = [];
+  let [x, y] = [n[0], n[1]];
+  for (let i = 2; i + 5 < n.length; i += 6) {
+    const [x1, y1, x2, y2, x3, y3] = n.slice(i, i + 6);
+    for (let k = 1; k <= 40; k++) {
+      const t = k / 40, u = 1 - t;
+      pts.push([u * u * u * x + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t * x3,
+        u * u * u * y + 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t * y3]);
+    }
+    [x, y] = [x3, y3];
+  }
+  pts.unshift([n[0], n[1]]);
+  const len = [0];
+  for (let i = 1; i < pts.length; i++) len.push(len[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const out = { pts, len, total: len[len.length - 1] };
+  measured.set(d, out);
+  return out;
+}
+/* The point, and the direction of travel, a share of the way along. */
+function along(d, share) {
+  const m = measure(d), at = m.total * share;
+  let i = m.len.findIndex(l => l >= at); if (i < 1) i = 1;
+  const [a, b] = [m.pts[i - 1], m.pts[i]];
+  return [b[0], b[1], Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI];
 }
 
+/* The trail markers the reader has opened, on the way out and the way back. */
+const seen = new Set();
+
+/* A marker's shape on the map: round for a rest stop, square for the rest. */
+function markerKind(back, i) {
+  if (!back) { const key = TRAIL_ORDER[i]; return key === "care" ? shared.care.exhibit : (trails[st.trail] || Object.values(trails)[0])[key].exhibit; }
+  const key = BACK_ORDER[i];
+  return key === "story" ? "sign" : shared.back[key].exhibit;
+}
+/* Where markers sit along a trail: even shares of the way. */
+const OUT_AT = [0.2, 0.4, 0.6, 0.8], BACK_AT = [0.25, 0.5, 0.75];
+
 function drawMap(M) {
-  const W = shared.map, picked = !!st.trail;
-  const line = (d, color, dashed) => `<path d="${d}" fill="none" style="stroke:${color}" stroke-width="${dashed ? 5 : 6}" stroke-linecap="round"${dashed ? ' stroke-dasharray="2 11"' : ""}/>`;
-  const rest = d => d.replace(/^M[\d.,]+/, "");
-  const trail = picked
-    ? line(M.path.start, "var(--park)") + line(M.path.trail, "var(--trail)") + line(M.path.home, "var(--park)")
-    : line(`${M.path.start} ${rest(M.path.trail)} ${rest(M.path.home)}`, "#64748B", true);
-  /* One arrowhead, just past the Trailhead sign: the way to set out.
-     The numbered stops show the order from there. */
-  const [ax, ay, aa] = M.arrows[0];
-  const arrows = `<path d="M-7,-8 L8,0 L-7,8 L-3,0 Z" transform="translate(${ax} ${ay}) rotate(${aa}) scale(1.35)" style="fill:#1F2937;stroke:#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
-  const stroke = picked ? "var(--trail)" : "#64748B", textC = picked ? "var(--trail-text)" : "#475569";
-  const stops = M.stops.map(([x, y], i) => {
-    if (i === 4) return "";
-    const shape = stopKind(i) === "rest"
-      ? `<circle cx="${x}" cy="${y}" r="15" style="fill:#fff;stroke:${stroke}" stroke-width="4"/>`
-      : `<rect x="${x - 13}" y="${y - 15}" width="26" height="30" rx="4" style="fill:#fff;stroke:${stroke}" stroke-width="4"/>`;
-    return `${shape}<text x="${x}" y="${y + 5}" class="map-num" text-anchor="middle" style="fill:${textC}">${i + 1}</text>`;
+  const W = shared.map, picked = st.trail;
+  const dash = (d, color, width, opacity = 1) => `<path d="${d}" fill="none" style="stroke:${color}" stroke-width="${width}" stroke-dasharray="${width > 5 ? "11 6" : "8 6"}" stroke-linecap="round" opacity="${opacity}"/>`;
+  /* The six trails: the picked one drawn last, bold, over the faded rest. */
+  const order = Object.keys(M.trails).sort((a, b) => (a === picked) - (b === picked));
+  const blazes = order.map(k => {
+    const color = `var(--${k.toLowerCase()}-color)`;
+    if (!picked) return dash(M.trails[k], "#fff", 7) + dash(M.trails[k], color, 4);
+    return k === picked ? dash(M.trails[k], "#fff", 9) + dash(M.trails[k], color, 6) : dash(M.trails[k], color, 4, 0.22);
   }).join("");
-  const name = ([x, y], [dx, dy, anchor], text, cls = "map-name") => `<text x="${x + dx}" y="${y + dy}" class="${cls}" text-anchor="${anchor}">${fmt(text)}</text>`;
-  /* The Climate Pavilion, stop 5: the biggest marker on the map, with
-     its number on a badge. */
-  const [px, py] = M.stops[4];
-  const pavilion = `<rect x="${px - 25}" y="${py - 25}" width="50" height="50" rx="10" style="fill:var(--map-lodge)"/>
-    <use href="#${P.lodge.icon}" x="${px - 16}" y="${py - 16}" width="32" height="32" style="color:#fff"/>
-    <circle cx="${px + 23}" cy="${py - 23}" r="11" style="fill:#fff;stroke:var(--map-lodge)" stroke-width="2.5"/>
-    <text x="${px + 23}" y="${py - 18.5}" class="map-badge" text-anchor="middle">5</text>
-    ${name(M.stops[4], M.label.lodge, P.lodge.name)}`;
-  /* The Visitor Center in its yard, and the Trailhead sign at the yard's
-     edge, where the trail sets out. */
-  const [cx, cy] = M.center, [sx, sy] = M.start;
-  const yard = `<ellipse cx="${(cx * 2 + sx) / 3}" cy="${(cy * 2 + sy) / 3}" rx="66" ry="38" class="map-yard"/>`;
-  const center = `<rect x="${cx - 21}" y="${cy - 21}" width="42" height="42" rx="8" style="fill:var(--map-trailhead)"/>
-    <use href="#${P.trailhead.icon}" x="${cx - 13}" y="${cy - 13}" width="26" height="26" style="color:#fff"/>
-    ${name(M.center, M.label.center, P.trailhead.name)}`;
-  const [sdx, sdy, sa] = M.label.start;
-  const sign = `<rect x="${sx - 12}" y="${sy - 12}" width="24" height="24" rx="5" style="fill:var(--map-trailhead)"/>
-    <use href="#${P.start.icon}" x="${sx - 8}" y="${sy - 8}" width="16" height="16" style="color:#fff"/>
-    ${name(M.start, M.label.start, P.start.name)}
-    <text x="${sx + sdx}" y="${sy + sdy + 16}" class="map-sub" text-anchor="${sa}">${fmt(W.startHere)}</text>`;
-  /* The map is a picture for getting your bearings, not a tracker: the
-     progress bar at the top of the screen shows where you are. */
+  const back = dash(M.back, "#fff", picked ? 9 : 7) + dash(M.back, "var(--board)", picked ? 6 : 4);
+  /* One arrow at the start of the trail: the way to set out. */
+  const [ax, ay, aa] = along(M.trails[picked || "Yellow"], 0.07);
+  const arrow = `<path d="M-7,-8 L8,0 L-7,8 L-3,0 Z" transform="translate(${ax.toFixed(1)} ${ay.toFixed(1)}) rotate(${aa.toFixed(0)}) scale(1.3)" style="fill:#1F2937;stroke:#fff" stroke-width="1.6" stroke-linejoin="round"/>`;
+  /* Numbered markers: on the picked trail (1 to 4), and on the Return
+     Trail (5 to 7). The Pavilion has none. */
+  const marker = (x, y, n, color, textColor, round) => round
+    ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="14" style="fill:#fff;stroke:${color}" stroke-width="4"/><text x="${x.toFixed(1)}" y="${(y + 5).toFixed(1)}" class="map-num" text-anchor="middle" style="fill:${textColor}">${n}</text>`
+    : `<rect x="${(x - 12).toFixed(1)}" y="${(y - 14).toFixed(1)}" width="24" height="28" rx="4" style="fill:#fff;stroke:${color}" stroke-width="4"/><text x="${x.toFixed(1)}" y="${(y + 5).toFixed(1)}" class="map-num" text-anchor="middle" style="fill:${textColor}">${n}</text>`;
+  const out = picked ? OUT_AT.map((f, i) => { const [x, y] = along(M.trails[picked], f);
+    return marker(x, y, i + 1, "var(--trail)", "var(--trail-text)", markerKind(false, i) === "rest"); }).join("") : "";
+  const backMarks = BACK_AT.map((f, i) => { const [x, y] = along(M.back, f);
+    return marker(x, y, i + 1 + TRAIL_ORDER.length, "var(--board)", "var(--board)", markerKind(true, i) === "rest"); }).join("");
+  const name = ([x, y], [dx, dy, anchor], text) => `<text x="${x + dx}" y="${y + dy}" class="map-name" text-anchor="${anchor}">${fmt(text)}</text>`;
+  const sq = ([x, y], size, fill, iconId) => `<rect x="${x - size / 2}" y="${y - size / 2}" width="${size}" height="${size}" rx="${size / 5}" style="fill:${fill}"/>
+    <use href="#${iconId}" x="${x - size * 0.32}" y="${y - size * 0.32}" width="${size * 0.64}" height="${size * 0.64}" style="color:#fff"/>`;
+  const [px, py] = M.parking;
+  const places = sq(M.trailhead, 30, "var(--map-trailhead)", P.trailhead.icon) + name(M.trailhead, M.label.trailhead, P.trailhead.name)
+    + sq(M.center, 38, "var(--map-center)", P.finish.icon) + name(M.center, M.label.center, P.finish.name)
+    + sq(M.lodge, 48, "var(--map-lodge)", P.lodge.icon) + name(M.lodge, M.label.lodge, P.lodge.name)
+    + `<rect x="${px - 11}" y="${py - 11}" width="22" height="22" rx="4" class="map-parking"/><text x="${px}" y="${py + 5.5}" class="map-p" text-anchor="middle">P</text>`;
   const [nx, ny] = M.north;
   return `<svg class="map-${M === MAPS.wide ? "wide" : "tall"}" viewBox="0 ${M.top} ${M.w} ${M.h - M.top}" focusable="false">
+    ${M.contours.map(([cx, cy, rx, ry]) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" class="map-contour"/>`).join("")}
+    <path d="${M.road}" class="map-road"/>
     <path d="${M.lake}" class="map-lake"/><text x="${M.lakeAt[0]}" y="${M.lakeAt[1]}" class="map-lake-name" text-anchor="middle">${fmt(W.lake)}</text>
     ${M.trees.map(([x, y]) => `<use href="#i-tree" x="${x}" y="${y}" width="20" height="22"/>`).join("")}
-    ${yard}${trail}${arrows}${stops}${pavilion}${center}${sign}
+    ${blazes}${back}${arrow}${out}${backMarks}${places}
     <circle cx="${nx}" cy="${ny}" r="18" class="map-north"/><path d="M${nx},${ny - 13} L${nx + 6},${ny + 5} L${nx},${ny + 1} L${nx - 6},${ny + 5} Z" style="fill:var(--text-secondary)"/>
     <text x="${nx}" y="${ny + 34}" class="map-n" text-anchor="middle">${fmt(W.north)}</text></svg>`;
 }
 
-/* The map's key: the Visitor Center, the Trailhead sign, the trail stops,
-   and the Pavilion, each with what happens there. Getting around is the
-   progress bar's job. */
-const KEY_ORDER = ["trailhead", "start", "trail", "lodge"];
+/* The map's key: each kind of thing on the map, with what happens there.
+   Getting around is the progress bar's job. */
 function routeStrip() {
-  return KEY_ORDER.map(key => { const pl = P[key];
-    return `<li class="route-${key}"><div class="route-place">
-      <span class="route-icon" aria-hidden="true">${key === "trail" ? "1" : icon(pl.icon)}</span><span><b class="route-name">${fmt(pl.legendName || pl.name)}</b><span class="route-text">${fmt(pl.route)}</span></span></div></li>`; }).join("");
+  const K = shared.map.key;
+  const swatch = cls => `<span class="route-icon route-swatch ${cls}" aria-hidden="true"></span>`;
+  const items = [
+    [`<span class="route-icon" aria-hidden="true">${icon(P.trailhead.icon)}</span>`, P.trailhead.name, P.trailhead.route, "route-trailhead"],
+    [`<span class="route-icon route-blazes" aria-hidden="true">${COLOR_KEYS.map(k => `<i style="background:var(--${k.toLowerCase()}-color)"></i>`).join("")}</span>`, K.blazes, K.blazesText, "route-blaze"],
+    [`<span class="route-icon" aria-hidden="true">1</span>`, K.markers, K.markersText, "route-trail"],
+    [`<span class="route-icon" aria-hidden="true">${icon(P.lodge.icon)}</span>`, P.lodge.name, P.lodge.route, "route-lodge"],
+    [swatch("route-back-line"), K.back, K.backText, "route-back"],
+    [`<span class="route-icon" aria-hidden="true">${icon(P.finish.icon)}</span>`, P.finish.name, P.finish.route, "route-center"]
+  ];
+  return items.map(([ic, nm, tx, cls]) => `<li class="${cls}"><div class="route-place">${ic}<span><b class="route-name">${fmt(nm)}</b><span class="route-text">${fmt(tx)}</span></span></div></li>`).join("");
 }
 
 /* The progress bar: once a trail is picked and the reader is past the
@@ -357,7 +383,7 @@ $("pickHelp").addEventListener("change", e => { if (e.target.matches("[data-find
    else. Browsers never send the part after # to any server, so no one
    but the reader sees it. Older ?spot= links still open (see the end). */
 const spot = () => st.trail ? st.trail.toLowerCase() + (st.visited.length ? "-" + st.visited.join(",") : "") : "";
-/* The page's own address: climatecolor.com/trail/. */
+/* The page's own address: climatetrailway.com/trail/. */
 const home = location.origin + location.pathname;
 const spotUrl = () => spot() ? `${home}#${spot()}` : home;
 
@@ -494,7 +520,7 @@ function renderBack() {
   const top = `<li class="stop place is-trail is-back" id="backTop">
     <span class="marker" aria-hidden="true">${icon(P.back.icon)}</span>
     <div class="place-sign"><div class="text"><h2 class="place-title">${fmt(P.back.title)}</h2><p class="place-sub">${fmt(P.back.sub)}</p></div></div></li>`;
-  let n = TRAIL_ORDER.length + 2;
+  let n = TRAIL_ORDER.length + 1;
   ol.innerHTML = top + BACK_ORDER.map(key =>
     renderStop({ n: n++, key, title: TITLES[key], stop: stopFor(key), ctx })).join("");
 }
@@ -628,10 +654,10 @@ function renderFinish() {
   const line = $("finishLine");
   if (!st.trail) { line.innerHTML = ""; return; }
   const E = shared.bulletin.board.end;
-  /* The end of the line: the Trailhead sign, where the trail began, and
-     the way back to the start. */
+  /* The end of the line: a trail sign marking the end, and the way back
+     to the Trailhead. */
   const end = `<li class="stop place is-end" id="lineEnd">
-    <span class="marker" aria-hidden="true">${icon(P.start.icon)}</span>
+    <span class="marker" aria-hidden="true">${icon(P.trailhead.icon)}</span>
     <div class="end-sign"><p class="end-name">${fmt(E.sign)}</p>
       <button type="button" class="pill-btn pill-all next-btn" data-go="place-trailhead">${fmt(E.home)}</button></div></li>`;
   line.innerHTML = place("finish", "is-finish", finishBody(getColor(st.trail), st.visited)) + end;
@@ -701,7 +727,7 @@ function keepsakeHTML() {
     <section><h2>${fmt(G.story)}</h2>${renderBlocks(t.story.blocks, ctx)}</section>
     <section><h2>${fmt(G.helpers)}</h2>${renderBlocks([{ ways: true }], ctx)}</section>
     <footer class="ks-foot"><div class="ks-band" aria-hidden="true">${band}</div>
-      <p>${fmt(G.comeBack)} <a href="${spotUrl()}">${spotUrl()}</a></p><p>${fmt(G.footBrand)} climatecolor.com</p></footer>`;
+      <p>${fmt(G.comeBack)} <a href="${spotUrl()}">${spotUrl()}</a></p><p>${fmt(G.footBrand)} climatetrailway.com</p></footer>`;
   /* On paper, a link can't be followed: each one prints its address, and
      the "opens a new site" notes go away. */
   const short = u => u.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
@@ -752,8 +778,8 @@ function render(trailChanged = true) {
 function stopOpened() {
   drawProgress();
   const out = document.querySelector(".trip-trail .vh"), back = document.querySelector(".trip-back .vh");
-  if (out) out.textContent = tripTrailLine();
-  if (back) back.textContent = tripBackLine();
+  if (out) out.textContent = `: ${tripTrailLine()}`;
+  if (back) back.textContent = `: ${tripBackLine()}`;
 }
 
 /* ---------- Events (one listener each, so re-rendered parts just work) ---------- */

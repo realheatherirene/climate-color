@@ -1,26 +1,27 @@
-# The Climate Color Trail
+# The Climate Trailway
 
 A learning trail into the climate movement, from Climate Color, a project
-of Kinfeather, laid out as a loop in a park:
+of Kinfeather, laid out like a state park:
 
-1. **Visitor Center (arriving):** get your bearings and pick a way of
-   helping (a trail).
-2. **Stops 1 to 4:** meet your way of helping.
-3. **Stop 5, the Climate Pavilion:** pick a topic and visit its exhibit.
-4. **Stops 6 to 8, the way back:** a story, your own place, and the
-   other helpers. The same for every topic.
-5. **Back at the Visitor Center:** choose a first step, find what's
-   happening near you on the Bulletin Board, and take home a Field Guide
+1. **Trailhead:** get your bearings and pick a way of helping. Each one
+   is its own trail, marked by its color, like trail blazes.
+2. **Markers 1 to 4:** meet your way of helping, on your own trail.
+3. **Climate Pavilion:** where every trail meets. Pick a topic and visit
+   its exhibit. It's a place, not a numbered marker.
+4. **Markers 5 to 7, the Return Trail:** a story, your own place, and
+   the other helpers. The same for everyone, in the park's wood brown.
+5. **Visitor Center:** the end of the trail. Choose a first step, find
+   ways to help on the Bulletin Board, and take home a Field Guide
    (print, save as PDF, download, or keep a link).
 
 The Field Guide is a keepsake, not a place: it gathers what the reader
 did, notes included, and asks nothing new. Inside the code, some old
-names stay as keys so saved links keep working: `trailhead` is the
-Visitor Center on arrival, `lodge` is the Pavilion, and `finish` is the
-return.
+names stay as keys so saved links keep working: `lodge` is the Pavilion,
+`back` is the Return Trail, and `finish` is the Visitor Center.
 
-Live at **https://climatecolor.com/trail/**. climatecolor.com,
-stewardshiptrail.com and trailmap.climatecolor.com forward here.
+Live at **https://climatetrailway.com/trail/**. climatetrailway.com
+forwards here, and so do climatecolor.com, stewardshiptrail.com and
+trailmap.climatecolor.com once they're set to forward at the registrar.
 
 ## How it's built
 
@@ -54,9 +55,9 @@ check and its skip list live at the top of the climate-color repository
 
 ## Address
 
-This folder is served at climatecolor.com/trail/. Renaming the folder
+This folder is served at climatetrailway.com/trail/. Renaming the folder
 changes the address and breaks every saved-spot link
-(climatecolor.com/trail/#green-water), so keep the name.
+(climatetrailway.com/trail/#green-water), so keep the name.
 
 Saved-spot links name exhibits by key. If an exhibit's key changes, add
 the old key to `OLD_KEYS` in `trail.js`, so saved links still open the
