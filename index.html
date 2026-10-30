@@ -1,19 +1,139 @@
 <!doctype html>
-<!-- climatetrailway.com: forwards to the Climate Trailway, the site's one
-     experience. The Trail lives at /trail/, so its saved-spot links
-     (/trail/#green-water) keep working. -->
+<!-- ==========================================================================
+     CLIMATE COLOR CARDS
+     ==========================================================================
+     The starter pack of the Climate Color card deck: 18 action cards and
+     9 topic cards, a way to draw a pair, and a print sheet to cut out.
+     cards.js builds every card from the Trail's own data (trail/data/),
+     so the cards and the Trail always say the same thing. This file
+     holds only the page shell and the topic icons.
+     Not listed in search engines or linked from the site yet: it's a
+     working page, at climatetrailway.com/cards/.
+     ========================================================================== -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; object-src 'none'; base-uri 'self'">
-<meta http-equiv="refresh" content="0; url=/trail/">
-<link rel="canonical" href="https://climatetrailway.com/trail/">
-<title>Climate Trailway</title>
+<!-- Content Security Policy: code, styles, fonts, and images may come
+     only from this site and Google Fonts. The sha256 value is the
+     fingerprint of the one inline script below (the import map). If it
+     changes by even one character, recompute the fingerprint, or the
+     browser will block it and no cards will appear. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-JBYPtgmL+lfb9+JveCuuhL+sbr09gYHQfEr/TtOhsJo='; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<!-- Kept out of search results until the deck is ready to share. -->
+<meta name="robots" content="noindex">
+<title>Climate Color Cards</title>
 <link rel="icon" type="image/png" sizes="32x32" href="/trail/images/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Varela+Round&display=swap" rel="stylesheet">
+<!-- CORE: the shared climate-color files, as in the Trail. The import
+     map lets cards.js write "climate-color/climate-color.js". -->
+<script type="importmap">{ "imports": { "climate-color/": "/core/" } }</script>
 <link rel="stylesheet" href="/core/atlas.css">
+<link rel="stylesheet" href="cards.css">
 </head>
 <body>
-<p class="moved"><a href="/trail/">Go to the Climate Trailway</a></p>
+<!-- The nine topic icons. A copy of the ones in trail/index.html: when
+     an icon changes there, change it here too. -->
+<svg class="icon-set" width="0" height="0" aria-hidden="true"><defs>
+    <symbol id="i-food" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 8c-2-1.6-6-1.4-7 2.2-1 3.6 1.4 9.8 4.6 9.8 1 0 1.6-.5 2.4-.5s1.4.5 2.4.5c3.2 0 5.6-6.2 4.6-9.8C18 6.6 14 6.4 12 8z"/>
+      <path d="M12 8c0-2 .8-3.6 2.6-4.6"/>
+    </symbol>
+    <symbol id="i-water" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11z"/>
+      <path d="M9.2 14.5a2.8 2.8 0 0 0 2.3 2.7"/>
+    </symbol>
+    <symbol id="i-land" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 20h18"/>
+      <path d="M12 20v-8"/>
+      <path d="M12 12c0-3.3-2.7-6-6-6 0 3.3 2.7 6 6 6z"/>
+      <path d="M12 14c0-3.3 2.7-6 6-6 0 3.3-2.7 6-6 6z"/>
+    </symbol>
+    <symbol id="i-air" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 8h9.5a2.5 2.5 0 1 0-2.5-2.5"/>
+      <path d="M3 12h15a3 3 0 1 1-3 3"/>
+      <path d="M3 16h6"/>
+    </symbol>
+    <symbol id="i-energy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13.5 3 6 13.5h5.5L10.5 21 18 10.5h-5.5z"/>
+    </symbol>
+    <symbol id="i-transportation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5" y="3" width="14" height="14" rx="3"/>
+      <path d="M5 10h14"/>
+      <circle cx="9" cy="13.5" r=".6"/>
+      <circle cx="15" cy="13.5" r=".6"/>
+      <path d="M8 17v3M16 17v3"/>
+    </symbol>
+    <symbol id="i-goods" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3 4 7v10l8 4 8-4V7z"/>
+      <path d="M4 7l8 4 8-4"/>
+      <path d="M12 11v10"/>
+      <path d="M8 5l8 4"/>
+    </symbol>
+    <symbol id="i-health" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 20s-7.5-4.6-7.5-10A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 7.5 3c0 5.4-7.5 10-7.5 10z"/>
+      <path d="M8 12h2l1-2 2 4 1-2h2"/>
+    </symbol>
+    <symbol id="i-housing" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3.5 11 12 4l8.5 7"/>
+      <path d="M6 9.5V20h12V9.5"/>
+      <path d="M10 20v-5h4v5"/>
+    </symbol>
+</defs></svg>
+
+<header class="page-header">
+  <h1>Climate Color Cards</h1>
+  <p>The starter pack: 18 action cards, one for each way of helping, and 9 topic cards, one for each part of daily life in the Climate Pavilion.</p>
+</header>
+
+<main>
+  <noscript><p>The cards are built by a script. Turn on JavaScript to use this page.</p></noscript>
+
+  <section class="draw" aria-labelledby="drawTitle">
+    <h2 id="drawTitle">Draw a pair</h2>
+    <p>One action and one topic. How could you put that pair to work close to home?</p>
+    <div class="pair">
+      <div class="flip" id="flipAction"></div>
+      <p class="plus" aria-hidden="true">+</p>
+      <div class="flip" id="flipTopic"></div>
+    </div>
+    <button type="button" class="go" id="drawBtn">Draw a pair</button>
+    <div class="idea" id="idea" aria-live="polite"></div>
+  </section>
+
+  <section aria-labelledby="actionsTitle">
+    <h2 id="actionsTitle">Action cards</h2>
+    <p>Six colors, three actions each. Every card is something people already do for each other.</p>
+    <ul class="deck" id="actionDeck"></ul>
+  </section>
+
+  <section aria-labelledby="topicsTitle">
+    <h2 id="topicsTitle">Topic cards</h2>
+    <p>One for each exhibit in the Climate Pavilion, in the Pavilion's teal.</p>
+    <ul class="deck" id="topicDeck"></ul>
+  </section>
+
+  <section aria-labelledby="backTitle">
+    <h2 id="backTitle">Card back</h2>
+    <p>One back for every card.</p>
+    <div class="deck" id="backDeck"></div>
+  </section>
+
+  <section class="print-set" aria-labelledby="printTitle">
+    <h2 id="printTitle">Print a set</h2>
+    <p>Prints on letter paper at playing-card size (2.5 &times; 3.5 inches), nine cards to a page, with lines to cut along. Print at 100% scale, not "fit to page."</p>
+    <p class="check"><input type="checkbox" id="withBacks"> <label for="withBacks">Add a page of card backs after each page of cards, for two-sided printing</label></p>
+    <button type="button" class="go" id="printBtn">Print the cards</button>
+  </section>
+</main>
+
+<footer class="site-foot" id="siteFoot"></footer>
+
+<!-- The print sheet: filled by cards.js, shown only when printing. -->
+<div class="sheet" id="sheet"></div>
+
+<script type="module" src="cards.js"></script>
 </body>
 </html>

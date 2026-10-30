@@ -1,117 +1,36 @@
-# Climate Color
-> Find the kind of climate action that energizes you.
+# Climate Color Cards
 
-Climate Color helps people find their **climate colors**: the strengths they
-already use to care for their communities, and can use for the climate too.
-Community care is climate care. Six colors, each with an archetype (like the
-Connector or the Navigator) and three words for how it helps, sit at the
-center of the Climate Trailway.
+The starter pack of the Climate Color card deck, at climatetrailway.com/cards/. It's a working page: kept out of search results (`noindex`) and not linked from the rest of the site yet.
 
-Climate Color is a project of **Kinfeather** (Kinfeather LLC). Its Terms,
-Privacy, and Accessibility pages live on kinfeather.com.
+## What's on the page
 
-* **Creator:** Heather Succio
-* **Status:** Public preview
+- **Draw a pair.** Two face-down cards turn over to one action and one topic. The page asks how that action could help with that topic, gives the Trail's own idea for the pair, and links to that trail and exhibit.
+- **The deck.** All 18 action cards, all 9 topic cards, and the card back.
+- **Print a set.** Prints the cards on letter paper at playing-card size (2.5 × 3.5 inches), nine to a page, with lines to cut along. A checkbox adds a page of backs after each page of cards, for two-sided printing.
 
----
+## Where the words come from
 
-## The site
+None of the card text is written here. `cards.js` reads it from the same files the Trail uses, so the cards and the Trail always match:
 
-This repository is the whole site at **https://climatetrailway.com**: the
-**Climate Trailway**, a learning trail laid out like a state park.
-Readers start at the Trailhead and pick a way of helping (one of six
-trails), follow markers 1 to 4 on their trail to the Climate Pavilion,
-take the shared Return Trail (markers 5 to 7) to bring it close to home,
-and end at the Visitor Center to choose a first step and take home a
-Field Guide. GitHub Pages serves it from the main
-branch, at the top level; `CNAME` holds the address and `.nojekyll` tells
-GitHub to serve every file as it is.
-
-| Address | Folder | What it is |
-|---|---|---|
-| climatetrailway.com/trail/ | `trail/` | **The Trail.** See `trail/README.md` |
-| climatetrailway.com | top level | Forwards to /trail/ |
-| climatetrailway.com/core/ | `core/` | The shared core the Trail loads, and a reference page |
-
-The Trail stays at /trail/ on purpose: its saved-spot links
-(climatetrailway.com/trail/#green-water) depend on that address.
-
-Old addresses keep working once they forward to /trail/ at the
-registrar: climatecolor.com (the site's address until October 2026),
-stewardshiptrail.com, and trailmap.climatecolor.com. The one-line
-pages in `terms/`, `privacy/`, and `accessibility/` forward to
-kinfeather.com. Links to retired pages land on the 404 page, which points
-to the Trail.
-
-Until October 2026, the site also held a home page, the Climate Color
-Wheel, and the Climate Color Directory. They retired when the site became
-the Trail alone, and the earlier repository is archived as a record.
-
-## Where everything lives
-
-| Path | What's in it |
+| On the card | Comes from |
 |---|---|
-| `trail/` | The Trail: its page, code, look, words, and icons |
-| `core/climate-color.js` | **The source of truth:** the six colors, their archetypes, what each provides, their three words, and the Trail's address |
-| `core/atlas.css` | How everything looks: the brand colors, text shades, and tints, and the styles every page shares |
-| `core/site-foot.js` | The footer every page shares: legal links, the open-resource note, the owner line. The 404 page runs no scripts, so it holds a typed copy; change both together |
-| `core/index.html` | A reference page: every color with its contrast checks |
-| `index.html`, `404.html` | The forward to the Trail, and the "page not found" page |
-| `.github/workflows/check-links.yml`, `.lycheeignore` | The weekly link check for the whole site, and the sites it skips |
+| Color and archetype ("Red · Anchor") | `core/climate-color.js` |
+| Action word, phrase, and "For example" | `trail/data/adult/trails/<color>.js`, the "Three typical actions" |
+| Topic name, icon, teaser, and source chapter | `trail/data/adult/topics.js` |
+| The idea for a drawn pair | `trail/data/adult/exhibits/<topic>.js`, its `work` lines |
+| Card colors and tints | `core/atlas.css` |
 
-## How it's built
+## Files
 
-Plain HTML, CSS, and JavaScript (ES modules), with no build step and no
-dependencies. Everything runs in the browser. There are no accounts and no
-tracking. Pages load fonts from Google Fonts. Each page carries a Content
-Security Policy. Pages with inline scripts name them by fingerprint (the
-Trail's two, and the one in `core/index.html`), so edit those scripts only
-with care and recompute the fingerprint after any change.
+| File | What it holds |
+|---|---|
+| `index.html` | The page shell and a copy of the nine topic icons |
+| `cards.js` | Builds every card, the draw, and the print sheet |
+| `cards.css` | Card styles, phone sizes, and the print sheet |
 
-## Making common changes
+## When something changes
 
-* **A color's archetype, words, or "provides":** edit `COLORS` in
-  `core/climate-color.js`. Links use color names, so renaming an archetype
-  breaks nothing.
-* **A brand color or shade:** edit `core/atlas.css`, then open
-  `core/index.html` and check that every contrast check still passes.
-* **Trail words:** edit the files in `trail/data/adult/`. Titles live once in
-  `trail/titles.js`.
-* **Uploading:** go into the right folder on GitHub first. Trail files go in
-  `trail/`, core files in `core/`. Files keep Windows line endings (CRLF).
-
-## Conventions
-
-* **One place for everything.** Colors, names, and wording live in `core/`;
-  pages never keep their own copies.
-* **Color first, then archetype:** "Blue · Communicator". Never show a color
-  without its name.
-* **Public wording** is plain, at a 9th-grade reading level or below, with no
-  words that assume a body or a sense (walk, see, look, hear, listen, notice).
-* **Contrast:** all text clears 4.5:1.
-
-## Trying it locally
-
-The pages use ES modules and root-relative addresses (`/core/`), so serve
-this folder as the site's top level:
-
-```
-cd climate-color
-python3 -m http.server
-```
-
-Then visit `http://localhost:8000/trail/`.
-
----
-
-## 💼 Enterprise & Organizational Inquiries
-
-Looking to facilitate Climate Color workshops, run team assessment cohorts, or access enterprise L&D tools for your organization?
-
-We offer workshops, facilitated team mapping, B2B toolkits, and organizational resources through Kinfeather. Visit [kinfeather.com](https://kinfeather.com) or reach out to **climatecolor@kinfeather.com** to learn more.
-
----
-
-🌐 *Explore the web app live at [climatetrailway.com](https://climatetrailway.com)*
-
----
+- **Card words:** change them in the Trail's data. The cards follow.
+- **A topic icon:** the icons are copied from `trail/index.html`. Change them in both places.
+- **The import map in `index.html`:** recompute its sha256 in the Content Security Policy line, or no cards will appear.
+- **Card sizes:** every size on a card is in `em`, set from `--card-size` in `cards.css`: 15px on screen, 12px in print (a 2.5 × 3.5 inch card).
