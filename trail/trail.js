@@ -148,22 +148,22 @@ const MAPS = {
     north: [40, 40]
   },
   tall: {
-    w: 340, h: 600, top: 20,
-    trailhead: [60, 75], center: [192, 72], lodge: [215, 522], parking: [125, 48],
+    w: 340, h: 432, top: 20,
+    trailhead: [60, 75], center: [192, 72], lodge: [215, 379], parking: [125, 48],
     label: { trailhead: [0, -26, "middle"], center: [0, -30, "middle"], lodge: [0, 46, "middle"] },
     trails: {
-      Red: "M60,75 C25,150 25,260 45,340 C65,420 120,470 215,522",
-      Indigo: "M60,75 C90,140 60,200 90,250 C120,300 80,360 120,410 C150,450 180,490 215,522",
-      Orange: "M60,75 C110,120 130,170 110,230 C90,290 140,330 160,380 C175,420 200,470 215,522",
-      Yellow: "M60,75 C130,110 170,150 150,210 C130,270 100,320 140,370 C170,410 210,460 215,522",
-      Green: "M60,75 C150,90 200,140 190,200 C180,260 130,300 170,350 C200,390 230,450 215,522",
-      Blue: "M60,75 C170,85 230,120 220,180 C210,240 240,290 220,350 C205,400 240,460 215,522"
+      Red: "M60,75 C25,126 25,201 45,255 C65,310 120,344 215,379",
+      Indigo: "M60,75 C90,119 60,160 90,194 C120,228 80,269 120,303 C150,330 180,357 215,379",
+      Orange: "M60,75 C110,106 130,140 110,180 C90,221 140,248 160,282 C175,310 200,344 215,379",
+      Yellow: "M60,75 C130,99 170,126 150,167 C130,208 100,242 140,276 C170,303 210,337 215,379",
+      Green: "M60,75 C150,85 200,119 190,160 C180,201 130,228 170,262 C200,289 230,330 215,379",
+      Blue: "M60,75 C170,82 230,106 220,146 C210,187 240,221 220,262 C205,296 240,337 215,379"
     },
-    back: "M215,522 C285,500 312,440 306,370 C300,280 312,200 292,140 C272,96 236,76 192,72",
+    back: "M215,379 C285,364 312,323 306,276 C300,214 312,160 292,119 C272,89 236,76 192,72",
     road: "M0,20 C120,24 220,24 340,22",
-    lake: "M22,490 C36,470 82,472 96,494 C106,512 92,540 62,544 C36,546 20,532 18,514 C17,504 17,497 22,490 Z", lakeAt: [58, 512],
-    contours: [[140, 300, 50, 80], [140, 300, 85, 135]],
-    trees: [[270, 560], [294, 572], [10, 420], [250, 250], [262, 300]],
+    lake: "M22,357 C36,344 82,345 96,360 C106,372 92,391 62,394 C36,395 20,386 18,374 C17,367 17,362 22,357 Z", lakeAt: [58, 372],
+    contours: [[140, 228, 50, 54], [140, 228, 85, 92]],
+    trees: [[270, 405], [294, 413], [10, 310], [250, 194], [262, 228]],
     north: [312, 60]
   }
 };
@@ -331,7 +331,7 @@ $("trailheadSign").outerHTML = sign(P.trailhead);
    story, always in sight. */
 const B = trailhead.board;
 $("board").setAttribute("aria-label", TITLES.how);
-$("board").innerHTML = `<p class="open-all">${fmt(B.open)}</p>
+$("board").innerHTML = `
   ${renderBlocks(B.blocks, ctx)}
   <p class="story-intro">${fmt(B.storyIntro)}</p>
   <details class="mini"><summary>${fmt(B.storyLabel)}</summary><div class="story">${renderBlocks(B.story, ctx)}</div></details>`;
@@ -423,9 +423,10 @@ function renderTrail() {
   const top = `<li class="stop place is-trail" id="trailTop">
     <span class="marker" aria-hidden="true">${icon(P.trail.icon)}</span>
     <div class="place-sign"><div class="text"><h2 class="place-title">${fmt(fill(TT.title, c))}</h2><p class="place-sub">${fmt(fill(TT.line, c))}</p></div></div></li>`;
-  let n = 1;
-  stops.innerHTML = top + TRAIL_ORDER.map(key =>
-    renderStop({ n: n++, key, title: TITLES[key], stop: stopFor(key), ctx })).join("");
+  const N = shared.next;
+  const nextOut = i => i < TRAIL_ORDER.length - 1 ? N.marker.replace("{n}", i + 2) : N.lodge;
+  stops.innerHTML = top + TRAIL_ORDER.map((key, i) =>
+    renderStop({ n: i + 1, key, title: TITLES[key], stop: { ...stopFor(key), ahead: nextOut(i) }, ctx })).join("");
 }
 
 /* ---------- The Climate Pavilion, the way back, and the return ---------- */
@@ -464,7 +465,7 @@ const aAn = w => /^[AEIOU]/.test(w) ? "an" : "a";
 function exhibitParts(E, c, tp) {
   const W = shared.work, Wk = E.work[c.key];
   const line = fill(W.line, c, tp).replace("{a}", aAn(c.archetype));
-  const parts = EXHIBIT_ORDER.map(k => [k, k === "life" ? { ...E.parts[k], ahead: line } : E.parts[k]]);
+  const parts = EXHIBIT_ORDER.map(k => [k, { ...E.parts[k], ahead: null }]);
   parts.push(["work", { exhibit: "sign", title: fill(TITLES.work, c), line, ahead: W.ahead, blocks: [
     { sub: W.imagine }, { p: E.situation },
     { list: c.words.map(w => `**${w.word}:** ${Wk[w.word]}`) },
@@ -495,13 +496,13 @@ function renderLodge() {
   const open = tp ? `<section class="exhibit-open" id="exhibitOpen" aria-label="${fmt(exhibitName(tp))}">
     <div class="room-sign"><div class="text"><p class="room-title">${fmt(exhibitName(tp))}</p>
       <p class="place-sub">${examples(tp)}</p></div>${icon(tp.icon, "place-icon")}</div>
-    <div class="room-body"><p class="promise">${fmt(E.promise)}</p>${panel(exhibitParts(E, c, tp))}</div></section>` : "";
+    <div class="room-body">${panel(exhibitParts(E, c, tp))}</div></section>` : "";
 
   line.innerHTML = `<li class="stop place is-lodge" id="lodge">
   <span class="marker" aria-hidden="true">${icon(P.lodge.icon)}</span>
   ${sign(P.lodge)}
   <div class="lodge-card">
-    <div class="place-board"><div class="reality">${panel([["reality", shared.reality]])}</div><h3 class="board-h">${TITLES.pickExhibit}</h3>
+    <div class="place-board"><div class="reality">${panel([["reality", { ...shared.reality, ahead: null }]])}</div>
       <p class="step-hint">${fmt(L.pickHint)}</p>
       <div class="floor"><ul class="options exhibits">${opts}</ul></div>
       ${open}</div></div></li>`;
@@ -520,9 +521,10 @@ function renderBack() {
   const top = `<li class="stop place is-trail is-back" id="backTop">
     <span class="marker" aria-hidden="true">${icon(P.back.icon)}</span>
     <div class="place-sign"><div class="text"><h2 class="place-title">${fmt(P.back.title)}</h2><p class="place-sub">${fmt(P.back.sub)}</p></div></div></li>`;
-  let n = TRAIL_ORDER.length + 1;
-  ol.innerHTML = top + BACK_ORDER.map(key =>
-    renderStop({ n: n++, key, title: TITLES[key], stop: stopFor(key), ctx })).join("");
+  const N = shared.next, first = TRAIL_ORDER.length + 1;
+  const nextBack = i => i < BACK_ORDER.length - 1 ? N.marker.replace("{n}", first + i + 1) : N.finish;
+  ol.innerHTML = top + BACK_ORDER.map((key, i) =>
+    renderStop({ n: first + i, key, title: TITLES[key], stop: { ...stopFor(key), ahead: nextBack(i) }, ctx })).join("");
 }
 
 /* ---------- Back at the Visitor Center ---------- */

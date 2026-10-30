@@ -2899,6 +2899,11 @@ ul.plain li {
     transform: rotate(0.5deg);
 }
 
+/* The plan note has a form to fill in, so it hangs straight. */
+.board .pins > .pin.pin-plan {
+    transform: none;
+}
+
 /* Cork: a faint speckle on the board's tan. */
 .board {
     background-color: var(--board-tint);
