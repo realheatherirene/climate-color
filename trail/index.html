@@ -9,11 +9,11 @@
      home, and end at the Visitor Center to take home a Field Guide.
      trail.js draws everything from data/ and the shared core files; this
      file holds only the page shell and the icon set.
-     Part of Climate Color, at climatetrailway.com/trail/ (stewardshiptrail.com
-     forwards here). This folder, trail/, sits in the climate-color
+     The Climate Trailway, at climatetrailway.com/trail/ (stewardshiptrail.com
+     forwards here). This folder, trail/, sits in the climate-trailway
      repository beside core/, the shared core (colors, ways of helping, the
      base stylesheet), served at /core/, so one change there reaches every
-     Climate Color experience. Climate Color is a project of Kinfeather.
+     Climate Trailway experience. The Climate Trailway is a project of Kinfeather.
      CORE below is the one place that address is written.
      ========================================================================== -->
 <html lang="en" class="loading">
@@ -27,7 +27,7 @@
      scripts below (the import map and the old-browser check). If either
      script changes by even one character, its fingerprint must be
      recomputed, or the browser will block it and the page won't load. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-JBYPtgmL+lfb9+JveCuuhL+sbr09gYHQfEr/TtOhsJo=' 'sha256-sSIOhr4FBqA/5Y5NTZIIxFrusfaSpXmjFzS691E+qXY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-eKS57ORtXElXx8BapCqYpXOySifH/nbY3S5v8ltVwiE=' 'sha256-sSIOhr4FBqA/5Y5NTZIIxFrusfaSpXmjFzS691E+qXY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <title>Climate Trailway</title>
 <!-- What shows when the link is shared: in texts, email, and social posts.
      The image is images/share.png (1200 x 630). -->
@@ -47,9 +47,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Varela+Round&display=swap" rel="stylesheet">
-<!-- CORE: the shared climate-color files. The import map lets trail.js
-     write "climate-color/climate-color.js"; change both lines together. -->
-<script type="importmap">{ "imports": { "climate-color/": "/core/" } }</script>
+<!-- CORE: the shared Climate Trailway files. The import map lets trail.js
+     write "trailway/climate-trailway.js"; change both lines together. -->
+<script type="importmap">{ "imports": { "trailway/": "/core/" } }</script>
 <link rel="stylesheet" href="/core/atlas.css">
 <link rel="stylesheet" href="trail.css">
 </head>
