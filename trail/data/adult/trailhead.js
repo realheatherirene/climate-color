@@ -8,13 +8,12 @@ const IMLS = { title: "IMLS: Mass Audubon's Accessible Trails Project", url: "ht
 export default {
   title: "Climate Trailway",
   lede: "Find your way into the climate movement!",
-  intro: "The Climate Trailway is a self-guided learning experience that helps you find your way into the climate movement. Pick your trail, learn about your way of caring, visit the Climate Pavilion, and leave with a Field Guide to climate action!",
+  intro: "A free, self-guided trail: pick your way of helping, visit the Climate Pavilion, and leave with a Field Guide to climate action.",
 
   /* The Visitor Center's board, with the trail picker at the bottom. The key
      shows the places on the map (drawn from shared.js) and the two kinds
      of stop. */
   board: {
-    open: "Navigating the trail can take anywhere from 20-30 minutes, but if you need to rest, you can save your spot and come back anytime. Scroll down to get started!",
     storyLabel: "Read a story about outdoor accessibility",
     blocks: [
       { map: true },

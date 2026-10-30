@@ -22,19 +22,19 @@ export default {
     /* The Trailhead: where the reader arrives, gets their bearings, and
        picks a trail. */
     trailhead: { name: "Trailhead", icon: "i-sign", route: "Start here.",
-      title: "Trailhead", sub: "Welcome! Get your bearings, then pick your trail." },
+      title: "Trailhead", sub: "Start here. The trail takes 20 to 30 minutes, and you can save your spot anytime." },
     /* Markers 1 to 4: on the reader's own trail. */
     trail: { name: "Markers 1–4", short: "Markers 1–4", icon: "i-trail" },
     /* The Climate Pavilion: where every trail meets, and the exhibits are.
        It's a place, not a numbered marker. */
-    lodge: { name: "Climate Pavilion", short: "Pavilion", icon: "i-pavilion", route: "Pick a topic exhibit.",
-      title: "Climate Pavilion", sub: "Learn about the effects of climate change on nine environmental topics." },
+    lodge: { name: "Climate Pavilion", short: "Pavilion", icon: "i-pavilion", route: "Pick an exhibit.",
+      title: "Climate Pavilion", sub: "Pick an exhibit." },
     /* Markers 5 to 7: the Return Trail, the same for everyone. */
     back: { name: "Markers 5–7", short: "Markers 5–7", icon: "i-trail",
-      title: "Return Trail", sub: "Three markers to bring what you learned close to home." },
+      title: "Return Trail", sub: "Head back." },
     /* The Visitor Center: the end of the trail. */
-    finish: { name: "Visitor Center", icon: "i-center", route: "End here.",
-      title: "Visitor Center", sub: "You made it! Choose a first step, find ways to help, and take your Field Guide home." }
+    finish: { name: "Visitor Center", icon: "i-center", route: "Bring it home.",
+      title: "Visitor Center", sub: "Bring it home. Plan your first step, find ways to help, and take your Field Guide with you." }
   },
 
 
@@ -90,14 +90,17 @@ export default {
   map: { here: "You are here", lake: "Lake", north: "N",
     /* The map's key, beside the places above. */
     key: {
-      blazes: "Trail Blazes", blazesText: "Six trails, one for each way of helping.",
-      markers: "Trail Markers", markersText: "Numbered along your trail. Open each one.",
-      back: "Return Trail", backText: "One trail back, the same for everyone."
+      blazes: "Trail Blazes", blazesText: "Pick a trail.",
+      markers: "Trail Markers", markersText: "Open to explore.",
+      back: "Return Trail", backText: "Head back."
     } },
 
   /* The progress bar at the top of the screen. For screen readers, the
      trail's dots are read as "2 of 4 markers opened." */
   progress: { stops: "{n} of {total} markers opened", topics: "{n} topics" },
+
+  /* After each marker: just where you're headed next. */
+  next: { marker: "Marker {n}", lodge: "Climate Pavilion", finish: "Visitor Center" },
 
   /* "Put your [action] to work": the last part of each exhibit, where the
      reader's trail meets the topic. Its words for each trail live in the
@@ -107,12 +110,12 @@ export default {
     imagine: "Imagine this:",
     first: "One first step:",
     added: "Added to your Field Guide.",
-    ahead: "Visit another exhibit, or head on to marker 5, on the Return Trail."
+    ahead: "Return Trail, or another exhibit"
   },
 
   /* The top of the trail, once a trail is picked: its name and what it's
      about. */
-  trailTop: { title: "{trail} Trail", line: "Learn the ways of the {archetype}: {meaning}." },
+  trailTop: { title: "{trail} Trail", line: "Open to explore." },
 
   care: {
     exhibit: "sign",
@@ -144,10 +147,9 @@ export default {
      (in its trail file); markers 6 and 7 are the same for everyone. Every part
      works for any topic, and for any number of exhibits visited. */
   back: {
-    story: { line: "A true story from your trail.", ahead: "A rest stop to think about a place close to home." },
+    story: {},
     place: {
       exhibit: "rest",
-      line: "A rest stop for a place you care about.",
       blocks: [
         { p: "At the Pavilion, you learned how climate change touches one part of life. Now bring it closer to home." },
         { sub: "Pick one place" },
@@ -163,7 +165,6 @@ export default {
     },
     helpers: {
       exhibit: "sign",
-      line: "All six ways of helping, side by side.",
       blocks: [
         { quote: { text: "Look for the helpers. You will always find people who are helping.", who: "Fred Rogers, sharing his mother's advice", src: ROGERS } },
         { p: "You're one of those helpers. And you're not the only one. Every way of helping has a part to play, and yours is marked." },
