@@ -58,7 +58,7 @@ export default {
       { sub: "Where Communicators show up" },
       { p: "Newsletters and group chats. Community radio and local news. School and faith bulletins. Translating at a meeting. Anywhere people need to understand each other." }
     ],
-    ahead: "Stop 5, the Climate Pavilion, where you pick an exhibit on a topic you care about."
+    ahead: "The Climate Pavilion, where you pick an exhibit on a topic you care about."
   },
 
   /* For the Field Guide: a true story of someone on this trail. Every

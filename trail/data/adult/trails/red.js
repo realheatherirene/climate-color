@@ -58,7 +58,7 @@ export default {
       { sub: "Where Anchors show up" },
       { p: "Committee chairs and treasurers. Volunteer schedules and sign-up sheets. Land trusts and co-ops. The person who keeps the records. Anywhere a group needs to last." }
     ],
-    ahead: "Stop 5, the Climate Pavilion, where you pick an exhibit on a topic you care about."
+    ahead: "The Climate Pavilion, where you pick an exhibit on a topic you care about."
   },
 
   /* For the Field Guide: a true story of someone on this trail. Every

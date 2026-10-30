@@ -58,7 +58,7 @@ export default {
       { sub: "Where Creators show up" },
       { p: "Community art and murals. Repair cafés and tool libraries. Planning meetings and design workshops. Gardens in unexpected places. Anywhere people need a new idea." }
     ],
-    ahead: "Stop 5, the Climate Pavilion, where you pick an exhibit on a topic you care about."
+    ahead: "The Climate Pavilion, where you pick an exhibit on a topic you care about."
   },
 
   /* For the Field Guide: a true story of someone on this trail. Every

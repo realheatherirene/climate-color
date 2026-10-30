@@ -58,7 +58,7 @@ export default {
       { sub: "Where Navigators show up" },
       { p: "Emergency planning teams and warning systems. Help desks and hotlines. Mentors and peer guides. People who help others through forms and systems. Anywhere people need to find their way." }
     ],
-    ahead: "Stop 5, the Climate Pavilion, where you pick an exhibit on a topic you care about."
+    ahead: "The Climate Pavilion, where you pick an exhibit on a topic you care about."
   },
 
   /* For the Field Guide: a true story of someone on this trail. Every

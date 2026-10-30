@@ -1,6 +1,6 @@
 /* The Green Trail: Connecting.
    Color names, archetypes, and action words come from core/climate-color.js;
-   this file holds only the words written for this trail: its four stops,
+   this file holds only the words written for this trail: its four markers,
    plus its story and its "Try it now" for the Field Guide.
    Adult pack: grade 9 reading level or lower. */
 
@@ -65,7 +65,7 @@ export default {
       { sub: "Where Connectors show up" },
       { p: "Block clubs and tenant groups. Mutual aid networks. Faith communities and schools. Group chats and contact lists. Anywhere people need to find each other." }
     ],
-    ahead: "Stop 5, the Climate Pavilion, where you pick an exhibit on a topic you care about."
+    ahead: "The Climate Pavilion, where you pick an exhibit on a topic you care about."
   },
 
   /* For the Field Guide: a true story of someone on this trail. Every

@@ -58,7 +58,7 @@ export default {
       { sub: "Where Motivators show up" },
       { p: "Kickoff events and celebrations. Rides, races, and cleanup days. Team captains and volunteer coordinators. Posts that cheer people on. Anywhere a group needs energy." }
     ],
-    ahead: "Stop 5, the Climate Pavilion, where you pick an exhibit on a topic you care about."
+    ahead: "The Climate Pavilion, where you pick an exhibit on a topic you care about."
   },
 
   /* For the Field Guide: a true story of someone on this trail. Every
