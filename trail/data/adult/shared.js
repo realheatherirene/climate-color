@@ -22,7 +22,8 @@ export default {
     /* The Trailhead: where the reader arrives, gets their bearings, and
        picks a trail. */
     trailhead: { name: "Trailhead", icon: "i-sign", route: "Start here.",
-      title: "Trailhead", sub: "Start here. The trail takes 20 to 30 minutes, and you can save your spot anytime." },
+      title: "Trailhead", sub: "Start here.",
+      hint: "The trail takes 20 to 30 minutes, and you can save your spot anytime." },
     /* Markers 1 to 4: on the reader's own trail. */
     trail: { name: "Markers 1–4", short: "Markers 1–4", icon: "i-trail" },
     /* The Climate Pavilion: where every trail meets, and the exhibits are.
@@ -34,7 +35,8 @@ export default {
       title: "Return Trail", sub: "Head back." },
     /* The Visitor Center: the end of the trail. */
     finish: { name: "Visitor Center", icon: "i-center", route: "Bring it home.",
-      title: "Visitor Center", sub: "Bring it home. Plan your first step, find ways to help, and take your Field Guide with you." }
+      title: "Visitor Center", sub: "Bring it home.",
+      hint: "Plan your first step, find ways to help, and take your Field Guide with you." }
   },
 
 
