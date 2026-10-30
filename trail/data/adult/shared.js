@@ -1,5 +1,5 @@
 /* Words shared by every trail and every exhibit: the places on the map,
-   the first trail stop, the Pavilion, the way back, the Field Guide, the
+   the first trail marker, the Pavilion, the way back, the Field Guide, the
    return to the Visitor Center,
    notes, and saving. The page fills in {trail}, {action}, {meaning},
    {words}, {exhibit}, {exhibitName}, and {lower}.
@@ -19,24 +19,24 @@ export default {
      each place's sign, and the return to the Visitor Center all read
      from here. */
   places: {
-    /* The Visitor Center: where the loop starts and ends, as in a real
-       park. The reader arrives here (trailhead, the first place on the
-       page) and comes back here at the end (finish). */
-    trailhead: { name: "Visitor Center", icon: "i-center", route: "Start and end here.",
-      title: "Visitor Center", sub: "Welcome! Get your bearings, pick your trail, and head out. The trail loops back here at the end." },
-    /* The sign where the trail leaves the Visitor Center's yard. On the
-       map and its key only. */
-    start: { name: "Trailhead", icon: "i-sign", route: "Where the trail begins, just outside." },
-    trail: { name: "Stops 1–4", legendName: "Trail Stops", short: "Stops 1–4", icon: "i-trail", route: "Numbered 1 to 8. Open each one." },
-    /* Stop 5: the far point of the loop, where the exhibits are. */
-    lodge: { name: "Climate Pavilion", short: "Pavilion", stop: "Stop 5", icon: "i-pavilion", route: "Stop 5. Pick a topic exhibit.",
+    /* The Trailhead: where the reader arrives, gets their bearings, and
+       picks a trail. */
+    trailhead: { name: "Trailhead", icon: "i-sign", route: "Start here.",
+      title: "Trailhead", sub: "Welcome! Get your bearings, then pick your trail." },
+    /* Markers 1 to 4: on the reader's own trail. */
+    trail: { name: "Markers 1–4", short: "Markers 1–4", icon: "i-trail" },
+    /* The Climate Pavilion: where every trail meets, and the exhibits are.
+       It's a place, not a numbered marker. */
+    lodge: { name: "Climate Pavilion", short: "Pavilion", icon: "i-pavilion", route: "Pick a topic exhibit.",
       title: "Climate Pavilion", sub: "Learn about the effects of climate change on nine environmental topics." },
-    /* Stops 6 to 8: the way back, bringing it all close to home. */
-    back: { name: "Stops 6–8", short: "Stops 6–8", icon: "i-trail",
-      title: "Head Back", sub: "Three stops to bring what you learned close to home." },
-    finish: { name: "Visitor Center", icon: "i-center",
-      title: "Visitor Center", sub: "You've come full circle. Choose a first step, find what's happening near you, and take your Field Guide home." }
+    /* Markers 5 to 7: the Return Trail, the same for everyone. */
+    back: { name: "Markers 5–7", short: "Markers 5–7", icon: "i-trail",
+      title: "Return Trail", sub: "Three markers to bring what you learned close to home." },
+    /* The Visitor Center: the end of the trail. */
+    finish: { name: "Visitor Center", icon: "i-center", route: "End here.",
+      title: "Visitor Center", sub: "You made it! Choose a first step, find ways to help, and take your Field Guide home." }
   },
+
 
 
   /* "Climate Realities": at the Climate Pavilion door, before the
@@ -81,17 +81,23 @@ export default {
     by: "a {owner} project",
     /* While readers test it: a small tag beside that line, linking
        to one line in the footer that asks for feedback by email. */
-    preview: { tag: "Preview", line: "The Trail is a preview. Tell us what works and what doesn't:", email: "trailmap@kinfeather.com", subject: "Climate Color Trail feedback" }
+    preview: { tag: "Preview", line: "The Trail is a preview. Tell us what works and what doesn't:", email: "trailmap@kinfeather.com", subject: "Climate Trailway feedback" }
   },
 
   /* The park map at the Visitor Center: a picture of the places above, for
      getting your bearings. Screen readers skip it; the route strip under
      it says the same in words, and marks where you are. */
-  map: { here: "You are here", lake: "Lake", north: "N", startHere: "Start here" },
+  map: { here: "You are here", lake: "Lake", north: "N",
+    /* The map's key, beside the places above. */
+    key: {
+      blazes: "Trail Blazes", blazesText: "Six trails, one for each way of helping.",
+      markers: "Trail Markers", markersText: "Numbered along your trail. Open each one.",
+      back: "Return Trail", backText: "One trail back, the same for everyone."
+    } },
 
   /* The progress bar at the top of the screen. For screen readers, the
-     trail's dots are read as "2 of 4 stops opened." */
-  progress: { stops: "{n} of {total} stops opened", topics: "{n} topics" },
+     trail's dots are read as "2 of 4 markers opened." */
+  progress: { stops: "{n} of {total} markers opened", topics: "{n} topics" },
 
   /* "Put your [action] to work": the last part of each exhibit, where the
      reader's trail meets the topic. Its words for each trail live in the
@@ -101,7 +107,7 @@ export default {
     imagine: "Imagine this:",
     first: "One first step:",
     added: "Added to your Field Guide.",
-    ahead: "Visit another exhibit, or head on to stop 6, on the way back."
+    ahead: "Visit another exhibit, or head on to marker 5, on the Return Trail."
   },
 
   /* The top of the trail, once a trail is picked: its name and what it's
@@ -134,8 +140,8 @@ export default {
     ahead: "A rest stop to check whether {action} fits you."
   },
 
-  /* The way back: stops 6 to 8. Stop 6 is the trail's own story (in its
-     trail file); stops 7 and 8 are the same for everyone. Every part
+  /* The Return Trail: markers 5 to 7. Marker 5 is the trail's own story
+     (in its trail file); markers 6 and 7 are the same for everyone. Every part
      works for any topic, and for any number of exhibits visited. */
   back: {
     story: { line: "A true story from your trail.", ahead: "A rest stop to think about a place close to home." },
@@ -194,7 +200,7 @@ export default {
   guide: {
     title: "Your Field Guide",
     /* The cover: the brand, the title, and the reader's trail. */
-    brand: "Climate Color Trail",
+    brand: "Climate Trailway",
     by: "a Kinfeather project",
     trailLine: "{trail} Trail · {action}",
     safety: "Put your own safety first. In an emergency, follow official alerts and call 911.",
@@ -212,7 +218,7 @@ export default {
     /* Blank lines to write on, after the notes. */
     moreNotes: "More notes",
     /* Each note, named by where it was written. */
-    noteFrom: { fit: "Stop 3: Rest and reflect", place: "Stop 7: Think about your own place", life: "{exhibit}: Find it in your own life" },
+    noteFrom: { fit: "Marker 3: Rest and reflect", place: "Marker 6: Think about your own place", life: "{exhibit}: Find it in your own life" },
     forTopic: "For {exhibit}",
     work: "Put your {action} to work",
     imagine: "Imagine this:",
@@ -224,7 +230,7 @@ export default {
     comeBack: "Come back to your trail anytime:",
     footBrand: "Climate Color is a project of Kinfeather. Free and open to everyone.",
     /* At the foot of every printed page. */
-    pageFoot: "Your Field Guide · Climate Color Trail",
+    pageFoot: "Your Field Guide · Climate Trailway",
     /* The downloaded file's name. */
     file: "climate-color-field-guide.html",
     /* In every "Find ways to help close to home" part, after its first
@@ -256,12 +262,12 @@ export default {
     board: {
       trip: "Your loop",
       trailhead: "You started here and picked the {trail} Trail.",
-      trailOpened: "You opened {n} of {total} stops.",
-      trailAll: "{total} stops on your way of helping.",
-      backOpened: "You opened {n} of {total} stops.",
-      backAll: "{total} stops to bring it close to home.",
+      trailOpened: "You opened {n} of {total} markers.",
+      trailAll: "{total} markers on your way of helping.",
+      backOpened: "You opened {n} of {total} markers.",
+      backAll: "{total} markers to bring it close to home.",
       lodge: "You visited the {exhibits}.",
-      here: "You're back.",
+      here: "You made it.",
       /* Before any exhibit is visited: the way to the Pavilion. */
       empty: "Visit at least one exhibit at the Climate Pavilion first. Each one adds a first step and its pages to your Field Guide.",
       emptyGo: "Go to the Climate Pavilion",
@@ -308,15 +314,15 @@ export default {
       pass: {
         title: "Pass it on",
         text: "Know someone who wants to help but isn't sure where to start? Send them the trail.",
-        message: "I took the {trail} Trail on Climate Color and found my way of helping with climate change. Find yours: {url}",
-        subject: "Try the Climate Color Trail",
+        message: "I took the {trail} Trail on the Climate Trailway and found my way of helping with climate change. Find yours: {url}",
+        subject: "Try the Climate Trailway",
         email: "Email it"
       },
       feedback: {
         title: "Help make the trail better",
         text: "The trail is new and still a little bumpy. Your feedback helps decide what fixes come next! Answer any questions you like.",
         to: "trailmap@kinfeather.com",
-        subject: "Climate Color Trail feedback",
+        subject: "Climate Trailway feedback",
         questions: [
           { key: "fit", ask: "Did you find a way of helping that fits you?", options: ["Yes", "Partly", "Not yet"] },
           { key: "step", ask: "Do you plan to try a first step?", options: ["Yes, soon", "Maybe later", "Not sure yet"] },
@@ -328,11 +334,11 @@ export default {
         copy: "Copy it",
         privacy: "**Nothing is sent until you send it.** The button opens your own email app. If it doesn't, copy your answers and email them to {to}.",
         /* The email itself. Lines with no answer are left out. */
-        mail: { intro: "Climate Color Trail feedback", trail: "Trail", exhibits: "Exhibits", comment: "Comments" }
+        mail: { intro: "Climate Trailway feedback", trail: "Trail", exhibits: "Exhibits", comment: "Comments" }
       },
       words: "Carry these words home",
-      /* The end of the line: the Trailhead sign, where the trail began. */
-      end: { sign: "Trailhead", home: "Back to the start" }
+      /* The end of the line: a sign marking the end of the trail. */
+      end: { sign: "End of the trail", home: "Back to the Trailhead" }
     }
   },
 
@@ -369,8 +375,8 @@ export default {
        Color. */
     share: "Share",
     email: "Email it to me",
-    emailSubject: "My spot on the Climate Color Trail",
-    emailBody: "Pick up where I left off on the Climate Color Trail:",
+    emailSubject: "My spot on the Climate Trailway",
+    emailBody: "Pick up where I left off on the Climate Trailway:",
     copy: "Copy link",
     copied: "Copied",
     privacy: "**Nothing is saved online.** Your notes stay in this browser on this device, and nowhere else. The link holds only your trail and the exhibits you've visited."

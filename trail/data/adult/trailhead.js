@@ -6,9 +6,9 @@ const MASS_AUDUBON = { title: "Mass Audubon, May 2024", url: "https://www.massau
 const IMLS = { title: "IMLS: Mass Audubon's Accessible Trails Project", url: "https://imls.gov/grant-spotlights/massachusetts-audubons-accessible-trails-project", archive: "https://web.archive.org/web/2026/https://imls.gov/grant-spotlights/massachusetts-audubons-accessible-trails-project" };
 
 export default {
-  title: "Climate Color Trail",
+  title: "Climate Trailway",
   lede: "Find your way into the climate movement!",
-  intro: "The Climate Color Trail is a self-guided learning experience that helps you find your way into the climate movement. Pick your trail, learn about your way of caring, visit the Climate Pavilion, and leave with a Field Guide to climate action!",
+  intro: "The Climate Trailway is a self-guided learning experience that helps you find your way into the climate movement. Pick your trail, learn about your way of caring, visit the Climate Pavilion, and leave with a Field Guide to climate action!",
 
   /* The Visitor Center's board, with the trail picker at the bottom. The key
      shows the places on the map (drawn from shared.js) and the two kinds
