@@ -1,4 +1,4 @@
-# Checks every outside link on climatecolor.com once a week: the Trail
+# Checks every outside link on climatetrailway.com once a week: the Trail
 # and the shared core.
 # If a link is broken, it opens an issue in this repo that lists each
 # broken link and the file it's in, and GitHub emails you. When every
@@ -45,7 +45,7 @@ jobs:
         if: steps.lychee.outputs.exit_code != 0
         uses: peter-evans/create-issue-from-file@v5
         with:
-          title: Broken links on climatecolor.com
+          title: Broken links on climatetrailway.com
           content-filepath: ./lychee/out.md
           labels: broken-links
 
