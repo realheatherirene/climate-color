@@ -3,15 +3,15 @@
    ==========================================================================
    Nothing here is written twice. Each card reads from the same files the
    Trail does:
-     action cards  core/climate-color.js (color, archetype) and each
+     action cards  core/climate-trailway.js (color, archetype) and each
                    trail's "Three typical actions" (word, phrase, example)
      topic cards   trail/data/adult/topics.js (name, icon, teaser, source)
      pair answers  each exhibit's "work" lines, one per trail and action
    So a change in the Trail reaches the cards on the next page load.
    ========================================================================== */
 
-import { COLOR_KEYS, getColor } from "climate-color/climate-color.js";
-import { renderSiteFoot } from "climate-color/site-foot.js";
+import { COLOR_KEYS, getColor } from "trailway/climate-trailway.js";
+import { renderSiteFoot } from "trailway/site-foot.js";
 import { topics, trails, exhibits } from "../trail/data/adult/index.js";
 
 const $ = id => document.getElementById(id);
@@ -162,4 +162,4 @@ buildSheet();
 $("withBacks").addEventListener("change", buildSheet);
 $("printBtn").addEventListener("click", () => window.print());
 
-renderSiteFoot($("siteFoot"));
+renderSiteFoot($("siteFoot"), "", { name: "Climate Color" });

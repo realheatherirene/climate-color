@@ -14,7 +14,7 @@ None of the card text is written here. `cards.js` reads it from the same files t
 
 | On the card | Comes from |
 |---|---|
-| Color and archetype ("Red · Anchor") | `core/climate-color.js` |
+| Color and archetype ("Red · Anchor") | `core/climate-trailway.js` |
 | Action word, phrase, and "For example" | `trail/data/adult/trails/<color>.js`, the "Three typical actions" |
 | Topic name, icon, teaser, and source chapter | `trail/data/adult/topics.js` |
 | The idea for a drawn pair | `trail/data/adult/exhibits/<topic>.js`, its `work` lines |

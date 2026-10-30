@@ -181,7 +181,7 @@ main section > p {
 .color-blue   { --suit: var(--blue-color);   --suit-text: var(--blue-text);   --suit-tint: var(--blue-tint-1); }
 .color-indigo { --suit: var(--indigo-color); --suit-text: var(--indigo-text); --suit-tint: var(--indigo-tint-1); }
 
-/* The text on each color's band: black or white, per core/climate-color.js. */
+/* The text on each color's band: black or white, per core/climate-trailway.js. */
 .action .label-black {
   color: var(--text-primary);
 }
