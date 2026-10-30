@@ -1,6 +1,6 @@
 # Climate Color Cards
 
-The starter pack of the Climate Color card deck, at climatecolor.com/cards/. It's a working page: kept out of search results (`noindex`) and not linked from the rest of the site yet.
+The starter pack of the Climate Color card deck, at climatetrailway.com/cards/. It's a working page: kept out of search results (`noindex`) and not linked from the rest of the site yet.
 
 ## What's on the page
 

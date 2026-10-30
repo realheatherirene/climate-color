@@ -74,7 +74,7 @@ function backCard() {
   <p class="back-name">Climate Color</p>
   ${BARS}
   <p class="back-line">Community care is climate care.</p>
-  <p class="back-url">climatecolor.com/trail</p>
+  <p class="back-url">climatetrailway.com/trail</p>
 </div>`;
 }
 
