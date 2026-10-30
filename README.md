@@ -1,13 +1,13 @@
-# Climate Color
-> Find the kind of climate action that energizes you.
+# Climate Trailway
+> Find your way into the climate movement.
 
-Climate Color helps people find their **climate colors**: the strengths they
-already use to care for their communities, and can use for the climate too.
-Community care is climate care. Six colors, each with an archetype (like the
-Connector or the Navigator) and three words for how it helps, sit at the
-center of the Climate Trailway.
+The Climate Trailway helps people find their **way of helping**: the
+strengths they already use to care for their communities, and can use for
+the climate too. Community care is climate care. Six colors, each with an
+archetype (like the Connector or the Navigator) and three words for how it
+helps, sit at the center of the trail.
 
-Climate Color is a project of **Kinfeather** (Kinfeather LLC). Its Terms,
+The Climate Trailway is a project of **Kinfeather** (Kinfeather LLC). Its Terms,
 Privacy, and Accessibility pages live on kinfeather.com.
 
 * **Creator:** Heather Succio
@@ -32,6 +32,7 @@ GitHub to serve every file as it is.
 | climatetrailway.com/trail/ | `trail/` | **The Trail.** See `trail/README.md` |
 | climatetrailway.com | top level | Forwards to /trail/ |
 | climatetrailway.com/core/ | `core/` | The shared core the Trail loads, and a reference page |
+| climatetrailway.com/cards/ | `cards/` | The Climate Color Cards, a working page kept out of search results. See `cards/README.md` |
 
 The Trail stays at /trail/ on purpose: its saved-spot links
 (climatetrailway.com/trail/#green-water) depend on that address.
@@ -52,7 +53,7 @@ the Trail alone, and the earlier repository is archived as a record.
 | Path | What's in it |
 |---|---|
 | `trail/` | The Trail: its page, code, look, words, and icons |
-| `core/climate-color.js` | **The source of truth:** the six colors, their archetypes, what each provides, their three words, and the Trail's address |
+| `core/climate-trailway.js` | **The source of truth:** the six colors, their archetypes, what each provides, their three words, and the Trail's address |
 | `core/atlas.css` | How everything looks: the brand colors, text shades, and tints, and the styles every page shares |
 | `core/site-foot.js` | The footer every page shares: legal links, the open-resource note, the owner line. The 404 page runs no scripts, so it holds a typed copy; change both together |
 | `core/index.html` | A reference page: every color with its contrast checks |
@@ -71,7 +72,7 @@ with care and recompute the fingerprint after any change.
 ## Making common changes
 
 * **A color's archetype, words, or "provides":** edit `COLORS` in
-  `core/climate-color.js`. Links use color names, so renaming an archetype
+  `core/climate-trailway.js`. Links use color names, so renaming an archetype
   breaks nothing.
 * **A brand color or shade:** edit `core/atlas.css`, then open
   `core/index.html` and check that every contrast check still passes.
@@ -96,7 +97,7 @@ The pages use ES modules and root-relative addresses (`/core/`), so serve
 this folder as the site's top level:
 
 ```
-cd climate-color
+cd climate-trailway
 python3 -m http.server
 ```
 
@@ -106,7 +107,7 @@ Then visit `http://localhost:8000/trail/`.
 
 ## 💼 Enterprise & Organizational Inquiries
 
-Looking to facilitate Climate Color workshops, run team assessment cohorts, or access enterprise L&D tools for your organization?
+Looking to facilitate Climate Trailway workshops, run team assessment cohorts, or access enterprise L&D tools for your organization?
 
 We offer workshops, facilitated team mapping, B2B toolkits, and organizational resources through Kinfeather. Visit [kinfeather.com](https://kinfeather.com) or reach out to **climatecolor@kinfeather.com** to learn more.
 
