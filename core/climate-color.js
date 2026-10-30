@@ -2,7 +2,7 @@
    CLIMATE COLOR: the one source of truth for what each color means
    ==========================================================================
    Every page reads the color system from here, so nothing drifts out of
-   sync. The Climate Color Trail (climatecolor.com/trail/) loads these
+   sync. The Climate Trailway (climatetrailway.com/trail/) loads these
    files from the same site, at /core/.
    What lives where in core/:
 
@@ -29,7 +29,7 @@
      - `words` are each color's three words. Each one covers one of
        purpose, process and people, in that order. Those three are for
        writing content only and never appear on the site. `phrase` is the
-       plain meaning of each word. The Climate Color Trail explains the
+       plain meaning of each word. The Climate Trailway explains the
        same words in action form ("Unite: bringing people who care about
        the same thing together"), in its own trail files. When a phrase
        changes here, check the Trail's to match.
