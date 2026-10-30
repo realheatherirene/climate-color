@@ -1,5 +1,5 @@
 /* The Green Trail: Connecting.
-   Color names, archetypes, and action words come from core/climate-color.js;
+   Color names, archetypes, and action words come from core/climate-trailway.js;
    this file holds only the words written for this trail: its four markers,
    plus its story and its "Try it now" for the Field Guide.
    Adult pack: grade 9 reading level or lower. */

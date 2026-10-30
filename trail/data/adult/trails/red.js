@@ -1,5 +1,5 @@
 /* The Red Trail: Anchoring.
-   Color names, archetypes, and action words come from core/climate-color.js;
+   Color names, archetypes, and action words come from core/climate-trailway.js;
    this file holds only the words that are written for this trail: its stops,
    plus its story and its "Try it now" for the Field Guide.
    Adult pack: grade 9 reading level or lower. */
