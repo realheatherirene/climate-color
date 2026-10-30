@@ -5,7 +5,7 @@ Climate Color helps people find their **climate colors**: the strengths they
 already use to care for their communities, and can use for the climate too.
 Community care is climate care. Six colors, each with an archetype (like the
 Connector or the Navigator) and three words for how it helps, sit at the
-center of the Climate Color Trail.
+center of the Climate Trailway.
 
 Climate Color is a project of **Kinfeather** (Kinfeather LLC). Its Terms,
 Privacy, and Accessibility pages live on kinfeather.com.
@@ -17,26 +17,28 @@ Privacy, and Accessibility pages live on kinfeather.com.
 
 ## The site
 
-This repository is the whole site at **https://climatecolor.com**: the
-**Climate Color Trail**, a learning trail laid out as a loop in a park.
-Readers start at the Visitor Center and pick a way of helping, follow
-stops 1 to 4, visit the Climate Pavilion (stop 5), bring it close to home
-at stops 6 to 8, and come back to the Visitor Center to choose a first
-step and take home a Field Guide. GitHub Pages serves it from the main
+This repository is the whole site at **https://climatetrailway.com**: the
+**Climate Trailway**, a learning trail laid out like a state park.
+Readers start at the Trailhead and pick a way of helping (one of six
+trails), follow markers 1 to 4 on their trail to the Climate Pavilion,
+take the shared Return Trail (markers 5 to 7) to bring it close to home,
+and end at the Visitor Center to choose a first step and take home a
+Field Guide. GitHub Pages serves it from the main
 branch, at the top level; `CNAME` holds the address and `.nojekyll` tells
 GitHub to serve every file as it is.
 
 | Address | Folder | What it is |
 |---|---|---|
-| climatecolor.com/trail/ | `trail/` | **The Trail.** See `trail/README.md` |
-| climatecolor.com | top level | Forwards to /trail/ |
-| climatecolor.com/core/ | `core/` | The shared core the Trail loads, and a reference page |
+| climatetrailway.com/trail/ | `trail/` | **The Trail.** See `trail/README.md` |
+| climatetrailway.com | top level | Forwards to /trail/ |
+| climatetrailway.com/core/ | `core/` | The shared core the Trail loads, and a reference page |
 
 The Trail stays at /trail/ on purpose: its saved-spot links
-(climatecolor.com/trail/#green-water) depend on that address.
+(climatetrailway.com/trail/#green-water) depend on that address.
 
-Old addresses keep working. stewardshiptrail.com and
-trailmap.climatecolor.com forward to /trail/ at the registrar. The one-line
+Old addresses keep working once they forward to /trail/ at the
+registrar: climatecolor.com (the site's address until October 2026),
+stewardshiptrail.com, and trailmap.climatecolor.com. The one-line
 pages in `terms/`, `privacy/`, and `accessibility/` forward to
 kinfeather.com. Links to retired pages land on the 404 page, which points
 to the Trail.
@@ -110,6 +112,6 @@ We offer workshops, facilitated team mapping, B2B toolkits, and organizational r
 
 ---
 
-🌐 *Explore the web app live at [climatecolor.com](https://climatecolor.com)*
+🌐 *Explore the web app live at [climatetrailway.com](https://climatetrailway.com)*
 
 ---
