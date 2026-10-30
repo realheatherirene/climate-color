@@ -3,7 +3,7 @@
    ==========================================================================
    Reads a content pack and draws the page. All words live in data/; all
    titles live in titles.js; colors and action words come from
-   core/climate-color.js. This file holds only behavior.
+   core/climate-trailway.js. This file holds only behavior.
 
    Flow: the Trailhead (get your bearings, pick your trail) -> stops 1-4
    along the trail -> the Lodge (visit as many exhibits as you like, then
@@ -12,8 +12,8 @@
    exhibits visited can be linked directly: ?spot=green-water,food.
    ========================================================================== */
 
-import { COLOR_KEYS, getColor, cssVar, colorValue } from "climate-color/climate-color.js";
-import { renderSiteFoot } from "climate-color/site-foot.js";
+import { COLOR_KEYS, getColor, cssVar, colorValue } from "trailway/climate-trailway.js";
+import { renderSiteFoot } from "trailway/site-foot.js";
 import { TITLES, TRAIL_ORDER, EXHIBIT_ORDER, BACK_ORDER } from "./titles.js";
 import { renderStop, renderBlocks, fmt, icon, setLabels } from "./exhibits.js";
 
@@ -107,7 +107,7 @@ const byLine = fmt(SB.by).replace("{owner}", `<a href="${SB.owner.url}">${fmt(SB
 $("by").innerHTML = `${byLine}${PV ? ` <a class="preview-tag" href="#feedback">${fmt(PV.tag)}</a>` : ""}`;
 /* The feedback section sits between the trail and the footer (see
    renderFeedback); the "Preview" tag jumps to it. */
-renderSiteFoot($("siteFoot"), "", { name: "The Climate Trailway", extra: trailhead.footnote });
+renderSiteFoot($("siteFoot"), "", { extra: trailhead.footnote });
 
 document.title = trailhead.title;
 $("title").textContent = trailhead.title;
@@ -558,10 +558,10 @@ function planPin(c, built) {
   };
   const field = (id, key, label, ph = "") => `<label class="vh" for="${id}">${fmt(label)}</label>
     <textarea id="${id}" class="note plan-field" data-note="${key}" rows="2"${ph ? ` placeholder="${fmt(ph)}"` : ""}>${noteText(store.get(key))}</textarea>`;
-  const steps = Pl.steps.map((step, i) => `<li class="plan-step"><p class="plan-q"><b>${fmt(step.q)}</b> ${fmt(step.hint)}</p>
+  const steps = Pl.steps.map((step, i) => `<li class="plan-step"><p class="plan-q"><b>${fmt(step.q)}</b> ${fmt(!built.length && step.hintNone ? step.hintNone : step.hint)}</p>
     ${i === 0
-      ? `<ul class="first-list" id="firstList"${picking ? ` role="radiogroup" aria-label="${fmt(step.q)}"` : ""}>${order.map(item).join("")}</ul>
-         <p class="plan-own">${fmt(Pl.own)}</p>${field("ownStep", ownKey(), Pl.own, Pl.ownPlaceholder)}`
+      ? `${built.length ? `<ul class="first-list" id="firstList"${picking ? ` role="radiogroup" aria-label="${fmt(step.q)}"` : ""}>${order.map(item).join("")}</ul>` : ""}
+         <p class="plan-own">${fmt(built.length ? Pl.own : Pl.ownNone)}</p>${field("ownStep", ownKey(), built.length ? Pl.own : Pl.ownNone, Pl.ownPlaceholder)}`
       : field(`plan-${step.key}`, planKey(step.key), step.q)}</li>`).join("");
   return pin("pin-plan", Pl.title, `<ol class="plan-steps">${steps}</ol>
     <p class="pin-note">${fmt(Pl.saved)}</p>`);
@@ -588,9 +588,9 @@ function takeSection(built) {
   return `<section class="pin take" aria-labelledby="takeTitle">
     <h3 id="takeTitle"><span class="take-icon" aria-hidden="true">${icon("i-guide")}</span>${fmt(T.title)}</h3>
     <p>${fmt(T.text)}</p>
-    <p class="door-q">${fmt(T.door)}</p>
+    ${built.length ? `<p class="door-q">${fmt(T.door)}</p>
     <ul class="door-list">${built.map(k => { const x = topicOf(k);
-      return `<li><label class="door-pick"><input type="checkbox" data-keep="${k}"${st.dropped.has(k) ? "" : " checked"}>${icon(x.icon)}<span>${fmt(x.name)}</span></label></li>`; }).join("")}</ul>
+      return `<li><label class="door-pick"><input type="checkbox" data-keep="${k}"${st.dropped.has(k) ? "" : " checked"}>${icon(x.icon)}<span>${fmt(x.name)}</span></label></li>`; }).join("")}</ul>` : ""}
     <div class="save-row take-row">
       <button type="button" class="save-btn" data-go="printGuide">${fmt(T.print)}</button>
       <button type="button" class="save-btn" data-go="downloadGuide">${fmt(T.download)}</button>
@@ -607,13 +607,12 @@ function takeSection(built) {
    Field Guide. Before any exhibit, it points the way to the Pavilion. */
 function finishBody(c, built) {
   const J = shared.bulletin, B = J.board, t = trails[st.trail], G = shared.guide;
-  if (!built.length) return `<p class="board-lede">${fmt(B.empty)}</p>
-    <p><button type="button" class="pill-btn pill-all next-btn" data-go="place-lodge">${fmt(B.emptyGo)}</button></p>`;
-  const names = built.length === 1 ? exhibitName(topicOf(built[0])) : `${listOf(built.map(k => topicOf(k).name))} Exhibits`;
+  const none = !built.length;
+  const names = none ? "" : built.length === 1 ? exhibitName(topicOf(built[0])) : `${listOf(built.map(k => topicOf(k).name))} Exhibits`;
   const did = {
     trailhead: fill(B.trailhead, c),
     trail: tripTrailLine(),
-    lodge: B.lodge.replace("{exhibits}", names),
+    lodge: none ? B.lodgeNone : B.lodge.replace("{exhibits}", names),
     back: tripBackLine(),
     finish: B.here
   };
@@ -621,10 +620,12 @@ function finishBody(c, built) {
      whole loop, back where it began, every place checked. */
   const trip = `<section class="trip" aria-labelledby="tripTitle"><h3 class="vh" id="tripTitle">${fmt(B.trip)}</h3>
     <div class="park-map trip-map" aria-hidden="true">${drawMap(MAPS.wide) + drawMap(MAPS.tall)}</div>
-    <ol class="trip-steps">${PLACES_IN_ORDER.map(key => `<li class="trip-${key}${key === "finish" ? " is-here" : ""}">
+    <ol class="trip-steps">${PLACES_IN_ORDER.map(key => { const skipped = none && key === "lodge";
+      return `<li class="trip-${key}${key === "finish" ? " is-here" : ""}${skipped ? " is-skipped" : ""}">
       <span class="trip-icon" aria-hidden="true">${icon(P[key].icon)}</span>
       <span><b>${fmt(P[key].name)}</b><span class="vh">: ${fmt(did[key])}</span></span>
-      <span class="trip-check" aria-hidden="true">${icon("i-check")}</span></li>`).join("")}</ol></section>`;
+      ${skipped ? "" : `<span class="trip-check" aria-hidden="true">${icon("i-check")}</span>`}</li>`; }).join("")}</ol>
+    ${none ? `<p class="trip-none">${fmt(B.empty)} <button type="button" class="linkish" data-go="place-lodge">${fmt(B.emptyGo)}</button></p>` : ""}</section>`;
   /* Pass it on. */
   const msg = fill(B.pass.message, c).replace("{url}", home);
   const canShare = typeof navigator.share === "function";
@@ -717,10 +718,10 @@ function keepsakeHTML() {
       <p class="ks-trail"><span class="ks-blaze" aria-hidden="true"></span>${fmt(fill(G.trailLine, c))}</p>
       <p class="ks-safety">${fmt(G.safety)}</p></header>
     <section><h2>${fmt(G.way)}</h2><p class="ks-you"><b>${fmt(G.you.replace("{a}", aAn(c.archetype)).replace("{archetype}", c.archetype))}</b> ${fmt(cap(trailhead.ways[c.key]))}.</p>${renderBlocks(actions, ctx)}</section>
-    <section><h2>${fmt(steps.length > 1 ? G.steps : G.step)}</h2>
-      <ul class="plain ks-steps">${steps.map(k => `<li><b>${fmt(topicOf(k).name)}:</b> ${fmt(firstOf(c, k))}</li>`).join("")}</ul>
+    ${steps.length || own || plan.length ? `<section><h2>${fmt(steps.length > 1 ? G.steps : G.step)}</h2>
+      ${steps.length ? `<ul class="plain ks-steps">${steps.map(k => `<li><b>${fmt(topicOf(k).name)}:</b> ${fmt(firstOf(c, k))}</li>`).join("")}</ul>` : ""}
       ${own ? `<p class="ks-own"><b>${fmt(G.own)}:</b> ${esc(own)}</p>` : ""}
-      ${plan.length ? `<h3>${fmt(G.plan)}</h3><ul class="plain ks-plan">${plan.map(([q, v]) => `<li><b>${fmt(q)}</b> ${esc(v)}</li>`).join("")}</ul>` : ""}</section>
+      ${plan.length ? `<h3>${fmt(G.plan)}</h3><ul class="plain ks-plan">${plan.map(([q, v]) => `<li><b>${fmt(q)}</b> ${esc(v)}</li>`).join("")}</ul>` : ""}</section>` : ""}
     <section><h2>${fmt(G.tryIt)}</h2>${renderBlocks(stretch, ctx)}</section>
     <section><h2>${fmt(G.notes)}</h2>${notes.length ? notes.map(([label, v]) => `<p class="sub">${fmt(label)}</p><p class="ks-note">${esc(v)}</p>`).join("") : `<p>${fmt(G.noNotes)}</p>`}
       <p class="sub">${fmt(G.moreNotes)}</p><div class="ks-lines" aria-hidden="true"></div></section>

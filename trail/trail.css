@@ -1,5 +1,5 @@
 /* ==========================================================================
-   THE CLIMATE COLOR TRAIL: layout only. Brand colors, type, the page
+   THE CLIMATE TRAILWAY: layout only. Brand colors, type, the page
    header, pills, the page frame (the margins), and the footer come from
    core/atlas.css. Everything is left-aligned and reading text stops at
    about 44rem.
@@ -149,7 +149,7 @@ html.loading .site-foot {
     color: var(--park);
 }
 
-/* "Climate Color – a Kinfeather project": a small tag under the title. */
+/* "a Kinfeather project": a small tag under the title. */
 .page-header .by {
     margin: -0.2rem 0 1rem;
     font-size: 0.95rem;
@@ -1639,6 +1639,18 @@ details:not([open]) .close-label {
 
 .trip-steps .is-here b {
     color: var(--board);
+}
+
+/* No exhibit visited yet: the Pavilion sits quieter, with no check, and a
+   line under the loop offers the way back. */
+.trip-steps .is-skipped .trip-icon {
+    opacity: 0.45;
+}
+
+.trip-none {
+    max-width: var(--read);
+    margin: 0.8rem 0 0;
+    color: var(--text-secondary);
 }
 
 /* The pinned notes: white cards with a pin at the top. */

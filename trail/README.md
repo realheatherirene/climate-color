@@ -1,7 +1,7 @@
 # The Climate Trailway
 
-A learning trail into the climate movement, from Climate Color, a project
-of Kinfeather, laid out like a state park:
+A learning trail into the climate movement, from Kinfeather, laid out
+like a state park:
 
 1. **Trailhead:** get your bearings and pick a way of helping. Each one
    is its own trail, marked by its color, like trail blazes.
@@ -38,19 +38,19 @@ trailmap.climatecolor.com once they're set to forward at the registrar.
 ## The shared core
 
 Colors, ways of helping, plain meanings, and the base stylesheet
-live in `core/`, beside this folder in the climate-color repository, and
+live in `core/`, beside this folder in the climate-trailway repository, and
 load from `/core/`.
 
 ## Owner
 
-Climate Color, including the Trail, is a project of Kinfeather (Kinfeather LLC). Its Terms,
+The Climate Trailway is a project of Kinfeather (Kinfeather LLC). Its Terms,
 Privacy, and Accessibility pages live on kinfeather.com.
 
 ## Links
 
 Every outside link is written out in full. Sources also carry an
 `archive:` link to a saved copy on the Wayback Machine. The weekly link
-check and its skip list live at the top of the climate-color repository
+check and its skip list live at the top of the climate-trailway repository
 (`.github/workflows/check-links.yml` and `.lycheeignore`).
 
 ## Address
