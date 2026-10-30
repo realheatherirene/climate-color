@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CORE ATLAS: how Climate Color looks
+   CORE ATLAS: how the Climate Trailway looks
    ==========================================================================
    Every page loads this file first. It is the only place the brand colors,
    their text shades, and their light tints are written down, and it holds
@@ -12,7 +12,7 @@
   /* The six brand colors. Chosen so every pair looks clearly different,
      including for common types of color blindness. If one changes, also
      check the text shades and tints below and the label colors in
-     core/climate-color.js; core/index.html flags anything that falls
+     core/climate-trailway.js; core/index.html flags anything that falls
      below 4.5:1. */
   --red-color: #EB0333;
   --orange-color: #E98B21;

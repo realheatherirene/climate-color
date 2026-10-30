@@ -7,9 +7,9 @@
        value is the fingerprint of the one inline script at the bottom of
        this page; if that script changes by even one character, recompute
        it or the page won't run. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Yeu1+toQxMZ6o2FtoSnb1Je/8N2IM6UqAcN+mV+KZkg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
-  <title>Core Reference | Climate Color</title>
-  <meta name="description" content="The shared core of Climate Color: the six colors, their meanings, and the contrast checks every page relies on.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-gcIEIISMc1Kw/sbVd4VeUAjRutYAKcwXYr22Uj2X4DQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Core Reference | Climate Trailway</title>
+  <meta name="description" content="The shared core of the Climate Trailway: the six colors, their meanings, and the contrast checks every page relies on.">
   <link rel="icon" type="image/png" sizes="32x32" href="/trail/images/favicon-32.png">
   <link rel="apple-touch-icon" href="/trail/images/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="atlas.css">
   <style>
     /* Reference page only. Everything it shows comes from atlas.css
-       and climate-color.js in this folder. */
+       and climate-trailway.js in this folder. */
     /* The margins come from atlas.css (the page frame). */
     body { text-align: left; }
     h1, h2 { font-family: 'ADLaM Display', 'Varela Round', sans-serif; font-weight: 400; color: var(--text-primary); }
@@ -50,7 +50,7 @@
 </head>
 <body>
 <main>
-  <h1>Climate Color: Core Reference</h1>
+  <h1>Climate Trailway: Core Reference</h1>
   <p>This page shows the one true copy of the color system. Every value here is read live from the files in
     <code>core/</code>, so if this page looks right, the source is right. Nothing on this page is typed in by hand.</p>
   <p class="note">Colors bring people in; archetypes make people understand, and stay.</p>
@@ -80,7 +80,7 @@
 <footer class="site-foot" id="siteFoot"></footer>
 
 <script type="module">
-  import { COLORS, COLOR_KEYS, getColor, colorValue } from "./climate-color.js";
+  import { COLORS, COLOR_KEYS, getColor, colorValue } from "./climate-trailway.js";
   import { renderSiteFoot } from "./site-foot.js";
 
   renderSiteFoot(document.getElementById("siteFoot"));
@@ -131,7 +131,7 @@
     const live = Object.fromEntries(COLORS.map(c => [c.key, { color: colorValue(c.key), text: colorValue(c.key, "text") }]));
 
     // Labels must clear 4.5:1 on their color.
-    note("core/climate-color.js labels", COLORS
+    note("core/climate-trailway.js labels", COLORS
       .filter(c => contrast(c.label === "black" ? BLACK : WHITE, rgb(live[c.key].color)) < 4.5)
       .map(c => `${c.key}: ${c.label} text is below 4.5:1 on ${live[c.key].color}`));
 

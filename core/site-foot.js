@@ -1,7 +1,7 @@
 /* ==========================================================================
-   CLIMATE COLOR: the footer every page shares
+   CLIMATE TRAILWAY: the footer every page shares
    ==========================================================================
-   The owner's legal pages, a note about what Climate Color is and isn't,
+   The owner's legal pages, a note about what the Climate Trailway is and isn't,
    and one line about the owner. Change the words here and the Trail and
    the core reference page follow.
 
@@ -14,7 +14,7 @@
      renderSiteFoot(document.getElementById("siteFoot"));
      renderSiteFoot(el, '<p class="feedback">...</p>');  // a page's own
                                                           // line on top
-     renderSiteFoot(el, "", { name: "The Climate Trailway",  // a page's own
+     renderSiteFoot(el, "", { name: "Climate Color",  // a page's own
        extra: "One more sentence for the note." });         // name, and an
                                                           // added sentence
    ========================================================================== */
@@ -27,7 +27,7 @@ export const SITE_FOOT = {
   ],
   note: "{name} is an open resource. No payment, login, or download is needed. To the best of our knowledge, all outside resources linked here are also free and open to access. Kinfeather is not affiliated with the organizations that host these resources and receives no financial or other incentive for sharing them.",
   made: "{name} is a project of Kinfeather LLC.",
-  name: "Climate Color"
+  name: "The Climate Trailway"
 };
 
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
